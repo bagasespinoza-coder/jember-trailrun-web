@@ -73,11 +73,12 @@ Pastikan perangkat lokal sudah ter-install:
    npm install
    
 3. **Konfigurasi Environment**
-    Duplicate file .env.example menjadi .env:
+Duplicate file .env.example menjadi .env:
     ```bash
     cp .env.example .env
+-
+   Atur kredensial berikut di .env:
     
-Atur kredensial berikut di .env:
     ```code snippet
     DB_DATABASE=jember_trail_run
     DB_USERNAME=root
@@ -95,12 +96,12 @@ Atur kredensial berikut di .env:
     
     MAKE_WEBHOOK_URL=your_make_webhook_url
     
-4. **Generate App Key & Run Migration**
+5. **Generate App Key & Run Migration**
     ```bash
     php artisan key:generate
     php artisan migrate
 
-5. **Jalankan Development Server**
+6. **Jalankan Development Server**
     ```bash
     # Jalankan server Laravel
     php artisan serve
