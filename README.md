@@ -66,44 +66,43 @@ Pastikan perangkat lokal sudah ter-install:
    ```bash
    git clone [https://github.com/username/jember-trail-run.git](https://github.com/username/jember-trail-run.git)
    cd jember-trail-run
-Install Dependensi PHP & Node
-
-Bash
-composer install
-npm install
-Konfigurasi Environment
-Duplicate file .env.example menjadi .env:
-
-Bash
-cp .env.example .env
+   
+2. **Install Dependensi PHP & Node**
+   ```bash
+   composer install
+   npm install
+   
+3. **Konfigurasi Environment**
+    Duplicate file .env.example menjadi .env:
+    ```bash
+    cp .env.example .env
+    
 Atur kredensial berikut di .env:
+    ```code snippet
+    DB_DATABASE=jember_trail_run
+    DB_USERNAME=root
+    DB_PASSWORD=
+    
+    MIDTRANS_SERVER_KEY=your_midtrans_server_key
+    MIDTRANS_CLIENT_KEY=your_midtrans_client_key
+    MIDTRANS_IS_PRODUCTION=false
+    
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp-relay.brevo.com
+    MAIL_PORT=587
+    MAIL_USERNAME=your_brevo_username
+    MAIL_PASSWORD=your_brevo_password
+    
+    MAKE_WEBHOOK_URL=your_make_webhook_url
+    
+4. **Generate App Key & Run Migration**
+    ```bash
+    php artisan key:generate
+    php artisan migrate
 
-Code snippet
-DB_DATABASE=jember_trail_run
-DB_USERNAME=root
-DB_PASSWORD=
-
-MIDTRANS_SERVER_KEY=your_midtrans_server_key
-MIDTRANS_CLIENT_KEY=your_midtrans_client_key
-MIDTRANS_IS_PRODUCTION=false
-
-MAIL_MAILER=smtp
-MAIL_HOST=smtp-relay.brevo.com
-MAIL_PORT=587
-MAIL_USERNAME=your_brevo_username
-MAIL_PASSWORD=your_brevo_password
-
-MAKE_WEBHOOK_URL=your_make_webhook_url
-Generate App Key & Run Migration
-
-Bash
-php artisan key:generate
-php artisan migrate
-Jalankan Development Server
-
-Bash
-# Jalankan server Laravel
-php artisan serve
-
-# Jalankan Vite compiler
-npm run dev
+5. **Jalankan Development Server**
+    ```bash
+    # Jalankan server Laravel
+    php artisan serve
+    # Jalankan Vite compiler
+    npm run dev
