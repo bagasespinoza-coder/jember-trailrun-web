@@ -63,21 +63,25 @@ Pastikan perangkat lokal sudah ter-install:
 ### Langkah Instalasi
 
 1. **Clone Repositori**
+   
    ```bash
    git clone [https://github.com/username/jember-trail-run.git](https://github.com/username/jember-trail-run.git)
    cd jember-trail-run
    
 2. **Install Dependensi PHP & Node**
+   
    ```bash
    composer install
    npm install
    
 3. **Konfigurasi Environment**
-Duplicate file .env.example menjadi .env:
+   
+- Duplicate file .env.example menjadi .env:
+  
     ```bash
     cp .env.example .env
--
-   Atur kredensial berikut di .env:
+
+- Atur kredensial berikut di .env:
     
     ```code snippet
     DB_DATABASE=jember_trail_run
@@ -96,12 +100,13 @@ Duplicate file .env.example menjadi .env:
     
     MAKE_WEBHOOK_URL=your_make_webhook_url
     
-5. **Generate App Key & Run Migration**
+4. **Generate App Key & Run Migration**
+   
     ```bash
     php artisan key:generate
     php artisan migrate
 
-6. **Jalankan Development Server**
+5. **Jalankan Development Server**
     ```bash
     # Jalankan server Laravel
     php artisan serve
