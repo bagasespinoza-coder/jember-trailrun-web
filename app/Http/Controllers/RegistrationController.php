@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Registration;
+use App\Http\Requests\StoreRegistrationRequest;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
@@ -19,7 +21,13 @@ class RegistrationController extends Controller
         $registration = Registration::create($validatedData);
 
         // (Di Sprint 3 nanti: Panggil Midtrans Snap Token di sini)
+        // Dummy snap_token for frontend testing (will be replaced in actual Sprint 3)
+        $snapToken = 'YOUR_SNAP_TOKEN_HERE';
 
-        return redirect()->back()->with('success', 'Pendaftaran berhasil, lanjut ke pembayaran!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Pendaftaran berhasil, lanjut ke pembayaran!',
+            'snap_token' => $snapToken
+        ]);
     }
 }
