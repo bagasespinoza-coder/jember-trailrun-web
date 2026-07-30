@@ -52,7 +52,7 @@
             </section>
 
             <!-- Form Section -->
-            <form class="space-y-8">
+            <form action="/payment" method="GET" class="space-y-8">
 
                 <!-- Section 1: Data Diri -->
                 <section class="bg-white rounded-xl shadow-sm p-6 md:p-8">
