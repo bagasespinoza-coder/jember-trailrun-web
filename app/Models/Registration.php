@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 class Registration extends Model
 {
@@ -62,25 +62,18 @@ class Registration extends Model
     /**
      * Scope: Hitung Pendaftar Lunas (Paid)
      */
-    public function scopePaidCount($query)
+    public static function paidCount(): int
     {
-        return $query->where('payment_status', 'paid')->count();
+        return static::where('payment_status', 'paid')->count();
     }
 
-    /**
-     * Scope: Hitung Sisa Kuota
-     */
-    public function scopeRemainingQuota($query): int
+    public static function remainingQuota(): int
     {
-        $paidCount = $this->scopePaidCount($query);
-        return max(0, self::MAX_QUOTA - $paidCount);
+        return max(0, self::MAX_QUOTA - static::paidCount());
     }
 
-    /**
-     * Scope: Cek Apakah Kuota Penuh
-     */
-    public function scopeIsQuotaFull($query): bool
+    public static function isQuotaFull(): bool
     {
-        return $this->scopePaidCount($query) >= self::MAX_QUOTA;
+        return static::paidCount() >= self::MAX_QUOTA;
     }
 }
