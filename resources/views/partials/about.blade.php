@@ -7,7 +7,7 @@
                 Beyond The <span class="text-[#FD4801]">Finish Line</span>
             </h2>
             <!-- Garis pemisah oranye kecil di bawah judul -->
-            <div class="mx-auto mt-6 h-1 w-16 rounded-full bg-[#FD4801]"></div>        
+            <div class="mx-auto mt-6 h-1 w-16 rounded-full bg-[#FD4801]"></div>
             <p class="mt-6 text-base leading-8 text-white/70 sm:text-lg">
                 This is where it begins. The Jember Trail Run  Start Here brings a brand new 10K adventure through East Java's raw landscapes, built for anyone ready to take their first step into trail running.
             </div>

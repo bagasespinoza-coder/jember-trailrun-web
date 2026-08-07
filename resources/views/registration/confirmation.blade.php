@@ -9,11 +9,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
                 </svg>
             </div>
-            <h1 class="text-2xl font-bold text-[#000C28] mb-2">Pendaftaran Berhasil!</h1>
-            <p class="text-gray-600 mb-6">Terima kasih, pembayaran Anda sedang kami verifikasi. Silakan cek email Anda secara berkala.</p>
-            <a href="/" class="inline-flex items-center justify-center rounded-full bg-[#fd4801] px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105">
-                Kembali ke Beranda
-            </a>
+
+            
+        <div class="text-center">
+    <       h2>Pembayaran Berhasil! ✅</h2>
+        <p>E-ticket akan dikirim ke email Anda dalam beberapa saat.</p>
+    
+        <!-- Webhook dari Midtrans akan handle data sync ke Google Sheets + send email -->
+    </div>
         </div>
     </main>
     @include('partials.footer')

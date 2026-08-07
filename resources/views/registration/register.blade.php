@@ -11,7 +11,26 @@
 
     <!-- Main Content -->
     <main class="pt-32 pb-12 bg-[#E2E2E2] min-h-screen">
-        <div class="mx-auto max-w-6xl px-5 lg:px-10" x-data="registrationForm()">
+        <div class="mx-auto max-w-6xl px-5 lg:px-10" x-data="registrationForm()" x-cloak>
+
+
+                    <!-- Back Button to Home -->
+            <div class="flex justify-end mb-6">
+                <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FD4801] text-white font-semibold text-sm transition duration-300 hover:bg-[#e04000] hover:scale-105 active:scale-95 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span>Kembali ke Beranda</span>
+                </a>
+            </div>
+
+
+
+                        <!-- Title Section -->
+            <section class="text-center mb-10">
+                <h1 class="text-4xl md:text-5xl font-bold text-[#000C28] mb-4">Formulir Pendaftaran</h1>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">Lengkapi data diri Anda untuk mengikuti tantangan Trail Run Jember.</p>
+            </section>
 
             <!-- Stepper Section -->
             <section class="mb-12">
@@ -48,12 +67,6 @@
                         <span class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400 mt-3 text-center">Confirmation</span>
                     </div>
                 </div>
-            </section>
-
-            <!-- Title Section -->
-            <section class="text-center mb-10">
-                <h1 class="text-4xl md:text-5xl font-bold text-[#000C28] mb-4">Formulir Pendaftaran</h1>
-                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">Lengkapi data diri Anda untuk mengikuti tantangan Trail Run Jember.</p>
             </section>
 
             <!-- ============================================================ -->
@@ -112,10 +125,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Nama Lengkap -->
                         <div>
-                            <label for="nama" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="full_name" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Nama Lengkap (Sesuai KTP/Passport)
                             </label>
-                            <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" value="Adrian Wijaya" 
+                            <input type="text" id="full_name" name="full_name" placeholder="Masukkan nama lengkap" 
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.full_name }"
                                 required>
@@ -124,10 +137,10 @@
 
                         <!-- Nomor Identitas -->
                         <div>
-                            <label for="nomor_identitas" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="identity_number" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Nomor Identitas (NIK/Passport)
                             </label>
-                            <input type="text" id="nomor_identitas" name="nomor_identitas" placeholder="3509XXXXXXXXXXXX" value="3509XXXXXXXXXXXX"
+                            <input type="text" id="identity_number" name="identity_number" placeholder="3509XXXXXXXXXXXX"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.identity_number }"
                                 required>
@@ -136,15 +149,15 @@
 
                         <!-- Jenis Kelamin -->
                         <div>
-                            <label class="block text-sm font-semibold text-[#000C28] mb-3">Jenis Kelamin</label>
+                            <label class="block text-sm font-semibold text-[#000C28] mb-3">Jenis Kelamin (Wajib Pilih salah satu)</label>
                             <fieldset class="flex gap-6">
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="jenis_kelamin" value="laki-laki" checked
+                                    <input type="radio" name="gender" value="L"
                                         class="w-4 h-4 text-[#FD4801] focus:ring-2 focus:ring-[#FD4801]">
                                     <span class="text-sm text-gray-700 font-medium">Laki-laki</span>
                                 </label>
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="jenis_kelamin" value="perempuan"
+                                    <input type="radio" name="gender" value="P"
                                         class="w-4 h-4 text-[#FD4801] focus:ring-2 focus:ring-[#FD4801]">
                                     <span class="text-sm text-gray-700 font-medium">Perempuan</span>
                                 </label>
@@ -154,10 +167,10 @@
 
                         <!-- Tempat Lahir -->
                         <div>
-                            <label for="tempat_lahir" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="pob" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Tempat Lahir
                             </label>
-                            <input type="text" id="tempat_lahir" name="tempat_lahir" placeholder="Jember" value="Jember"
+                            <input type="text" id="pob" name="pob" placeholder="Contoh: Jember"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.pob }"
                                 required>
@@ -166,10 +179,10 @@
 
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label for="tanggal_lahir" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="dob" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Tanggal Lahir
                             </label>
-                            <input type="date" id="tanggal_lahir" name="tanggal_lahir" placeholder="mm/dd/yyyy" value="2002-11-24"
+                            <input type="date" id="dob" name="dob"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.dob }"
                                 required>
@@ -181,17 +194,17 @@
                             <label for="usia" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Usia (Per-tahun lari)
                             </label>
-                            <input type="number" id="usia" name="usia" placeholder="24" value="24"
+                            <input type="number" id="usia" name="usia" placeholder="Contoh: 24"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 required>
                         </div>
 
                         <!-- Komunitas -->
                         <div class="md:col-span-2">
-                            <label for="komunitas" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="community" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Komunitas / Klub Lari (Opsional)
                             </label>
-                            <input type="text" id="komunitas" name="komunitas" placeholder="e.g., Jember Runners" value="Jember Runners"
+                            <input type="text" id="community" name="community" placeholder="e.g., Jember Runners"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.community }">
                             <p x-show="errors.community" x-text="errors.community?.[0]" class="mt-1.5 text-sm text-red-600"></p>
@@ -199,12 +212,12 @@
 
                         <!-- Alamat -->
                         <div class="md:col-span-2">
-                            <label for="alamat" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="address" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Alamat Domisili
                             </label>
-                            <textarea id="alamat" name="alamat" placeholder="Masukkan alamat lengkap saat ini" rows="4"
+                            <textarea id="address" name="address" placeholder="Masukkan alamat lengkap saat ini" rows="4"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
-                                :class="{ 'border-red-400 focus:ring-red-400': errors.address }">Jl. Jawa No. 15, Jember</textarea>
+                                :class="{ 'border-red-400 focus:ring-red-400': errors.address }"></textarea>
                             <p x-show="errors.address" x-text="errors.address?.[0]" class="mt-1.5 text-sm text-red-600"></p>
                         </div>
                     </div>
@@ -220,10 +233,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Nomor WhatsApp -->
                         <div>
-                            <label for="whatsapp" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="whatsapp_number" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Nomor WhatsApp
                             </label>
-                            <input type="tel" id="whatsapp" name="whatsapp" placeholder="+62 81234567890" value="+62 81234567890"
+                            <input type="tel" id="whatsapp_number" name="whatsapp_number" placeholder="Contoh: +6281234567890"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.whatsapp_number }"
                                 required>
@@ -235,7 +248,7 @@
                             <label for="email" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Alamat Email
                             </label>
-                            <input type="email" id="email" name="email" placeholder="nama@email.com" value="adrian@email.com"
+                            <input type="email" id="email" name="email" placeholder="nama@email.com"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.email }"
                                 required>
@@ -244,10 +257,10 @@
 
                         <!-- Instagram -->
                         <div class="md:col-span-2">
-                            <label for="instagram" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="instagram_handle" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Akun Instagram (Opsional)
                             </label>
-                            <input type="text" id="instagram" name="instagram" placeholder="@username" value="@adrianwijaya"
+                            <input type="text" id="instagram_handle" name="instagram_handle" placeholder="@username"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.instagram_handle }">
                             <p x-show="errors.instagram_handle" x-text="errors.instagram_handle?.[0]" class="mt-1.5 text-sm text-red-600"></p>
@@ -265,10 +278,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Kategori Lari -->
                         <div>
-                            <label for="kategori_lari" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="category" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Kategori Lari
                             </label>
-                            <input type="text" id="kategori_lari" name="kategori_lari" value="10K Trail Run" readonly
+                            <input type="text" id="category" name="category" value="10K Trail Run" readonly
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 bg-gray-100 cursor-not-allowed focus:outline-none shadow-sm">
                             <p x-show="errors.category" x-text="errors.category?.[0]" class="mt-1.5 text-sm text-red-600"></p>
                         </div>
@@ -278,23 +291,23 @@
                             <label class="block text-sm font-semibold text-[#000C28] mb-3">Race Tee Size</label>
                             <fieldset class="flex gap-2 flex-wrap">
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="tee_size" value="S" class="sr-only peer">
+                                    <input type="radio" name="jersey_size" value="S" class="sr-only peer">
                                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-gray-300 text-sm font-semibold text-gray-700 peer-checked:border-[#FD4801] peer-checked:bg-[#FD4801] peer-checked:text-white transition">S</span>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="tee_size" value="M" checked class="sr-only peer">
+                                    <input type="radio" name="jersey_size" value="M" class="sr-only peer">
                                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-gray-300 text-sm font-semibold text-gray-700 peer-checked:border-[#FD4801] peer-checked:bg-[#FD4801] peer-checked:text-white transition">M</span>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="tee_size" value="L" class="sr-only peer">
+                                    <input type="radio" name="jersey_size" value="L" class="sr-only peer">
                                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-gray-300 text-sm font-semibold text-gray-700 peer-checked:border-[#FD4801] peer-checked:bg-[#FD4801] peer-checked:text-white transition">L</span>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="tee_size" value="XL" class="sr-only peer">
+                                    <input type="radio" name="jersey_size" value="XL" class="sr-only peer">
                                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-gray-300 text-sm font-semibold text-gray-700 peer-checked:border-[#FD4801] peer-checked:bg-[#FD4801] peer-checked:text-white transition">XL</span>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="tee_size" value="XXL" class="sr-only peer">
+                                    <input type="radio" name="jersey_size" value="XXL" class="sr-only peer">
                                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg border-2 border-gray-300 text-sm font-semibold text-gray-700 peer-checked:border-[#FD4801] peer-checked:bg-[#FD4801] peer-checked:text-white transition">XXL</span>
                                 </label>
                             </fieldset>
@@ -313,14 +326,13 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Golongan Darah -->
                         <div>
-                            <label for="golongan_darah" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="blood_type" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Golongan Darah
                             </label>
-                            <select id="golongan_darah" name="golongan_darah" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
-                                :class="{ 'border-red-400 focus:ring-red-400': errors.blood_type }"
-                                required>
+                            <select id="blood_type" name="blood_type" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
+                                :class="{ 'border-red-400 focus:ring-red-400': errors.blood_type }">
                                 <option value="">-- Pilih Golongan Darah --</option>
-                                <option value="O" selected>O</option>
+                                <option value="O">O</option>
                                 <option value="A">A</option>
                                 <option value="B">B</option>
                                 <option value="AB">AB</option>
@@ -330,10 +342,10 @@
 
                         <!-- Riwayat Medis -->
                         <div>
-                            <label for="riwayat_medis" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="medical_history" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Riwayat Medis / Alergi
                             </label>
-                            <input type="text" id="riwayat_medis" name="riwayat_medis" placeholder="Tidak ada" value="Tidak ada"
+                            <input type="text" id="medical_history" name="medical_history" placeholder="Contoh: Tidak ada / Alergi debu"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.medical_history }">
                             <p x-show="errors.medical_history" x-text="errors.medical_history?.[0]" class="mt-1.5 text-sm text-red-600"></p>
@@ -341,10 +353,10 @@
 
                         <!-- Nama Kontak Darurat -->
                         <div class="md:col-span-2">
-                            <label for="nama_kontak_darurat" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="emergency_contact_name" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Nama Kontak Darurat
                             </label>
-                            <input type="text" id="nama_kontak_darurat" name="nama_kontak_darurat" placeholder="Nama lengkap wali/kontak" value="Budi Wijaya"
+                            <input type="text" id="emergency_contact_name" name="emergency_contact_name" placeholder="Nama lengkap wali/kontak"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_name }"
                                 required>
@@ -353,14 +365,14 @@
 
                         <!-- Hubungan -->
                         <div>
-                            <label for="hubungan" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="emergency_contact_relation" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Hubungan
                             </label>
-                            <select id="hubungan" name="hubungan" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
+                            <select id="emergency_contact_relation" name="emergency_contact_relation" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_relation }"
                                 required>
                                 <option value="">-- Pilih Hubungan --</option>
-                                <option value="Ayah" selected>Ayah</option>
+                                <option value="Ayah">Ayah</option>
                                 <option value="Ibu">Ibu</option>
                                 <option value="Saudara Laki-laki">Saudara Laki-laki</option>
                                 <option value="Saudara Perempuan">Saudara Perempuan</option>
@@ -374,10 +386,10 @@
 
                         <!-- Nomor Telepon Darurat -->
                         <div>
-                            <label for="nomor_darurat" class="block text-sm font-semibold text-[#000C28] mb-2">
+                            <label for="emergency_contact_phone" class="block text-sm font-semibold text-[#000C28] mb-2">
                                 Nomor Telepon Darurat
                             </label>
-                            <input type="tel" id="nomor_darurat" name="nomor_darurat" placeholder="Nomor telepon aktif kontak darurat" value="+62 81122334455"
+                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Contoh: +6281122334455"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_phone }"
                                 required>
@@ -387,10 +399,11 @@
                 </section>
 
                 <!-- Checkbox Persetujuan -->
-                <section class="bg-white rounded-xl shadow-sm p-6 md:p-8">
+                <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-8">
                     <label class="flex items-start gap-3 cursor-pointer">
-                        <input type="checkbox" id="agreement" name="agreement" checked
-                            class="mt-1 w-5 h-5 text-[#FD4801] rounded border-gray-300 focus:ring-2 focus:ring-[#FD4801] cursor-pointer">
+                        <input type="checkbox" id="agreement" name="agreement"
+                            class="mt-1 w-5 h-5 text-[#FD4801] rounded border-gray-300 focus:ring-2 focus:ring-[#FD4801] cursor-pointer"
+                            required>
                         <span class="text-sm text-gray-600">
                             Saya dengan ini menyatakan bahwa seluruh data yang saya masukkan adalah benar. Saya juga memahami dan menyetujui <a href="#" class="text-[#FD4801] font-semibold hover:underline">Syarat & Ketentuan</a> yang berlaku pada 10K Trail Run Jember 2026.
                         </span>
@@ -399,6 +412,7 @@
 
                 <!-- CTA Button -->
                 <div class="flex justify-center">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button type="submit"
                         :disabled="isSubmitting"
                         :class="{ 'opacity-60 cursor-not-allowed hover:scale-100 active:scale-100': isSubmitting }"
@@ -423,12 +437,6 @@
 <script>
     /**
      * Alpine.js Registration Form Component
-     * ======================================
-     * Handles:
-     * - Async form submission via Fetch API
-     * - Backend validation error display per field
-     * - Loading / disabled state management
-     * - Midtrans Snap popup integration with all callbacks
      */
     function registrationForm() {
         return {
@@ -449,9 +457,7 @@
             // ─────────────────────────────────────────────────────────
 
             /**
-             * Maps form field names to the backend's expected parameter names.
-             * This avoids changing HTML name attributes while satisfying
-             * StoreRegistrationRequest validation rules.
+             * Maps form field names directly to backend parameters.
              *
              * @returns {Object} Payload ready for JSON POST
              */
@@ -461,29 +467,29 @@
 
                 return {
                     // Data Diri
-                    full_name:          fd.get('nama'),
-                    identity_number:    fd.get('nomor_identitas'),
-                    gender:             fd.get('jenis_kelamin') === 'laki-laki' ? 'L' : 'P',
-                    pob:                fd.get('tempat_lahir'),
-                    dob:                fd.get('tanggal_lahir'),
-                    address:            fd.get('alamat'),
-                    community:          fd.get('komunitas') || null,
+                    full_name:                  fd.get('full_name'),
+                    identity_number:            fd.get('identity_number'),
+                    gender:                     fd.get('gender'),
+                    pob:                        fd.get('pob'),
+                    dob:                        fd.get('dob'),
+                    address:                    fd.get('address'),
+                    community:                  fd.get('community') || null,
 
                     // Kontak & Komunikasi
-                    whatsapp_number:    fd.get('whatsapp'),
-                    email:              fd.get('email'),
-                    instagram_handle:   fd.get('instagram') || null,
+                    whatsapp_number:            fd.get('whatsapp_number'),
+                    email:                      fd.get('email'),
+                    instagram_handle:           fd.get('instagram_handle') || null,
 
                     // Event Details
-                    category:           fd.get('kategori_lari'),
-                    jersey_size:        fd.get('tee_size'),
+                    category:                   fd.get('category'),
+                    jersey_size:                fd.get('jersey_size'),
 
                     // Profil Medis & Kontak Darurat
-                    blood_type:                 fd.get('golongan_darah') || null,
-                    medical_history:            fd.get('riwayat_medis') || null,
-                    emergency_contact_name:     fd.get('nama_kontak_darurat'),
-                    emergency_contact_relation: fd.get('hubungan'),
-                    emergency_contact_phone:    fd.get('nomor_darurat'),
+                    blood_type:                 fd.get('blood_type') || null,
+                    medical_history:            fd.get('medical_history') || null,
+                    emergency_contact_name:     fd.get('emergency_contact_name'),
+                    emergency_contact_relation: fd.get('emergency_contact_relation'),
+                    emergency_contact_phone:    fd.get('emergency_contact_phone'),
                 };
             },
 
@@ -511,15 +517,7 @@
             // Form Submission
             // ─────────────────────────────────────────────────────────
 
-            /**
-             * Main submission handler — called by @submit.prevent.
-             * 1. Collects & maps form data
-             * 2. POSTs to /register as JSON
-             * 3. On 422 → displays per-field errors
-             * 4. On success → opens Midtrans Snap popup
-             */
             async submitForm() {
-                // Guard: prevent duplicate submissions
                 if (this.isSubmitting) return;
 
                 this.isSubmitting = true;
@@ -529,7 +527,6 @@
                 try {
                     const payload = this.buildPayload();
 
-                    // Retrieve CSRF token from <meta> tag
                     const csrfToken = document.querySelector('meta[name="csrf-token"]')
                                         ?.getAttribute('content');
 
@@ -543,7 +540,6 @@
                         body: JSON.stringify(payload),
                     });
 
-                    // Try to parse the JSON response
                     let data;
                     try {
                         data = await response.json();
@@ -569,10 +565,8 @@
 
                     // ── Success → Trigger Midtrans Snap ──
                     if (data.success && data.snap_token) {
-                        // Keep isSubmitting = true while Snap popup is open
                         this.openSnapPopup(data.snap_token);
                     } else if (data.success && data.redirect_url) {
-                        // Fallback for redirect flow if needed
                         window.location.href = data.redirect_url;
                     } else {
                         this.generalError =
@@ -592,48 +586,22 @@
             // Midtrans Snap Integration
             // ─────────────────────────────────────────────────────────
 
-            /**
-             * Opens the Midtrans Snap payment popup.
-             * Uses the token returned by the backend — does NOT generate a new one.
-             *
-             * @param {string} snapToken – Snap transaction token from backend
-             */
             openSnapPopup(snapToken) {
                 window.snap.pay(snapToken, {
-
-                    /**
-                     * Payment completed successfully.
-                     * Log the result and redirect to confirmation page.
-                     */
                     onSuccess: (result) => {
                         console.log('Payment success:', result);
                         window.location.href = '/confirmation';
                     },
-
-                    /**
-                     * Payment is pending (e.g. QRIS scanned, awaiting settlement).
-                     * Log the result and redirect to payment status page.
-                     */
                     onPending: (result) => {
                         console.log('Payment pending:', result);
                         window.location.href = '/payment';
                     },
-
-                    /**
-                     * Payment failed / error from payment gateway.
-                     * Show friendly error, keep form data intact.
-                     */
                     onError: (result) => {
                         console.error('Payment error:', result);
                         this.generalError =
                             'Pembayaran gagal. Silakan coba lagi atau hubungi panitia.';
                         this.isSubmitting = false;
                     },
-
-                    /**
-                     * User closed the Snap popup without completing payment.
-                     * Notify the user and re-enable the form.
-                     */
                     onClose: () => {
                         this.notification =
                             'Pembayaran belum selesai. Silakan klik "Lanjut ke Pembayaran" untuk melanjutkan.';

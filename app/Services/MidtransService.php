@@ -16,8 +16,8 @@ class MidtransService
         $isProduction = config('midtrans.is_production');
 
         // Tentukan URL API Midtrans (Sandbox atau Production)
-        $baseUrl = $isProduction 
-            ? 'https://app.midtrans.com/snap/v1/transactions' 
+        $baseUrl = $isProduction
+            ? 'https://app.midtrans.com/snap/v1/transactions'
             : 'https://app.sandbox.midtrans.com/snap/v1/transactions';
 
         // Susun Payload
@@ -39,9 +39,9 @@ class MidtransService
                     'name'     => 'Tiket Pendaftaran Jember 10k Trail Run',
                 ]
             ],
-            //'enabled_payments' => [
-            //    'qris'
-            //],
+            'enabled_payments' => [
+                'qris'
+            ],
         ];
 
         // 🚀 TEMBAK API LANGSUNG (PAKSA TANPA VERIFIKASI SSL)

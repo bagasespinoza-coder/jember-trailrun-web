@@ -53,59 +53,69 @@
 
                         <!-- Profile Box -->
                         <div class="flex items-center gap-4 bg-[#F5F7FA] rounded-xl p-4 mb-6">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80" 
-                                 alt="Adrian Wijaya" 
-                                 class="w-12 h-12 rounded-full object-cover border border-gray-200">
-                            <div>
-                                <h3 class="font-bold text-sm text-[#000C28]">Adrian Wijaya</h3>
-                                <p class="text-xs text-gray-500">adrian.wijaya@email.com</p>
+                            <div class="w-12 h-12 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center text-gray-600 overflow-hidden shrink-0">
+                                @if(isset($registration->gender) && strtolower($registration->gender) == 'female')
+                                    <!-- Ikon Person Wanita -->
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                @else
+                                    <!-- Ikon Person Pria (Default) -->
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.654 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                @endif
+                            </div>
+                            <div class="overflow-hidden">
+                                <h3 class="font-bold text-sm text-[#000C28] truncate">{{ $registration->name ?? 'Nama Peserta' }}</h3>
+                                <p class="text-xs text-gray-500 truncate">{{ $registration->email ?? 'email@domain.com' }}</p>
                             </div>
                         </div>
 
                         <!-- Details List -->
-                        <div class="space-y-4 text-sm border-b border-gray-100 pb-5 mb-5">
+                    <div class="space-y-4 text-sm border-b border-gray-100 pb-5 mb-5">
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-500 text-xs">Category</span>
-                                <span class="font-bold text-xs text-[#000C28]">10 KM Trail Elite</span>
+                                <span class="font-bold text-xs text-[#000C28]">{{ $registration->category ?? '10 KM Trail Elite' }}</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-500 text-xs">Race Date</span>
-                                <span class="font-semibold text-xs text-[#000C28]">Nov 24, 2024</span>
+                                <span class="font-semibold text-xs text-[#000C28]">{{ $registration->race_date ?? 'Nov 24, 2026' }}</span>
                             </div>
                             <div class="flex justify-between items-center pt-2 border-t border-dashed border-gray-200">
                                 <span class="text-gray-500 text-xs">Registration Fee</span>
-                                <span class="font-semibold text-xs text-[#000C28]">Rp150.000</span>
+                                <span class="font-semibold text-xs text-[#000C28]">Rp{{ number_format($registration->fee ?? 150000, 0, ',', '.') }}</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-500 text-xs">Service Fee</span>
-                                <span class="font-semibold text-xs text-[#000C28]">Rp2.500</span>
+                                <span class="font-semibold text-xs text-[#000C28]">Rp{{ number_format($registration->service_fee ?? 2500, 0, ',', '.') }}</span>
                             </div>
-                        </div>
-
+                        </>
                         <div class="space-y-4 text-sm mb-6">
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-500 uppercase tracking-wider text-[10px] font-semibold">Payment Status</span>
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-50 text-[#fd4801] border border-orange-100">
                                     <span class="w-1.5 h-1.5 rounded-full bg-[#fd4801] animate-pulse"></span>
-                                    Pending
+                                    {{ ucfirst($registration->status ?? 'Pending') }}
                                 </span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-500 uppercase tracking-wider text-[10px] font-semibold">Registration Time</span>
-                                <span class="text-xs text-gray-600 font-medium text-right">Oct 24, 2024 | 14:30 WIB</span>
+                                <span class="text-xs text-gray-600 font-medium text-right">{{ $registration->created_at ?? 'Oct 24, 2026 | 14:30 WIB' }}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Coupon Input & Info Footer -->
-                    <div>
-                        <div class="flex gap-2 mb-6">
-                            <input type="text" placeholder="Coupon Code" aria-label="Coupon Code" 
+                <div>
+                        <form action="{{ route('payment.apply-coupon', $registration->id ?? 1) }}" method="POST" class="flex gap-2 mb-6">
+                            @csrf
+                            <input type="text" name="coupon_code" placeholder="Coupon Code" aria-label="Coupon Code" 
                                 class="flex-1 bg-[#F5F7FA] rounded-xl border border-gray-200 px-4 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#fd4801] placeholder-gray-400">
-                            <button aria-label="Apply Coupon" class="bg-[#000C28] text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fd4801] transition duration-300">
+                            <button type="submit" aria-label="Apply Coupon" class="bg-[#000C28] text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-[#fd4801] transition duration-300">
                                 Apply
                             </button>
-                        </div>
+                        </form>
 
                         <div class="flex items-center justify-center gap-4 text-[10px] text-gray-400 font-semibold border-t border-gray-100 pt-4">
                             <span class="flex items-center gap-1">

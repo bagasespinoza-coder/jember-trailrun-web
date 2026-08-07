@@ -14,10 +14,11 @@ Route::get('/register', function () {
 
 Route::post('/register', [PaymentController::class, 'checkout'])->name('register.store');
 
-// 2. Tampilan Halaman Status Pembayaran
-Route::get('/payment', function () {
-    return view('registration.payment');
-})->name('payment');
+// 2. Tampilan Halaman Pembayaran & Aksi Terkait
+Route::get('/payment', [PaymentController::class, 'showPayment'])->name('payment');
+Route::post('/payment/apply-coupon', [PaymentController::class, 'applyCoupon'])->name('payment.apply-coupon');
+Route::post('/payment/confirm', [PaymentController::class, 'confirmPayment'])->name('payment.confirm');
+Route::get('/payment/status', [PaymentController::class, 'checkStatus'])->name('payment.status');
 
 Route::get('/confirmation', function () {
     return view('registration.confirmation');

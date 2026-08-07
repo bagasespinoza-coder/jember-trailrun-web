@@ -1,12 +1,27 @@
 @php
-    $isSubpage = Request::is('register') || Request::is('payment') || Request::is('confirmation') || Request::is('payment-expired');
+    // Jika halaman saat ini adalah register, hentikan render navbar
+    if (Request::is('register')) {
+        return;
+    }
+
+    $isSubpage = Request::is('payment') || Request::is('confirmation') || Request::is('payment-expired');
+    
+    // Menentukan tujuan tombol "Back" secara dinamis berdasarkan subpage aktif
+    $backUrl = '/';
+    if (Request::is('payment')) {
+        $backUrl = '/register';
+    } elseif (Request::is('confirmation')) {
+        $backUrl = '/payment';
+    }
 @endphp
 
 <header class="fixed inset-x-0 top-0 z-50 {{ $isSubpage ? 'bg-white shadow-sm border-b border-gray-100' : '' }}" {{ $isSubpage ? 'data-navbar-static' : '' }}>
     <nav data-navbar class="mx-auto flex h-20 items-center justify-between px-5 transition-all duration-300 lg:px-10">
         @if($isSubpage)
-            <a href="/" class="flex items-center gap-3 text-[#000C28] font-bold text-xl no-underline tracking-wide">
-                10K Trail Run Jember
+            <a href="{{ $backUrl }}" class="flex items-center gap-3 text-[#000C28] no-underline">
+                <div class="flex items-center gap-3">
+                    <img id="nav-logo-black" src="/images/logo.black.png" alt="Logo" class="h-18 w-auto block transition-opacity duration-300">
+                </div>
             </a>
         @else
             <a href="#home" class="flex items-center gap-3 text-white no-underline">
@@ -19,12 +34,6 @@
         @endif
 
         @if($isSubpage)
-            <div class="hidden items-center gap-8 text-sm font-semibold uppercase tracking-[0.18em] lg:flex">
-                <a href="/#home" class="transition text-[#000C28] hover:text-[#FF5A1F]">Home</a>
-                <a href="/#about" class="transition text-[#000C28] hover:text-[#FF5A1F]">About</a>
-                <a href="/#route" class="transition text-[#000C28] hover:text-[#FF5A1F]">Route</a>
-                <a href="/#contact" class="transition text-[#000C28] hover:text-[#FF5A1F]">Contact</a>
-            </div>
         @else
             <div class="hidden items-center gap-8 text-sm font-semibold uppercase tracking-[0.18em] text-white lg:flex">
                 <a href="#home" class="transition hover:text-[#FD4801] hover:underline hover:underline-offset-8">Home</a>
@@ -38,13 +47,8 @@
 
         @if($isSubpage)
             <div class="hidden items-center gap-4 lg:flex">
-                <!-- Help Icon Button -->
-                <button aria-label="Help and FAQ" class="text-gray-500 hover:text-[#FF5A1F] transition duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"></path>
-                    </svg>
-                </button>
-                <a href="/register" aria-label="Go back to registration" class="inline-flex items-center justify-center rounded-full bg-[#FF5A1F] px-8 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105">
+                <!-- Mengubah href agar kembali sesuai variabel $backUrl -->
+                <a href="{{ $backUrl }}" aria-label="Go back" class="inline-flex items-center justify-center rounded-full bg-[#FF5A1F] px-8 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105">
                     Back
                 </a>
             </div>
@@ -95,7 +99,8 @@
 
         <div class="mt-10">
             @if($isSubpage)
-                <a href="/register" data-mobile-link aria-label="Go back to registration" class="inline-flex w-full items-center justify-center rounded-full bg-[#FF5A1F] px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105">
+                <!-- Mengubah href tombol Back versi mobile -->
+                <a href="{{ $backUrl }}" data-mobile-link aria-label="Go back" class="inline-flex w-full items-center justify-center rounded-full bg-[#FF5A1F] px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105">
                     Back
                 </a>
             @else
