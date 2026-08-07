@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ETicketMail;
 use App\Models\Registration;
 use App\Services\MakeService;
 use App\Services\MidtransService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Midtrans\Config;
 use Midtrans\Notification;
 
@@ -76,6 +78,7 @@ class PaymentController extends Controller
             $registration = Registration::create($registrationData);
 
             return response()->json([
+                'success'      => true,
                 'status'       => 'success',
                 'message'      => 'Pendaftaran berhasil dibuat, silakan selesaikan pembayaran.',
                 'order_id'     => $orderId,
@@ -124,7 +127,7 @@ class PaymentController extends Controller
                 return response()->json(['message' => 'Registration not found'], 404);
             }
 
-            // 3. Update Status Pembayaran
+            // 3. Update Status Pembayaran & Trigger Otomatisasi
             if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
                 if ($registration->payment_status !== 'paid') {
                     $registration->update([
@@ -133,7 +136,16 @@ class PaymentController extends Controller
                     ]);
                     Log::info("Payment SUCCESS (Settlement) for Order ID: {$orderId}");
 
+                    // 🚀 A. Kirim Data ke Make.com -> Google Sheets
                     $this->makeService->sendRunnerData($registration);
+
+                    // 🚀 B. Kirim Email E-Ticket via Brevo SMTP
+                    try {
+                        Mail::to($registration->email)->send(new ETicketMail($registration));
+                        Log::info("E-Ticket Email sent successfully to: {$registration->email}");
+                    } catch (\Exception $emailError) {
+                        Log::error("Failed sending E-Ticket to {$registration->email}: " . $emailError->getMessage());
+                    }
                 }
             } else if (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
                 $registration->update([
