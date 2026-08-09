@@ -4,30 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Registration;
 use App\Http\Requests\StoreRegistrationRequest;
-use Illuminate\Http\Request;
+use App\Services\MidtransService;
+use Illuminate\Http\JsonResponse;
 
 class RegistrationController extends Controller
 {
-    public function store(StoreRegistrationRequest $request)
+    protected MidtransService $midtransService;
+
+    // Suntik MidtransService ke sini
+    public function __construct(MidtransService $midtransService)
     {
-        // 1. Ambil data yang udah Lolos Validation 100%
-        $validatedData = $request->validated();
+        $this->midtransService = $midtransService;
+    }
 
-        // 2. Generate Order ID unik & Gross Amount (Rp165.000 / Sesuaikan harga event)
-        $validatedData['order_id'] = 'JTR-' . strtoupper(uniqid());
-        $validatedData['gross_amount'] = 165000; 
+    public function store(StoreRegistrationRequest $request): JsonResponse
+    {
+        // 1. Ambil data yang udah Lolos Validation 100% dari "Satpam"
+        $validated = $request->validated();
+        
+        $ticketPrice = 165000;
+        $orderId = 'JTR-' . strtoupper(uniqid());
 
-        // 3. Simpan ke Database
-        $registration = Registration::create($validatedData);
+        try {
+            // 2. Tembak Token Midtrans Dulu
+            $snapToken = $this->midtransService->createSnapToken([
+                'order_id'   => $orderId,
+                'amount'     => $ticketPrice,
+                'user_name'  => $validated['full_name'],
+                'user_email' => $validated['email'],
+                'user_phone' => $validated['whatsapp_number'],
+            ]);
 
-        // (Di Sprint 3 nanti: Panggil Midtrans Snap Token di sini)
-        // Dummy snap_token for frontend testing (will be replaced in actual Sprint 3)
-        $snapToken = 'YOUR_SNAP_TOKEN_HERE';
+            // 3. Gabungkan Data + Token buat disimpen ke Database
+            $registrationData = array_merge($validated, [
+                'order_id'       => $orderId,
+                'gross_amount'   => $ticketPrice,
+                'payment_status' => 'pending',
+                'snap_token'     => $snapToken,
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Pendaftaran berhasil, lanjut ke pembayaran!',
-            'snap_token' => $snapToken
-        ]);
+            Registration::create($registrationData);
+
+            // 4. Sukses! Lempar user ke halaman Payment
+            return response()->json([
+                'success'      => true,
+                'status'       => 'success',
+                'message'      => 'Pendaftaran sukses, mengalihkan ke pembayaran....',
+                'redirect_url' => url('/payment/' . $orderId),
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Gagal membuat transaksi: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

@@ -10,10 +10,10 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
+    ->withMiddleware(function (Middleware $middleware) {
         // Whitelist CSRF buat webhook Midtrans (tanpa prefix /api)
         $middleware->validateCsrfTokens(except: [
-            'midtrans/notification',
+            '/midtrans/notification',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

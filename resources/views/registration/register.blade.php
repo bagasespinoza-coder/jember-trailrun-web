@@ -10,61 +10,60 @@
     @include('partials.navbar')
 
     <!-- Main Content -->
-    <main class="pt-32 pb-12 bg-[#E2E2E2] min-h-screen">
+    <main class="pt-8 pb-12 bg-[#E2E2E2] min-h-screen">
         <div class="mx-auto max-w-6xl px-5 lg:px-10" x-data="registrationForm()" x-cloak>
 
+            <!-- Header Section: Tombol Kembali & Judul Megah -->
+            <div class="mb-10">
+                <div class="flex items-center justify-between mb-4">
+                    <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FD4801] text-white font-semibold text-sm transition duration-300 hover:bg-[#e04000] hover:scale-105 active:scale-95 shadow-sm">
+                        <span>Kembali</span>
+                    </a>
+                    <div></div>
+                </div>
 
-                    <!-- Back Button to Home -->
-            <div class="flex justify-end mb-6">
-                <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FD4801] text-white font-semibold text-sm transition duration-300 hover:bg-[#e04000] hover:scale-105 active:scale-95 shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    <span>Kembali ke Beranda</span>
-                </a>
+                <!-- Judul & Sub-judul yang Lebih Besar & Mencolok -->
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-[#000C28] mb-3 tracking-tight">Formulir Pendaftaran</h1>
+                    <p class="text-base md:text-xl text-gray-600 max-w-2xl mx-auto">Lengkapi data diri Anda untuk mengikuti tantangan Trail Run Jember.</p>
+                </div>
             </div>
 
-
-
-                        <!-- Title Section -->
-            <section class="text-center mb-10">
-                <h1 class="text-4xl md:text-5xl font-bold text-[#000C28] mb-4">Formulir Pendaftaran</h1>
-                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">Lengkapi data diri Anda untuk mengikuti tantangan Trail Run Jember.</p>
-            </section>
-
-            <!-- Stepper Section -->
+            <!-- Stepper Section: Paksa Horizontal di HP & Desktop (Hapus arah vertikal) -->
             <section class="mb-12">
-                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                <div class="flex items-center justify-center max-w-xl mx-auto">
                     <!-- Step 1: Registration (Active) -->
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-[#FD4801] border-2 border-[#FD4801]">
-                            <span class="text-white font-bold text-lg">1</span>
+                    <div class="flex flex-col items-center shrink-0">
+                        <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FD4801] border-2 border-[#FD4801]">
+                            <span class="text-white font-bold text-base sm:text-lg">1</span>
                         </div>
-                        <span class="text-sm font-semibold uppercase tracking-[0.18em] text-[#FD4801] mt-3 text-center">Registration</span>
+                        <span class="text-[11px] sm:text-sm font-semibold uppercase tracking-[0.12em] sm:tracking-[0.18em] text-[#FD4801] mt-2 text-center">Registration</span>
                     </div>
 
-                    <!-- Connector -->
-                    <div class="hidden md:block h-1 flex-1 bg-gray-300"></div>
-                    <div class="md:hidden w-0.5 h-12 bg-gray-300"></div>
+                    <!-- Connector 1 (Panjang di desktop, pas di tengah bulatan) -->
+                    <div class="flex-1 flex items-center justify-center px-2 sm:px-4 mb-6">
+                        <div class="h-1 w-full max-w-[60px] sm:max-w-[90px] md:max-w-[120px] bg-gray-300 rounded"></div>
+                    </div>
 
                     <!-- Step 2: Payment -->
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-white border-2 border-gray-300">
-                            <span class="text-gray-400 font-bold text-lg">2</span>
+                    <div class="flex flex-col items-center shrink-0">
+                        <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-gray-300">
+                            <span class="text-gray-400 font-bold text-base sm:text-lg">2</span>
                         </div>
-                        <span class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400 mt-3 text-center">Payment</span>
+                        <span class="text-[11px] sm:text-sm font-semibold uppercase tracking-[0.12em] sm:tracking-[0.18em] text-gray-400 mt-2 text-center">Payment</span>
                     </div>
 
-                    <!-- Connector -->
-                    <div class="hidden md:block h-1 flex-1 bg-gray-300"></div>
-                    <div class="md:hidden w-0.5 h-12 bg-gray-300"></div>
+                    <!-- Connector 2 -->
+                    <div class="flex-1 flex items-center justify-center px-2 sm:px-4 mb-6">
+                        <div class="h-1 w-full max-w-[60px] sm:max-w-[90px] md:max-w-[120px] bg-gray-300 rounded"></div>
+                    </div>
 
                     <!-- Step 3: Confirmation -->
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-white border-2 border-gray-300">
-                            <span class="text-gray-400 font-bold text-lg">3</span>
+                    <div class="flex flex-col items-center shrink-0">
+                        <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-gray-300">
+                            <span class="text-gray-400 font-bold text-base sm:text-lg">3</span>
                         </div>
-                        <span class="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400 mt-3 text-center">Confirmation</span>
+                        <span class="text-[11px] sm:text-sm font-semibold uppercase tracking-[0.12em] sm:tracking-[0.18em] text-gray-400 mt-2 text-center">Confirmation</span>
                     </div>
                 </div>
             </section>
@@ -113,7 +112,7 @@
             </div>
 
             <!-- Form Section -->
-            <form x-ref="form" @submit.prevent="submitForm" class="space-y-8">
+            <form x-ref="form" @submit.prevent="submitForm" novalidate class="space-y-8">
 
                 <!-- Section 1: Data Diri -->
                 <section class="bg-white rounded-xl shadow-sm p-6 md:p-8">
@@ -126,7 +125,7 @@
                         <!-- Nama Lengkap -->
                         <div>
                             <label for="full_name" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Nama Lengkap (Sesuai KTP/Passport)
+                                Nama Lengkap (Sesuai KTP/Passport)<span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="full_name" name="full_name" placeholder="Masukkan nama lengkap" 
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
@@ -138,7 +137,7 @@
                         <!-- Nomor Identitas -->
                         <div>
                             <label for="identity_number" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Nomor Identitas (NIK/Passport)
+                                Nomor Identitas (NIK/Passport)<span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="identity_number" name="identity_number" placeholder="3509XXXXXXXXXXXX"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
@@ -149,7 +148,7 @@
 
                         <!-- Jenis Kelamin -->
                         <div>
-                            <label class="block text-sm font-semibold text-[#000C28] mb-3">Jenis Kelamin (Wajib Pilih salah satu)</label>
+                            <label class="block text-sm font-semibold text-[#000C28] mb-3">Jenis Kelamin (Wajib Pilih salah satu)<span class="text-red-500">*</span></label>
                             <fieldset class="flex gap-6">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input type="radio" name="gender" value="L"
@@ -168,7 +167,7 @@
                         <!-- Tempat Lahir -->
                         <div>
                             <label for="pob" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Tempat Lahir
+                                Tempat Lahir<span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="pob" name="pob" placeholder="Contoh: Jember"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
@@ -179,24 +178,17 @@
 
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label for="dob" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Tanggal Lahir
-                            </label>
-                            <input type="date" id="dob" name="dob"
-                                class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
-                                :class="{ 'border-red-400 focus:ring-red-400': errors.dob }"
-                                required>
-                            <p x-show="errors.dob" x-text="errors.dob?.[0]" class="mt-1.5 text-sm text-red-600"></p>
+                            <label for="dob" class="block text-sm font-semibold text-[#000C28] mb-2">Tanggal Lahir<span class="text-red-500">*</span></label>
+                            <input type="date" id="dob" name="dob" @change="hitungUmur"
+                                class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition" required>
                         </div>
 
                         <!-- Usia -->
                         <div>
-                            <label for="usia" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Usia (Per-tahun lari)
-                            </label>
-                            <input type="number" id="usia" name="usia" placeholder="Contoh: 24"
-                                class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
-                                required>
+                            <label for="usia" class="block text-sm font-semibold text-[#000C28] mb-2">Usia</label>
+                            <input type="number" id="usia" name="usia" x-model="usia" readonly
+                                placeholder="Otomatis terisi"
+                                class="w-full rounded-xl border border-gray-300 px-4 py-3 bg-gray-100 cursor-not-allowed text-gray-500...">
                         </div>
 
                         <!-- Komunitas -->
@@ -213,7 +205,7 @@
                         <!-- Alamat -->
                         <div class="md:col-span-2">
                             <label for="address" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Alamat Domisili
+                                Alamat Domisili<span class="text-red-500">*</span>
                             </label>
                             <textarea id="address" name="address" placeholder="Masukkan alamat lengkap saat ini" rows="4"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
@@ -234,9 +226,9 @@
                         <!-- Nomor WhatsApp -->
                         <div>
                             <label for="whatsapp_number" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Nomor WhatsApp
+                                Nomor WhatsApp<span class="text-red-500">*</span>
                             </label>
-                            <input type="tel" id="whatsapp_number" name="whatsapp_number" placeholder="Contoh: +6281234567890"
+                            <input type="tel" id="whatsapp_number" name="whatsapp_number" placeholder="Contoh: 081234567890"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.whatsapp_number }"
                                 required>
@@ -246,9 +238,9 @@
                         <!-- Email -->
                         <div>
                             <label for="email" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Alamat Email
+                                Alamat Email<span class="text-red-500">*</span>
                             </label>
-                            <input type="email" id="email" name="email" placeholder="nama@email.com"
+                            <input type="email" id="email" name="email" autocomplete="off" placeholder="nama@email.com"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.email }"
                                 required>
@@ -288,7 +280,7 @@
 
                         <!-- Race Tee Size -->
                         <div>
-                            <label class="block text-sm font-semibold text-[#000C28] mb-3">Race Tee Size</label>
+                            <label class="block text-sm font-semibold text-[#000C28] mb-3">Race Tee Size<span class="text-red-500">*</span></label>
                             <fieldset class="flex gap-2 flex-wrap">
                                 <label class="cursor-pointer">
                                     <input type="radio" name="jersey_size" value="S" class="sr-only peer">
@@ -327,7 +319,7 @@
                         <!-- Golongan Darah -->
                         <div>
                             <label for="blood_type" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Golongan Darah
+                                Golongan Darah<span class="text-red-500">*</span>
                             </label>
                             <select id="blood_type" name="blood_type" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.blood_type }">
@@ -354,9 +346,9 @@
                         <!-- Nama Kontak Darurat -->
                         <div class="md:col-span-2">
                             <label for="emergency_contact_name" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Nama Kontak Darurat
+                                Nama Kontak Darurat<span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="emergency_contact_name" name="emergency_contact_name" placeholder="Nama lengkap wali/kontak"
+                            <input type="text" id="emergency_contact_name" name="emergency_contact_name" autocomplete="nope" placeholder="Nama lengkap wali/kontak"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_name }"
                                 required>
@@ -366,7 +358,7 @@
                         <!-- Hubungan -->
                         <div>
                             <label for="emergency_contact_relation" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Hubungan
+                                Hubungan<span class="text-red-500">*</span>
                             </label>
                             <select id="emergency_contact_relation" name="emergency_contact_relation" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_relation }"
@@ -387,9 +379,9 @@
                         <!-- Nomor Telepon Darurat -->
                         <div>
                             <label for="emergency_contact_phone" class="block text-sm font-semibold text-[#000C28] mb-2">
-                                Nomor Telepon Darurat
+                                Nomor Telepon Darurat<span class="text-red-500">*</span>
                             </label>
-                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Contoh: +6281122334455"
+                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Contoh: 081122334455"
                                 class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FD4801] shadow-sm transition"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_phone }"
                                 required>
@@ -411,20 +403,21 @@
                 </section>
 
                 <!-- CTA Button -->
-                <div class="flex justify-center">
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <button type="submit"
-                        :disabled="isSubmitting"
-                        :class="{ 'opacity-60 cursor-not-allowed hover:scale-100 active:scale-100': isSubmitting }"
-                        class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-10 py-4 text-base md:text-lg font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105 active:scale-95">
-                        <!-- Loading Spinner (visible during submission) -->
-                        <svg x-show="isSubmitting" x-cloak class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span x-text="isSubmitting ? 'Memproses...' : 'Lanjut ke Pembayaran'"></span>
-                        <span class="ml-2" x-show="!isSubmitting">→</span>
-                    </button>
+                <<div class="flex justify-center">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button type="submit"
+                            :disabled="isSubmitting"
+                            :class="{ 'opacity-60 cursor-not-allowed hover:scale-100 active:scale-100': isSubmitting }"
+                            class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-10 py-4 text-base md:text-lg font-semibold uppercase tracking-[0.18em] text-white transition duration-300 hover:scale-105 active:scale-95">
+                            
+                            <!-- Loading Circle Spinner (CSS murni bentuk lingkaran berputar) -->
+                            <div x-show="isSubmitting" x-cloak class="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+
+                            <!-- Teks Tombol (Hilang saat submitting, diganti circle) -->
+                            <span x-show="!isSubmitting">Lanjut ke Pembayaran</span>
+                            <span x-show="isSubmitting" x-cloak>Memproses...</span>
+                        </button>
+                    </div>
                 </div>
 
             </form>
@@ -440,33 +433,29 @@
      */
     function registrationForm() {
         return {
-            /** @type {boolean} Submission lock — prevents duplicate POSTs */
             isSubmitting: false,
-
-            /** @type {Object} Backend validation errors keyed by field name */
             errors: {},
-
-            /** @type {string} General error message (server/network failures) */
             generalError: '',
-
-            /** @type {string} Informational notification (e.g. popup closed) */
             notification: '',
+            
+            usia: '', 
 
-            // ─────────────────────────────────────────────────────────
-            // Payload Builder
-            // ─────────────────────────────────────────────────────────
+            hitungUmur(event) {
+                const dob = event.target.value;
+                if(!dob) return;
+                
+                const birthDate = new Date(dob);
+                const raceYear = 2026; 
+                
+                let calculatedAge = raceYear - birthDate.getFullYear();
+                this.usia = calculatedAge > 0 ? calculatedAge : 0;
+            },
 
-            /**
-             * Maps form field names directly to backend parameters.
-             *
-             * @returns {Object} Payload ready for JSON POST
-             */
             buildPayload() {
                 const form = this.$refs.form;
                 const fd = new FormData(form);
 
                 return {
-                    // Data Diri
                     full_name:                  fd.get('full_name'),
                     identity_number:            fd.get('identity_number'),
                     gender:                     fd.get('gender'),
@@ -474,18 +463,12 @@
                     dob:                        fd.get('dob'),
                     address:                    fd.get('address'),
                     community:                  fd.get('community') || null,
-
-                    // Kontak & Komunikasi
                     whatsapp_number:            fd.get('whatsapp_number'),
                     email:                      fd.get('email'),
                     instagram_handle:           fd.get('instagram_handle') || null,
-
-                    // Event Details
                     category:                   fd.get('category'),
                     jersey_size:                fd.get('jersey_size'),
-
-                    // Profil Medis & Kontak Darurat
-                    blood_type:                 fd.get('blood_type') || null,
+                    blood_type:                 fd.get('blood_type'), 
                     medical_history:            fd.get('medical_history') || null,
                     emergency_contact_name:     fd.get('emergency_contact_name'),
                     emergency_contact_relation: fd.get('emergency_contact_relation'),
@@ -493,17 +476,11 @@
                 };
             },
 
-            // ─────────────────────────────────────────────────────────
-            // Error Helpers
-            // ─────────────────────────────────────────────────────────
-
-            /** Resets all error/notification states */
             clearErrors() {
                 this.errors = {};
                 this.generalError = '';
             },
 
-            /** Smooth-scrolls to the first visible validation error message */
             scrollToFirstError() {
                 this.$nextTick(() => {
                     const el = this.$refs.form.querySelector('.text-red-600');
@@ -512,10 +489,6 @@
                     }
                 });
             },
-
-            // ─────────────────────────────────────────────────────────
-            // Form Submission
-            // ─────────────────────────────────────────────────────────
 
             async submitForm() {
                 if (this.isSubmitting) return;
@@ -526,9 +499,7 @@
 
                 try {
                     const payload = this.buildPayload();
-
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]')
-                                        ?.getAttribute('content');
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
                     const response = await fetch('{{ route("register.store") }}', {
                         method: 'POST',
@@ -547,7 +518,6 @@
                         throw new Error('Server mengembalikan respons yang tidak valid.');
                     }
 
-                    // ── Validation Errors (422) ──
                     if (response.status === 422) {
                         this.errors = data.errors || {};
                         this.scrollToFirstError();
@@ -555,61 +525,25 @@
                         return;
                     }
 
-                    // ── Other HTTP Errors ──
                     if (!response.ok) {
-                        this.generalError = data.message
-                            || 'Terjadi kesalahan pada server. Silakan coba lagi.';
+                        this.generalError = data.message || 'Terjadi kesalahan pada server. Silakan coba lagi.';
                         this.isSubmitting = false;
                         return;
                     }
 
-                    // ── Success → Trigger Midtrans Snap ──
-                    if (data.success && data.snap_token) {
-                        this.openSnapPopup(data.snap_token);
-                    } else if (data.success && data.redirect_url) {
+                    if (data.success && data.redirect_url) {
                         window.location.href = data.redirect_url;
                     } else {
-                        this.generalError =
-                            data.message || 'Gagal mendapatkan token pembayaran. Silakan coba lagi.';
+                        this.generalError = data.message || 'Gagal memproses pendaftaran. Silakan coba lagi.';
                         this.isSubmitting = false;
                     }
 
                 } catch (error) {
                     console.error('Registration submission error:', error);
-                    this.generalError =
-                        'Terjadi kesalahan jaringan. Periksa koneksi internet Anda dan coba lagi.';
+                    this.generalError = 'Terjadi kesalahan jaringan. Periksa koneksi internet Anda dan coba lagi.';
                     this.isSubmitting = false;
                 }
-            },
-
-            // ─────────────────────────────────────────────────────────
-            // Midtrans Snap Integration
-            // ─────────────────────────────────────────────────────────
-
-            openSnapPopup(snapToken) {
-                window.snap.pay(snapToken, {
-                    onSuccess: (result) => {
-                        console.log('Payment success:', result);
-                        window.location.href = '/confirmation';
-                    },
-                    onPending: (result) => {
-                        console.log('Payment pending:', result);
-                        window.location.href = '/payment';
-                    },
-                    onError: (result) => {
-                        console.error('Payment error:', result);
-                        this.generalError =
-                            'Pembayaran gagal. Silakan coba lagi atau hubungi panitia.';
-                        this.isSubmitting = false;
-                    },
-                    onClose: () => {
-                        this.notification =
-                            'Pembayaran belum selesai. Silakan klik "Lanjut ke Pembayaran" untuk melanjutkan.';
-                        this.isSubmitting = false;
-                    },
-                });
             },
         };
     }
 </script>
-@endpush
