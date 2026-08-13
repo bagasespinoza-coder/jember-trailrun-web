@@ -16,14 +16,14 @@
     <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,_rgba(253,72,1,0.16),transparent_90%)]"></div>
     
     <!-- Content -->
-    <div class="relative z-10 mx-auto w-full max-w-[1300px] lg:max-w-[850px] px-4 lg:px-6">
+<div class="relative z-10 mx-auto w-full max-w-[1300px] lg:max-w-[850px] px-4 lg:px-6">
         <div class="flex flex-col justify-center">
             <!-- Title Section -->
             <div class="max-w-3xl lg:max-w-xl text-center lg:text-left">
                 <p class="mb-2.5 lg:mb-1.5 inline-block rounded-full border border-white/30 bg-white/10 px-3.5 py-1 lg:px-2.5 lg:py-0.5 text-[10px] lg:text-[9px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
                     🏃 Registration For 2026
                 </p>
-                <h1 class="max-w-4xl lg:max-w-2xl text-3xl font-black uppercase leading-[1.1] tracking-[-0.02em] text-white sm:text-4xl lg:text-[2.75rem]">
+                <h1 class="font-race max-w-4xl lg:max-w-2xl text-3xl font-black uppercase leading-[1.1] tracking-[-0.02em] text-white sm:text-4xl lg:text-[2.75rem]">
                     Jember <br class="hidden lg:block" />
                     <span class="inline-block">Trail Run</span> <span class="text-[#FD4801]">10K</span>
                 </h1>
@@ -40,21 +40,21 @@
                         <div class="text-lg lg:text-sm">🏃</div>
                         <p class="text-[10px] lg:text-[9px] font-semibold uppercase tracking-[0.12em] text-white/60">Participants</p>
                     </div>
-                    <h2 class="text-xl lg:text-lg font-bold text-white">300+</h2>
+                    <h2 class="font-race text-xl lg:text-lg font-bold text-white">300+</h2>
                 </article>
                 <article class="group rounded-xl lg:rounded-lg border border-white/20 bg-white/10 px-4 py-3 lg:px-3 lg:py-2 backdrop-blur-xl transition duration-300 hover:border-[#FD4801]/50 hover:bg-white/15">
                     <div class="flex items-center gap-2 lg:gap-1.5 mb-0.5">
                         <div class="text-lg lg:text-sm">🛤️</div>
                         <p class="text-[10px] lg:text-[9px] font-semibold uppercase tracking-[0.12em] text-white/60">Trail</p>
                     </div>
-                    <h2 class="text-xl lg:text-lg font-bold text-white">10K</h2>
+                    <h2 class="font-race text-xl lg:text-lg font-bold text-white">10K</h2>
                 </article>
                 <article class="group rounded-xl lg:rounded-lg border border-white/20 bg-white/10 px-4 py-3 lg:px-3 lg:py-2 backdrop-blur-xl transition duration-300 hover:border-[#FD4801]/50 hover:bg-white/15">
                     <div class="flex items-center gap-2 lg:gap-1.5 mb-0.5">
                         <div class="text-lg lg:text-sm">🏅</div>
                         <p class="text-[10px] lg:text-[9px] font-semibold uppercase tracking-[0.12em] text-white/60">Official</p>
                     </div>
-                    <h2 class="text-xl lg:text-lg font-bold text-white">Medal</h2>
+                    <h2 class="font-race text-xl lg:text-lg font-bold text-white">Medal</h2>
                 </article>
             </div>
 

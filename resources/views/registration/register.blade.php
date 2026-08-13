@@ -476,12 +476,45 @@
                 this.generalError = '';
             },
 
-            scrollToFirstError() {
-                this.$nextTick(() => {
-                    const el = this.$refs.form.querySelector('.text-red-600');
-                    if (el && el.offsetParent !== null) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+findFirstInvalidField() {
+                // 1. Ambil key error pertama yang dikembalikan oleh Laravel (status 422)
+                const errorKeys = Object.keys(this.errors || {});
+                if (errorKeys.length > 0) {
+                    for (const key of errorKeys) {
+                        // Sesuaikan dengan berbagai kemungkinan atribut name pada HTML Anda
+                        // (misal: name="email", name="profile[email]", atau menggunakan x-ref)
+                        const field = document.querySelector(`[name="${key}"]`)
+                                    || document.querySelector(`[name^="${key}["]`)
+                                    || document.querySelector(`[x-ref="${key}"]`);
+                        if (field) return field;
                     }
+                }
+
+                // 2. Fallback universal mencari elemen yang memiliki class error / invalid di halaman
+                return document.querySelector('.is-invalid, [aria-invalid="true"], input:invalid, select:invalid, textarea:invalid');
+            },
+
+            scrollToFirstError() {
+                // Menggunakan double nextTick agar Alpine.js benar-benar selesai memperbarui DOM/pesan error
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        requestAnimationFrame(() => {
+                            const field = this.findFirstInvalidField();
+                            if (!field) return;
+
+                            // Lakukan scroll ke tengah elemen
+                            field.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+
+                            // Berikan fokus ke input jika memungkinkan
+                            if (typeof field.focus === 'function' && !field.disabled && field.tabIndex !== -1) {
+                                try {
+                                    field.focus({ preventScroll: true });
+                                } catch (error) {
+                                    field.focus();
+                                }
+                            }
+                        });
+                    }, 50); // Jeda kecil penstabil render DOM
                 });
             },
 
