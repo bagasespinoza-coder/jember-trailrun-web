@@ -12,5 +12,36 @@
     <body class="font-sans antialiased text-gray-900 overflow-x-hidden">
         @yield('content')
         @stack('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // 1. Ambil semua section yang punya ID dan semua menu navbar
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.nav-link');
+
+                // 2. Pasang pendeteksi scroll
+                window.addEventListener('scroll', () => {
+                    let currentSection = '';
+                    const scrollY = window.pageYOffset;
+
+                    sections.forEach(section => {
+                        // Offset -150px biar warnanya ganti sebelum section-nya beneran mentok di atas layar
+                        const sectionTop = section.offsetTop - 150; 
+                        const sectionHeight = section.offsetHeight;
+                        
+                        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                            currentSection = section.getAttribute('id');
+                        }
+                    });
+
+                    // 3. Update styling menu navbar
+                    navLinks.forEach(link => {
+                        link.classList.remove('text-[#FD4801]', 'underline', 'underline-offset-4');
+                        if (link.getAttribute('href') === `#${currentSection}`) {
+                            link.classList.add('text-[#FD4801]', 'underline', 'underline-offset-4');
+                        }
+                    });
+                });
+            });
+            </script>
     </body>
 </html>
