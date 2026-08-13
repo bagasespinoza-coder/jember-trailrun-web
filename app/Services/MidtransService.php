@@ -40,7 +40,7 @@ class MidtransService
                 ]
             ],
             'enabled_payments' => [
-                'qris'
+                'bca_va'
             ],
         ];
 

@@ -49,7 +49,7 @@ class Registration extends Model
     ];
 
     /// Const Total Kuota Event
-    public const MAX_QUOTA = 300;
+    public const MAX_QUOTA = 2;
 
     /**
      * Accessor: Hitung Usia Otomatis dari DOB

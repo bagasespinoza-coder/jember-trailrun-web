@@ -19,7 +19,7 @@ class RegistrationController extends Controller
 
     public function store(StoreRegistrationRequest $request): JsonResponse
     {
-        // 1. Ambil data yang udah Lolos Validation 100% dari "Satpam"
+        // 1. Ambil data yang udah Lolos Validation 100% dari "Satpam Form"
         $validated = $request->validated();
         
         $ticketPrice = 165000;

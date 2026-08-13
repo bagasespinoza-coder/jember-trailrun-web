@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon; // 🚀 WAJIB TAMBAHIN INI BIAR CARBON BISA DIPAKAI
 
 class MakeService
 {
@@ -21,17 +22,24 @@ class MakeService
         }
 
         try {
+            // 🚀 LOGIKA NGITUNG UMUR OTOMATIS
+            // Kasih fallback angka 0 kalau misal user daftar nggak ngisi tanggal lahir
+            $umur = $registration->dob ? Carbon::parse($registration->dob)->age : 0;
+
             // Request HTTP POST dengan timeout 5 detik & non-blocking
-            $response = Http::withoutVerifying()->timeout(5)->post($webhookUrl, [
+            // (withoutVerifying udah gua hapus karena SSL lu sekarang udah bener)
+            $response = Http::timeout(5)->post($webhookUrl, [
                 'order_id'                   => $registration->order_id,
                 'full_name'                  => $registration->full_name,
                 'identity_number'            => $registration->identity_number,
                 'gender'                     => $registration->gender == 'L' ? 'Laki-laki' : 'Perempuan',
                 'pob'                        => $registration->pob,
                 'dob'                        => $registration->dob?->format('Y-m-d'),
-                'address'                    => $registration->address,
+                'age'                        => $umur, 
                 'community'                  => $registration->community ?? '-',
+                'address'                    => $registration->address,
                 'whatsapp_number'            => $registration->whatsapp_number,
+                'instagram_username'         => $registration->intagram_username ?? '-',
                 'email'                      => $registration->email,
                 'category'                   => $registration->category,
                 'jersey_size'                => $registration->jersey_size,

@@ -28,8 +28,17 @@ class PaymentController extends Controller
     {
         $registration = Registration::where('order_id', $orderId)->first();
 
-        if (!$registration || $registration->payment_status !== 'pending') {
-            return redirect('/')->with('error', 'Transaksi tidak ditemukan atau sudah dibayar.');
+        if (empty($registration->snap_token)) {
+            return redirect('/')->with('error', 'Sistem pembayaran sedang sibuk. Silakan coba daftar ulang.');
+        }
+
+        // Kalau udah lunas, langsung arahin ke halaman sukses biar user tenang
+        if ($registration->payment_status === 'paid') {
+            return redirect()->route('confirmation'); 
+        }
+
+        if ($registration->payment_status !== 'pending') {
+            return redirect('/')->with('error', 'Transaksi sudah kedaluwarsa atau dibatalkan.');
         }
 
         return view('registration.payment', compact('registration'));
@@ -44,13 +53,12 @@ class PaymentController extends Controller
         Config::$isProduction = config('midtrans.is_production');
 
         try {
-            $notif = new Notification();
-
-            $transactionStatus = $notif->transaction_status;
-            $orderId           = $notif->order_id;
-            $statusCode        = $notif->status_code;
-            $grossAmount       = $notif->gross_amount;
-            $signatureKey      = $notif->signature_key;
+            
+            $transactionStatus = $request->transaction_status;
+            $orderId           = $request->order_id;
+            $statusCode        = $request->status_code;
+            $grossAmount       = $request->gross_amount;
+            $signatureKey      = $request->signature_key;
 
             // 1. Verifikasi Signature Key (Security Check)
             $serverKey           = config('midtrans.server_key');
@@ -88,6 +96,9 @@ class PaymentController extends Controller
                         Log::error("Failed sending E-Ticket to {$registration->email}: " . $emailError->getMessage());
                     }
                 }
+            } else if ($transactionStatus == 'pending') {
+                Log::info("Payment PENDING (Menunggu Transfer) for Order ID: {$orderId}");
+
             } else if (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
                 $registration->update([
                     'payment_status' => 'cancelled',

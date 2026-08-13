@@ -11,10 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Whitelist CSRF buat webhook Midtrans (tanpa prefix /api)
+        
+        $middleware->trustProxies(at: '*');
+        
         $middleware->validateCsrfTokens(except: [
-            '/midtrans/notification',
+            'midtrans/*', 
         ]);
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
