@@ -3,17 +3,17 @@
 
         <!-- Bagian Header & Deskripsi (Centered) -->
         <div class="mx-auto max-w-xl text-center">
-            <p class="text-sm font-semibold uppercase tracking-[0.4em] text-[#FD4801]"></p>
-            <h2 class="mt-3 text-xl lg:text-2xl font-bold uppercase tracking-[-0.02em] text-white sm:text-2xl">
-                Beyond The <span class="text-[#FD4801]">Finish Line</span>
+            <h2 class="mt-2 text-xl font-bold uppercase tracking-[-0.03em] text-[#E2E2E2] sm:text-2xl lg:text-3xl">
+                Beyond the <span class="text-[#FD4801]">Route</span>
             </h2>
+
             <!-- Garis pemisah oranye kecil di bawah judul -->
             <div class="mx-auto mt-3 h-0.5 w-10 rounded-full bg-[#FD4801]"></div>
             
             <!-- (FIXED) Penutup tag paragraf dibenerin jadi </p> -->
             <p class="mt-3 text-sm leading-6 text-white/70 sm:text-base">
                 This is where it begins. The Jember Trail Run Start Here brings a brand new 10K adventure through East Java's raw landscapes, built for anyone ready to take their first step into trail running.
-            </p> 
+            </p>
         </div>
 
         <!-- Bagian Grid Kartu Informasi -->

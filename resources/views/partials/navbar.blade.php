@@ -15,46 +15,46 @@
     }
 @endphp
 
-<header id="main-header" class="fixed inset-x-0 top-0 w-full z-50 transition-all duration-300 {{ $isSubpage ? 'bg-white shadow-sm border-b border-gray-100 text-[#000C28]' : 'bg-transparent text-white' }} hidden lg:block" {{ $isSubpage ? 'data-navbar-static' : '' }}>
-    
-    <nav data-navbar class="w-full mx-auto flex h-16 lg:h-20 items-center justify-between px-4 transition-all duration-300 lg:px-8 max-w-[1300px]">
+<header id="main-header" class="fixed w-screen left-1/2 -translate-x-1/2 top-0 z-50 transition-all duration-300 {{ $isSubpage ? 'bg-white shadow-sm border-b border-gray-100 text-[#000C28]' : 'bg-transparent text-white' }} hidden lg:block" {{ $isSubpage ? 'data-navbar-static' : '' }}>
+    <nav data-navbar class="w-full mx-auto flex h-12 items-center justify-between px-4 transition-all duration-300 lg:px-8 max-w-7xl">
         
-        <!-- 1. Bagian Logo (Ukurannya dibesarin jadi h-10 lg:h-11) -->
+        <!-- 1. Bagian Logo (Otomatis menyesuaikan Putih / Hitam) -->
         <div class="flex items-center">
         @if($isSubpage)
                 <a href="{{ $backUrl }}" class="flex items-center gap-2 text-[#000C28] no-underline">
-                    <img src="/images/logo.black.png" alt="Logo" class="h-10 w-auto lg:h-11 block">
+                    <img src="/images/logo.black.png" alt="Logo" class="h-8 w-auto lg:h-9 block">
                 </a>
         @else
                 <a href="#home" class="flex items-center gap-2 text-white no-underline">
-                    <img id="nav-logo-white" src="/images/logo.white.png" alt="Logo" class="h-10 w-auto lg:h-11 block transition-opacity duration-300">
-                    <img id="nav-logo-black" src="/images/logo.black.png" alt="Logo" class="h-10 w-auto lg:h-11 hidden transition-opacity duration-300">
+                    <!-- Script JS / CSS Anda biasanya mengubah class block/hidden pada id ini saat scroll -->
+                    <img id="nav-logo-white" src="/images/logo.white.png" alt="Logo" class="h-8 w-auto lg:h-9 block transition-opacity duration-300">
+                    <img id="nav-logo-black" src="/images/logo.black.png" alt="Logo" class="h-8 w-auto lg:h-9 hidden transition-opacity duration-300">
                 </a>
         @endif
         </div>
 
-        <!-- 2. Bagian Menu Navigasi Desktop (Teks dibesarin jadi text-[13px] dan font-bold) -->
+        <!-- 2. Bagian Menu Navigasi Desktop (Hanya muncul jika bukan subpage) -->
         @if(!$isSubpage)
-            <div class="hidden items-center gap-7 text-[13px] font-bold uppercase tracking-[0.12em] text-white lg:flex">
-                <a href="#home" class="nav-link transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Home</a>
-                <a href="#about" class="nav-link transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">About</a>
-                <a href="#route" class="nav-link transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Route</a>
-                <a href="#facilities" class="nav-link transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Facilities</a>
-                <a href="#regulations" class="nav-link transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Regulations</a>
-                <a href="#contact" class="nav-link transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Contact</a>
+            <div class="hidden items-center gap-6 text-[12px] font-semibold uppercase tracking-[0.12em] text-white lg:flex lg:text-[11px]">
+                <a href="#home" class="transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Home</a>
+                <a href="#about" class="transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">About</a>
+                <a href="#route" class="transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Route</a>
+                <a href="#facilities" class="transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Facilities</a>
+                <a href="#regulations" class="transition hover:text-[#FD4801] hover:underline hover:underline-offset-4">Regulations</a>
             </div>
         @else
+            <!-- Spacer kosong agar tata letak subpage tetap seimbang di tengah/kanan -->
             <div></div>
         @endif
 
-        <!-- 3. Bagian Tombol Aksi (Disesuaikan proporsinya) -->
+        <!-- 3. Bagian Tombol Aksi (Register / Back) -->
         <div class="flex items-center">
             @if($isSubpage)
-                <a href="{{ $backUrl }}" aria-label="Go back" class="inline-flex items-center justify-center rounded-full bg-[#FF5A1F] px-5 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105">
+                <a href="{{ $backUrl }}" aria-label="Go back" class="inline-flex items-center justify-center rounded-full bg-[#FF5A1F] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105 lg:px-3 lg:py-1 lg:text-[10px]">
                     Back
                 </a>
             @else
-                <a href="/register" aria-label="Register Now" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-[#FD4801] px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] text-white shadow-[0_4px_15px_rgba(253,72,1,0.3)] transition duration-300 hover:scale-105">
+                <a href="/register" aria-label="Register Now" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-[#FD4801] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105 lg:px-3 lg:py-1 lg:text-[10px]">
                     Register Now
                 </a>
             @endif
@@ -101,7 +101,6 @@
                 <a href="#facilities" data-mobile-link class="block transition hover:text-[#FD4801]">Facilities</a>
                 <a href="#regulations" data-mobile-link class="block transition hover:text-[#FD4801]">Regulations</a>
             @endif
-            <a href="/#contact" data-mobile-link class="block transition hover:text-[#FD4801]">Contact</a>
         </nav>
     </div>
 

@@ -1,7 +1,8 @@
+
 <section id="register-flow" class="bg-[#000C28] px-4 py-8 lg:px-8">
     <div class="mx-auto max-w-[900px]">
         <div class="max-w-xl">
-            <h2 class="mt-2 text-xl font-bold uppercase tracking-[-0.03em] text-[#E2E2E2] sm:text-2xl">
+            <h2 class="mt-2 text-xl font-bold uppercase tracking-[-0.03em] text-[#E2E2E2] sm:text-2xl lg:text-3xl">
                 Registration <span class="text-[#FD4801]">Flow</span>
             </h2>
             <!-- Garis pemisah oranye kecil di bawah judul -->

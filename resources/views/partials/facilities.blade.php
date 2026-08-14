@@ -1,15 +1,16 @@
 <section id="facilities" class="bg-[#E2E2E2] px-4 py-10 lg:px-8">
     <div class="mx-auto max-w-[1000px]">
         
-        <!-- Bagian Header & Deskripsi (Centered) -->
-        <div class="mx-auto max-w-lg text-center">
+
+                <!-- Bagian Header & Deskripsi (Centered) -->
+        <div class="mx-auto max-w-xl text-center">
             <h2 class="mt-2 text-xl font-bold uppercase tracking-[-0.03em] text-[#000C28] sm:text-2xl lg:text-3xl">
-                Racer <span class="text-[#FD4801]">Facilities</span>
+                Explore The <span class="text-[#FD4801]">Facilities</span>
             </h2>
             <!-- Garis pemisah oranye kecil di bawah judul -->
             <div class="mx-auto mt-4 h-0.5 w-12 rounded-full bg-[#FD4801]"></div>
             
-            <p class="mt-4 text-[11px] leading-5 text-[#000C28]/80 sm:text-xs sm:leading-6">
+                        <p class="mt-3 text-sm leading-6 text-[#000C28] sm:text-base">
                 Every participant receives a premium race pack and professional support.
             </p>
         </div>

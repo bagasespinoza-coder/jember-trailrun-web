@@ -34,7 +34,7 @@
             </div>
             
             <!-- Title -->
-            <h1 class="font-race max-w-4xl lg:max-w-full text-4xl font-black uppercase leading-[1.1] tracking-[-0.02em] text-white sm:text-5xl lg:text-[3.5rem]">
+            <h1 class="font-race max-w-3xl lg:max-w-full text-3xl font-black uppercase leading-[1.1] tracking-[-0.02em] text-white sm:text-4xl lg:text-[3.5rem]">
                 Jember <br class="hidden lg:block" />
                 <span class="inline-block">Trail Run</span> <span class="text-[#FD4801]">10K</span>
             </h1>
@@ -45,11 +45,11 @@
             </p>
 
             <!-- CTA Buttons KHUSUS DESKTOP (Sembunyi di Mobile) -->
-            <div class="hidden lg:flex mt-10 items-center justify-start gap-4">
-                <a href="#register-flow" aria-label="Register Event" class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-8 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_8px_25px_rgba(253,72,1,0.4)] transition duration-300 hover:scale-105 hover:shadow-[0_12px_35px_rgba(253,72,1,0.5)]">
+<div class="hidden lg:flex mt-10 items-center justify-start gap-4">
+                <a href="#register-flow" aria-label="Register Event" class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-5 py-2 text-xs font-bold uppercase tracking-[0.1em] text-white shadow-[0_4px_15px_rgba(253,72,1,0.35)] transition duration-300 hover:scale-105 hover:shadow-[0_8px_25px_rgba(253,72,1,0.45)]">
                     Register Flow
                 </a>
-                <a href="#route" aria-label="Explore Route" class="inline-flex items-center justify-center rounded-full border border-white/40 bg-white/5 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition duration-300 hover:border-white/80 hover:bg-white/10">
+                <a href="#route" aria-label="Explore Route" class="inline-flex items-center justify-center rounded-full border border-white/40 bg-white/5 px-5 py-2 text-xs font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm transition duration-300 hover:border-white/80 hover:bg-white/10">
                     Explore Route
                 </a>
             </div>

@@ -22,8 +22,8 @@
                 
                 <!-- Kotak 1: Age Requirement -->
                 <article x-data="{ open: false }" 
-                         @click="if(window.innerWidth >= 1024) open = !open" 
-                         class="group lg:cursor-pointer rounded-xl border border-[#FD4801]/20 bg-white p-3.5 sm:p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] transition duration-300 hover:border-[#FD4801]">
+                        @click="if(window.innerWidth >= 1024) open = !open" 
+                        class="group lg:cursor-pointer rounded-xl border border-[#FD4801]/20 bg-white p-3.5 sm:p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] transition duration-300 hover:border-[#FD4801]">
                     
                     <div class="flex items-start lg:items-center gap-3 lg:gap-3.5">
                         <!-- Ikon (Selalu Tampil) -->
@@ -57,8 +57,8 @@
 
                 <!-- Kotak 2: Health Status -->
                 <article x-data="{ open: false }" 
-                         @click="if(window.innerWidth >= 1024) open = !open" 
-                         class="group lg:cursor-pointer rounded-xl border border-[#FD4801]/20 bg-white p-3.5 sm:p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] transition duration-300 hover:border-[#FD4801]">
+                        @click="if(window.innerWidth >= 1024) open = !open" 
+                        class="group lg:cursor-pointer rounded-xl border border-[#FD4801]/20 bg-white p-3.5 sm:p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] transition duration-300 hover:border-[#FD4801]">
                     
                     <div class="flex items-start lg:items-center gap-3 lg:gap-3.5">
                         <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#FD4801]/10 text-[#FD4801] transition-colors group-hover:bg-[#FD4801] group-hover:text-white mt-0.5 lg:mt-0">

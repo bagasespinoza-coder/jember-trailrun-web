@@ -9,7 +9,7 @@
             <!-- Garis pemisah oranye kecil di bawah judul -->
             <div class="mx-auto mt-4 h-0.5 w-12 rounded-full bg-[#FD4801]"></div>
             
-            <p class="mt-4 text-[11px] leading-5 text-[#000C28]/70 sm:text-xs sm:leading-6">
+                        <p class="mt-3 text-sm leading-6 text-[#000C28] sm:text-base">
                 Navigate through varying elevations and terrains designed to test your limits in the heart of Jember’s highlands.
             </p>
         </div>
