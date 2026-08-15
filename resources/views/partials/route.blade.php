@@ -68,17 +68,17 @@
             </div>
 
 <!-- Elevation Profile Section -->
-<div class="border-t border-gray-800 pt-4">
-    <div class="flex justify-between items-center mb-2">
+<div class="w-full max-w-lg mx-auto bg-[#000511] border border-gray-800 rounded-xl p-4 shadow-lg my-4">
+    <div class="flex justify-between items-center mb-3">
         <h3 class="text-[11px] font-bold tracking-wider text-gray-400 uppercase">Elevation Profile</h3>
-        <!-- Informasi Min/Max Elevation (Opsional, bisa diisi via JS) -->
-        <div id="elevation-stats" class="text-[10px] text-gray-400 font-mono">
+        <!-- Min/Max Elevation Display -->
+        <div class="text-[10px] text-gray-400 font-mono">
             Min: <span id="min-elev" class="text-white">-</span> | Max: <span id="max-elev" class="text-white">-</span>
         </div>
     </div>
     
-    <div class="relative w-full h-[120px] sm:h-[130px] bg-[#00091d] rounded-lg p-3 border border-gray-800/60 overflow-hidden flex flex-col justify-between">
-        <!-- SVG Container -->
+    <!-- Bagan SVG dengan tinggi yang pas dan tidak terlalu lebar -->
+    <div class="relative w-full h-[100px] sm:h-[110px] bg-[#00091d] rounded-lg p-2 border border-gray-800/60 overflow-hidden flex items-center justify-center">
         <svg id="elevation-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none"></svg>
     </div>
 </div>
