@@ -110,9 +110,9 @@
                 Back
             </a>
         @else
-            <a href="/register" data-mobile-link aria-label="Register Now" class="inline-flex w-full items-center justify-center rounded-full bg-[#FD4801] px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105">
-                Register Now
-            </a>
+        <a href="/register" data-mobile-link aria-label="Register Now" class="inline-flex w-full items-center justify-center rounded-full bg-[#FD4801] px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_4px_15px_rgba(253,72,1,0.35)] transition duration-300 hover:scale-105 hover:shadow-[0_8px_25px_rgba(253,72,1,0.45)]">
+            Register Now
+        </a>
         @endif
     </div>
 </aside>

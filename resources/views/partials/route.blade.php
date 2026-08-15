@@ -15,25 +15,25 @@
         </div>
 
 <!-- 3 Statistic Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <!-- Card 1: Total Distance -->
-            <div class="bg-[#011638] border border-gray-800 rounded-xl p-6 text-center shadow-lg">
-                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-1">Total Distance</span>
-                <span id="stat-distance" class="text-2xl sm:text-3xl font-bold text-orange-500">-- KM</span>
-            </div>
-            <!-- Card 2: Elevation Gain -->
-            <div class="bg-[#011638] border border-gray-800 rounded-xl p-6 text-center shadow-lg">
-                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-1">Elevation Gain</span>
-                <span id="stat-elevation" class="text-2xl sm:text-3xl font-bold text-orange-500">+-- M</span>
-            </div>
-            <!-- Card 3: Difficulty -->
-            <div class="bg-[#011638] border border-gray-800 rounded-xl p-6 text-center shadow-lg">
-                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-1">Difficulty</span>
-                <span class="text-2xl sm:text-3xl font-bold text-orange-500">Medium</span>
-            </div>
-        </div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+    <!-- Card 1: Total Distance -->
+    <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
+        <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Total Distance</span>
+        <span id="stat-distance" class="text-xl sm:text-2xl font-normal text-orange-500 font-race">-- KM</span>
+    </div>
+    <!-- Card 2: Elevation Gain -->
+    <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
+        <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Elevation Gain</span>
+        <span id="stat-elevation" class="text-xl sm:text-2xl font-normal text-orange-500 font-race">+-- M</span>
+    </div>
+    <!-- Card 3: Difficulty -->
+    <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
+        <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Difficulty</span>
+        <span class="text-xl sm:text-2xl font-normal text-orange-500 font-race">Medium</span>
+    </div>
+</div>
 
-        <!-- Large Dark Navy Course Card -->
+<!-- Large Dark Navy Course Card -->
         <div class="bg-[#011638] border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
             <!-- Header Kecil -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-800 pb-4 mb-6 gap-2">
@@ -51,37 +51,53 @@
                 </div>
             </div>
 
-            <!-- Location Badge & Download Button -->
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+                        <!-- Elevation Profile Section -->
+            <div class="w-full max-w-lg mx-auto bg-[#000511] border border-gray-800 rounded-xl p-4 shadow-lg my-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-[11px] font-bold tracking-wider text-gray-400 uppercase">Elevation Profile</h3>
+                    <!-- Min/Max Elevation Display -->
+                    <div class="text-[10px] text-gray-400 font-mono">
+                        Min: <span id="min-elev" class="text-white">-</span> | Max: <span id="max-elev" class="text-white">-</span>
+                    </div>
+                </div>
+                
+                <!-- Bagan SVG dengan tinggi yang pas dan tidak terlalu lebar -->
+                <div class="relative w-full h-[100px] sm:h-[110px] bg-[#00091d] rounded-lg p-2 border border-gray-800/60 overflow-hidden flex items-center justify-center">
+                    <svg id="elevation-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none"></svg>
+                </div>
+            </div>
+
+
+            <!-- Location Badge & Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
+                <!-- Location Badge -->
                 <div class="flex items-center space-x-2 text-gray-300 text-sm font-medium">
                     <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                     </svg>
-                    <span>Jember, Jawa Timur, Indonesia</span>
+                    <span>Rembangan, Jember</span>
                 </div>
-                <a href="{{ asset('routes/trail-run-10k.gpx') }}" download="trail-run-10k.gpx" class="inline-flex items-center justify-center px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg hover:shadow-orange-500/20">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                    </svg>
-                    Download GPX
-                </a>
-            </div>
 
-<!-- Elevation Profile Section -->
-<div class="w-full max-w-lg mx-auto bg-[#000511] border border-gray-800 rounded-xl p-4 shadow-lg my-4">
-    <div class="flex justify-between items-center mb-3">
-        <h3 class="text-[11px] font-bold tracking-wider text-gray-400 uppercase">Elevation Profile</h3>
-        <!-- Min/Max Elevation Display -->
-        <div class="text-[10px] text-gray-400 font-mono">
-            Min: <span id="min-elev" class="text-white">-</span> | Max: <span id="max-elev" class="text-white">-</span>
-        </div>
-    </div>
-    
-    <!-- Bagan SVG dengan tinggi yang pas dan tidak terlalu lebar -->
-    <div class="relative w-full h-[100px] sm:h-[110px] bg-[#00091d] rounded-lg p-2 border border-gray-800/60 overflow-hidden flex items-center justify-center">
-        <svg id="elevation-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none"></svg>
-    </div>
+<!-- Buttons Group (View Start Point & Download GPX) -->
+<div class="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
+    <!-- View Start Point Button -->
+    <a id="btn-view-start" href="#" target="_blank" rel="noopener noreferrer"
+    class="inline-flex items-center justify-center px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white text-xs font-semibold rounded-lg transition-all shadow-md hover:shadow-orange-500/20">
+        VIEW START POINT
+    </a>
+
+<!-- Download GPX Button -->
+    <a href="{{ asset('routes/trail-run-10k.gpx') }}" download="trail-run-10k.gpx" 
+    class="inline-flex items-center justify-center px-4 py-2 bg-[#01217C] hover:bg-[#01217C]/80 border border-orange-500/30 text-white text-xs font-semibold rounded-lg transition-all">
+        <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        DOWNLOAD GPX
+    </a>
 </div>
+            </div>
+        </div>
+
 
         </div>
 

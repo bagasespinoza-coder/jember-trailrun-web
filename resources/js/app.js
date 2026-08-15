@@ -309,3 +309,53 @@ function renderElevationSvg(elevations) {
         if (maxEleEl) maxEleEl.textContent = Math.round(maxEle) + "M";
     };
 }
+
+fetch("/routes/trail-run-10k.gpx")
+    .then((response) => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.text();
+    })
+    .then((data) => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(data, "text/xml");
+
+        const trackPoints = xmlDoc.getElementsByTagName("trkpt");
+        if (trackPoints.length === 0)
+            throw new Error("No track points found in GPX");
+
+        const latlngs = [];
+        const elevations = [];
+
+        for (let i = 0; i < trackPoints.length; i++) {
+            const lat = parseFloat(trackPoints[i].getAttribute("lat"));
+            const lon = parseFloat(trackPoints[i].getAttribute("lon"));
+            latlngs.push([lat, lon]);
+
+            const eleTag = trackPoints[i].getElementsByTagName("ele")[0];
+            elevations.push(eleTag ? parseFloat(eleTag.textContent) : 0);
+        }
+
+        // --- 1. AMBIL TITIK PERTAMA SEBAGAI START ---
+        const startPoint = latlngs[0];
+
+        // --- 2. SET URL GOOGLE MAPS KETIKA STARTPOINT SUDAH PASTI ADA ---
+        const btnViewStart = document.getElementById("btn-view-start");
+        if (btnViewStart && startPoint) {
+            const startLat = startPoint[0];
+            const startLng = startPoint[1];
+            const googleMapsUrl = `https://www.google.com/maps?q=${startLat},${startLng}`;
+
+            btnViewStart.href = googleMapsUrl;
+            btnViewStart.setAttribute("target", "_blank");
+            btnViewStart.setAttribute("rel", "noopener noreferrer");
+            btnViewStart.style.opacity = "1";
+            btnViewStart.style.pointerEvents = "auto";
+            btnViewStart.onclick = null;
+        }
+
+        // ... (lanjutan kode render map, polyline, marker, dan elevation chart Anda di sini) ...
+    })
+    .catch((error) => {
+        console.error("Error loading GPX:", error);
+        document.getElementById("map-fallback")?.classList.remove("hidden");
+    });
