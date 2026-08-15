@@ -2,7 +2,7 @@
     <div class="mx-auto max-w-[1000px]">
         
         <!-- Bagian Header & Deskripsi (Centered) -->
-        <div class="mx-auto max-w-xl text-center">
+        <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-14r">
             <h2 class="mt-2 text-xl font-bold uppercase tracking-[-0.03em] text-[#000C28] sm:text-2xl lg:text-3xl">
                 Explore The <span class="text-[#FD4801]">Route</span>
             </h2>
@@ -14,100 +14,75 @@
             </p>
         </div>
 
-        <!-- ========================================== -->
-        <!-- Bagian Stats (3 Kotak Horizontal)          -->
-        <!-- ========================================== -->
-        <!-- Pake grid-cols-3 buat paksa berjejer 3 ke samping di semua ukuran layar -->
-        <div class="mt-8 sm:mt-10 grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
-            
-            <!-- Kartu 1: Total Distance -->
-            <article class="flex flex-col items-center justify-center text-center rounded-xl border border-[#000C28]/10 bg-white p-2.5 sm:p-4 shadow-[0_10px_25px_rgba(0,0,0,0.04)] hover:border-[#FD4801]/30 transition duration-300">
-                <div class="flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-[#FD4801]/10 text-[#FD4801] mb-1.5 sm:mb-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                    </svg>
-                </div>
-                <p class="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#000C28]/60 font-semibold line-clamp-1">Total Distance</p>
-                <p class="mt-0.5 sm:mt-1 text-xs sm:text-lg font-bold text-[#000C28]">10 KM</p>
-            </article>
-
-            <!-- Kartu 2: Max Elevation -->
-            <article class="flex flex-col items-center justify-center text-center rounded-xl border border-[#000C28]/10 bg-white p-2.5 sm:p-4 shadow-[0_10px_25px_rgba(0,0,0,0.04)] hover:border-[#FD4801]/30 transition duration-300">
-                <div class="flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-[#FD4801]/10 text-[#FD4801] mb-1.5 sm:mb-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                </div>
-                <p class="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#000C28]/60 font-semibold line-clamp-1">Elevation</p>
-                <p class="mt-0.5 sm:mt-1 text-xs sm:text-lg font-bold text-[#000C28]">850m</p>
-            </article>
-
-            <!-- Kartu 3: Difficulty -->
-            <article class="flex flex-col items-center justify-center text-center rounded-xl border border-[#000C28]/10 bg-white p-2.5 sm:p-4 shadow-[0_10px_25px_rgba(0,0,0,0.04)] hover:border-[#FD4801]/30 transition duration-300">
-                <div class="flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-[#FD4801]/10 text-[#FD4801] mb-1.5 sm:mb-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <p class="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#000C28]/60 font-semibold line-clamp-1">Difficulty</p>
-                <p class="mt-0.5 sm:mt-1 text-xs sm:text-lg font-bold text-[#000C28]">Medium</p>
-            </article>
-
+<!-- 3 Statistic Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <!-- Card 1: Total Distance -->
+            <div class="bg-[#011638] border border-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-1">Total Distance</span>
+                <span id="stat-distance" class="text-2xl sm:text-3xl font-bold text-orange-500">-- KM</span>
+            </div>
+            <!-- Card 2: Elevation Gain -->
+            <div class="bg-[#011638] border border-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-1">Elevation Gain</span>
+                <span id="stat-elevation" class="text-2xl sm:text-3xl font-bold text-orange-500">+-- M</span>
+            </div>
+            <!-- Card 3: Difficulty -->
+            <div class="bg-[#011638] border border-gray-800 rounded-xl p-6 text-center shadow-lg">
+                <span class="block text-xs font-semibold tracking-wider text-gray-400 uppercase mb-1">Difficulty</span>
+                <span class="text-2xl sm:text-3xl font-bold text-orange-500">Medium</span>
+            </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- Bagian Preview Peta (Full Width)           -->
-        <!-- ========================================== -->
-        <div class="mt-4 sm:mt-6 relative overflow-hidden rounded-[20px] sm:rounded-[24px] border border-[#000C28]/10 bg-white p-3 shadow-[0_30px_60px_rgba(0,0,0,0.08)]">
-            
-            <!-- min-h dinaikin biar petanya kerasa lega di desktop -->
-            <div class="relative h-full min-h-[350px] sm:min-h-[450px] rounded-[16px] sm:rounded-[20px] border border-[#000C28]/10 bg-[#000C28] p-3.5 sm:p-5 flex flex-col justify-between">
-                
-                <!-- Simulasi Header Peta -->
-                <div class="flex items-center justify-between border-b border-white/10 pb-3 gap-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-[11px] sm:text-[13px] font-bold tracking-wider text-[#FF5A1F]">10K</span>
-                        <span class="text-[10px] sm:text-[12px] font-semibold uppercase tracking-widest text-white/90 truncate">TRAIL RUN JEMBER</span>
-                    </div>
-                    <div class="hidden sm:flex items-center space-x-3 text-[10px] uppercase text-white/60 tracking-wider">
-                        <span class="cursor-pointer hover:text-white transition">Event Info</span>
-                        <span class="text-[#FF5A1F] font-semibold">Course</span>
-                        <span class="cursor-pointer hover:text-white transition">Registration</span>
-                        <span class="cursor-pointer hover:text-white transition">Profile</span>
-                    </div>
-                </div>
-
-                <!-- Simulasi Badan Peta (Garis Jalur & Titik Lokasi) -->
-                <div class="relative my-4 h-40 sm:h-56 w-full rounded-xl bg-[radial-gradient(circle_at_center,rgba(255,90,31,0.15),transparent_70%)] bg-[#071132] flex items-center justify-center overflow-hidden border border-white/5">
-                    <svg class="absolute inset-0 h-full w-full opacity-70" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                        <path d="M50 150 C 100 120, 150 180, 200 100 C 250 40, 300 80, 350 50" stroke="#FF5A1F" stroke-width="3" stroke-linecap="root" stroke-dasharray="6 4"/>
-                    </svg>
-                    <!-- Marker Titik Lokasi -->
-                    <div class="absolute h-4 w-4 rounded-full bg-[#FF5A1F] shadow-[0_0_15px_#FF5A1F] animate-pulse"></div>
-                </div>
-
-                <!-- 🔥 TOMBOL MAPS DIGABUNG DI SINI (Footer Peta) -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                    
-                    <!-- Badge Lokasi (Kiri) -->
-                    <div class="inline-flex items-center space-x-2 rounded-xl bg-white/10 border border-white/10 px-3.5 py-2 text-[10px] sm:text-[11px] text-white w-full sm:w-fit justify-center sm:justify-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 text-[#FF5A1F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span class="font-medium tracking-wide">Rembangan, Jember</span>
-                    </div>
-
-                    <!-- Tombol View on Maps (Kanan) -->
-                    <a href="#" aria-label="View on Google Maps" class="inline-flex items-center justify-center space-x-2 rounded-xl bg-[#FF5A1F] px-4 py-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_6px_15px_rgba(255,90,31,0.2)] transition duration-300 hover:scale-[1.02] w-full sm:w-fit active:scale-95">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                        </svg>
-                        <span>View on Google Maps</span>
-                    </a>
-
+        <!-- Large Dark Navy Course Card -->
+        <div class="bg-[#011638] border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <!-- Header Kecil -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-800 pb-4 mb-6 gap-2">
+                <span class="text-xs font-bold tracking-widest text-[#E2E2E2] uppercase">10K Trail Run Jember</span>
+                <div class="text-xs text-gray-400 space-x-3">
                 </div>
             </div>
+
+            <!-- Area Route/Map Besar -->
+            <div class="relative w-full h-[320px] sm:h-[420px] rounded-xl overflow-hidden border border-gray-800 bg-[#00091d] mb-6">
+                <div id="gpx-map" class="w-full h-full z-10"></div>
+                <!-- Fallback jika gagal muat -->
+                <div id="map-fallback" class="absolute inset-hidden flex items-center justify-center text-gray-400 text-sm hidden">
+                    Route map is currently unavailable.
+                </div>
+            </div>
+
+            <!-- Location Badge & Download Button -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+                <div class="flex items-center space-x-2 text-gray-300 text-sm font-medium">
+                    <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Jember, Jawa Timur, Indonesia</span>
+                </div>
+                <a href="{{ asset('routes/trail-run-10k.gpx') }}" download="trail-run-10k.gpx" class="inline-flex items-center justify-center px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg hover:shadow-orange-500/20">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Download GPX
+                </a>
+            </div>
+
+<!-- Elevation Profile Section -->
+<div class="border-t border-gray-800 pt-4">
+    <div class="flex justify-between items-center mb-2">
+        <h3 class="text-[11px] font-bold tracking-wider text-gray-400 uppercase">Elevation Profile</h3>
+        <!-- Informasi Min/Max Elevation (Opsional, bisa diisi via JS) -->
+        <div id="elevation-stats" class="text-[10px] text-gray-400 font-mono">
+            Min: <span id="min-elev" class="text-white">-</span> | Max: <span id="max-elev" class="text-white">-</span>
+        </div>
+    </div>
+    
+    <div class="relative w-full h-[120px] sm:h-[130px] bg-[#00091d] rounded-lg p-3 border border-gray-800/60 overflow-hidden flex flex-col justify-between">
+        <!-- SVG Container -->
+        <svg id="elevation-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none"></svg>
+    </div>
+</div>
+
         </div>
 
     </div>

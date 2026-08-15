@@ -47,7 +47,7 @@
                     <p class="text-[9px] lg:text-[11px] uppercase tracking-wider lg:tracking-[0.15em] text-white/60 font-medium">Location</p>
                 </div>
                 <!-- leading-tight ditambahkan agar kalau teks kepanjangan di HP tetep rapi -->
-                <p class="mt-2.5 lg:mt-4 text-xs sm:text-sm lg:text-base font-semibold text-white leading-tight">Rembangan, Jember</p>
+                <p class="mt-2.5 lg:mt-4 text-xs sm:text-sm lg:text-base font-semibold text-white leading-tight">Jember, Jawa Timur</p>
             </article>
 
             <!-- Card 3: Start Time -->
