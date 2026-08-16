@@ -41,13 +41,14 @@
             
             <!-- Deskripsi -->
             <p class="mt-3 lg:mt-4 max-w-xl mx-auto lg:mx-0 lg:max-w-2xl text-xs sm:text-sm leading-relaxed text-white/80 lg:text-base">
-                Start Your Journey, and Feel the Trail. Experience the untamed beauty of Jember in a race made for first-timers and future trailblazers.
+                Start Your Journey, and Feel the Trail.
+                Experience the untamed beauty of Jember in a race made for first-timers and future trailblazers.
             </p>
 
             <!-- CTA Buttons KHUSUS DESKTOP (Sembunyi di Mobile) -->
 <div class="hidden lg:flex mt-10 items-center justify-start gap-4">
                 <a href="#register-flow" aria-label="Register Event" class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-5 py-2 text-xs font-bold uppercase tracking-[0.1em] text-white shadow-[0_4px_15px_rgba(253,72,1,0.35)] transition duration-300 hover:scale-105 hover:shadow-[0_8px_25px_rgba(253,72,1,0.45)]">
-                    Register Flow
+                    Registration Flow
                 </a>
                 <a href="#route" aria-label="Explore Route" class="inline-flex items-center justify-center rounded-full border border-white/40 bg-white/5 px-5 py-2 text-xs font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm transition duration-300 hover:border-white/80 hover:bg-white/10">
                     Explore Route
@@ -101,7 +102,7 @@
         <!-- ========================================== -->
         <div class="mt-8 flex flex-col items-center justify-center gap-3 w-full lg:hidden">
             <a href="#register-flow" aria-label="Register Event" class="inline-flex items-center justify-center w-full rounded-full bg-[#FD4801] px-8 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[0_8px_25px_rgba(253,72,1,0.4)] active:scale-95 transition duration-300">
-                Register Flow
+                Registration Flow
             </a>
             <a href="#route" aria-label="Explore Route" class="inline-flex items-center justify-center w-full rounded-full border border-white/40 bg-white/5 px-8 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm active:bg-white/10 transition duration-300">
                 Explore Route

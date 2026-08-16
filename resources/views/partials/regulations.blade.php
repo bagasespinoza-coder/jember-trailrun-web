@@ -84,9 +84,9 @@
                 </article>
 
                 <!-- Kotak 3: Mandatory Gear -->
-                <article x-data="{ open: false }" 
-                         @click="if(window.innerWidth >= 1024) open = !open" 
-                         class="group lg:cursor-pointer rounded-xl border border-[#FD4801]/20 bg-white p-3.5 sm:p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] transition duration-300 hover:border-[#FD4801]">
+                <article x-data="{ open: false }"
+                        @click="if(window.innerWidth >= 1024) open = !open"
+                        class="group lg:cursor-pointer rounded-xl border border-[#FD4801]/20 bg-white p-3.5 sm:p-4 shadow-[0_8px_20px_rgba(0,0,0,0.03)] transition duration-300 hover:border-[#FD4801]">
                     
                     <div class="flex items-start lg:items-center gap-3 lg:gap-3.5">
                         <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#FD4801]/10 text-[#FD4801] transition-colors group-hover:bg-[#FD4801] group-hover:text-white mt-0.5 lg:mt-0">
@@ -127,15 +127,15 @@
             <div class="mt-3.5 space-y-2 lg:space-y-2.5">
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
                     <p class="text-[10px] text-white/70">WhatsApp</p>
-                    <p class="mt-0.5 text-xs font-semibold text-white">+62 822-3651-6043</p>
+                    <p class="mt-0.5 text-xs font-semibold text-white">+62 877 976 695 35</p>
                 </article>
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
                     <p class="text-[10px] text-white/70">Email Support</p>
-                    <p class="mt-0.5 text-xs font-semibold text-white">hello@jembertrail.run</p>
+                    <p class="mt-0.5 text-xs font-semibold text-white">jembertrailrun@gmail.com</p>
                 </article>
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
                     <p class="text-[10px] text-white/70">Instagram</p>
-                    <p class="mt-0.5 text-xs font-semibold text-white">@10ktrailjember</p>
+                    <p class="mt-0.5 text-xs font-semibold text-white">@jembertrailrun</p>
                 </article>
             </div>
             <p class="mt-3.5 text-[10px] leading-4 text-white/60 text-center lg:text-left">Mon - Sat, 09:00 - 17:00 WIB.</p>

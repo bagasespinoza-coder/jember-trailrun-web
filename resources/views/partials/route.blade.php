@@ -14,24 +14,24 @@
             </p>
         </div>
 
-<!-- 3 Statistic Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-    <!-- Card 1: Total Distance -->
-    <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
-        <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Total Distance</span>
-        <span id="stat-distance" class="text-xl sm:text-2xl font-normal text-orange-500 font-race">-- KM</span>
-    </div>
-    <!-- Card 2: Elevation Gain -->
-    <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
-        <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Elevation Gain</span>
-        <span id="stat-elevation" class="text-xl sm:text-2xl font-normal text-orange-500 font-race">+-- M</span>
-    </div>
-    <!-- Card 3: Difficulty -->
-    <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
-        <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Difficulty</span>
-        <span class="text-xl sm:text-2xl font-normal text-orange-500 font-race">Medium</span>
-    </div>
-</div>
+        <!-- 3 Statistic Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+            <!-- Card 1: Total Distance -->
+            <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
+                <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Total Distance</span>
+                <span id="stat-distance" class="text-xl sm:text-2xl font-normal text-orange-500 font-race">-- KM</span>
+            </div>
+            <!-- Card 2: Elevation Gain -->
+            <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
+                <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Elevation Gain</span>
+                <span id="stat-elevation" class="text-xl sm:text-2xl font-normal text-orange-500 font-race">+-- M</span>
+            </div>
+            <!-- Card 3: Difficulty -->
+            <div class="bg-[#011638] border border-gray-800 rounded-lg py-2.5 px-4 text-center shadow-md">
+                <span class="block text-[10px] font-semibold tracking-wider text-gray-400 uppercase mb-0.5 font-race">Difficulty</span>
+                <span class="text-xl sm:text-2xl font-normal text-orange-500 font-race">Medium</span>
+            </div>
+        </div>
 
 <!-- Large Dark Navy Course Card -->
         <div class="bg-[#011638] border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
@@ -52,17 +52,22 @@
             </div>
 
                         <!-- Elevation Profile Section -->
-            <div class="w-full max-w-lg mx-auto bg-[#000511] border border-gray-800 rounded-xl p-4 shadow-lg my-4">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-[11px] font-bold tracking-wider text-gray-400 uppercase">Elevation Profile</h3>
+                <div class="w-full bg-[#000511] border border-gray-800/80 rounded-xl p-5 shadow-lg mb-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+                        <h3 class="text-xs font-bold tracking-wider text-gray-300 uppercase flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8"></path>
+                        </svg>
+                        Elevation Profile
+                        </h3>
                     <!-- Min/Max Elevation Display -->
-                    <div class="text-[10px] text-gray-400 font-mono">
-                        Min: <span id="min-elev" class="text-white">-</span> | Max: <span id="max-elev" class="text-white">-</span>
+                    <div class="text-xs text-gray-400 font-mono bg-[#011638] px-3 py-1 rounded-md border border-gray-800">
+                        Min: <span id="min-elev" class="text-orange-400 font-semibold">-</span> | Max: <span id="max-elev" class="text-orange-400 font-semibold">-</span>
                     </div>
                 </div>
                 
-                <!-- Bagan SVG dengan tinggi yang pas dan tidak terlalu lebar -->
-                <div class="relative w-full h-[100px] sm:h-[110px] bg-[#00091d] rounded-lg p-2 border border-gray-800/60 overflow-hidden flex items-center justify-center">
+                <!-- Bagan SVG  -->
+            <div class="relative w-full h-[110px] sm:h-[130px] bg-[#00091d] rounded-lg p-2 border border-gray-800/60 overflow-hidden flex items-center justify-center">
                     <svg id="elevation-svg" class="w-full h-full overflow-visible" preserveAspectRatio="none"></svg>
                 </div>
             </div>
@@ -75,7 +80,7 @@
                     <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                     </svg>
-                    <span>Rembangan, Jember</span>
+                    <span>Jember, Jawa Timur, Indonesia</span>
                 </div>
 
 <!-- Buttons Group (View Start Point & Download GPX) -->
