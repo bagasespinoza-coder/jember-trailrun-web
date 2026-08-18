@@ -111,9 +111,11 @@
             <form x-ref="form" @submit.prevent="submitForm" novalidate class="space-y-4">
 
                 <!-- Section 1: Data Diri -->
-                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5">
+                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
                     <div class="flex items-center gap-2 mb-3.5">
-                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-[#FD4801] text-white font-bold text-[10px]">👤</span>
+                        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-orange-50 text-[#FD4801]">
+                        <span class="text-xs">👤</span>
+                    </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Data Diri</h2>
                     </div>
 
@@ -212,9 +214,12 @@
                 </section>
 
                 <!-- Section 2: Kontak & Komunikasi -->
-                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5">
+                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
+                    
                     <div class="flex items-center gap-2 mb-3.5">
-                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-[#FD4801] text-white font-bold text-[10px]">📱</span>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-[#FD4801] shrink-0">
+                        <span class="text-sm">📱</span>
+                    </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Kontak & Komunikasi</h2>
                     </div>
 
@@ -257,9 +262,11 @@
                 </section>
 
                 <!-- Section 3: Event Details -->
-                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5">
+                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
                     <div class="flex items-center gap-2 mb-3.5">
-                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-[#FD4801] text-white font-bold text-[10px]">🏃</span>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-[#FD4801] shrink-0">
+                        <span class="text-sm">🏃</span>
+                    </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Event Details</h2>
                     </div>
 
@@ -305,9 +312,11 @@
                 </section>
 
                 <!-- Section 4: Profil Medis -->
-                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5">
+                <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
                     <div class="flex items-center gap-2 mb-3.5">
-                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-[#FD4801] text-white font-bold text-[10px]">🏥</span>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-[#FD4801] shrink-0">
+                        <span class="text-sm">🏥</span>
+                    </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Profil Medis & Kontak Darurat</h2>
                     </div>
 
