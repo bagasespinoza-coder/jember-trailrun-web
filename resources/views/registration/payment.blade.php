@@ -33,19 +33,6 @@
                         </div>
                         <span class="text-[9px] font-semibold uppercase tracking-wider text-[#FD4801] mt-1">Payment</span>
                     </div>
-
-                    <!-- Connector 2 -->
-                    <div class="flex-1 flex items-center justify-center px-1.5 mb-4">
-                        <div class="h-0.5 w-full bg-gray-300"></div>
-                    </div>
-
-                    <!-- Step 3: Confirmation -->
-                    <div class="flex flex-col items-center shrink-0">
-                        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-white border border-gray-300 text-gray-400 font-bold text-xs">
-                            3
-                        </div>
-                        <span class="text-[9px] font-semibold uppercase tracking-wider text-gray-400 mt-1">Confirmation</span>
-                    </div>
                 </div>
             </section>
 
@@ -141,8 +128,65 @@
 @endsection
 
 @push('scripts')
-<!-- Logika Eksekusi Snap Embed -->
 <script>
+    // 1. FITUR KUNCI HALAMAN (Cegah user iseng pencet Back/Refresh)
+    let isLocked = true;
+    window.addEventListener('beforeunload', function (e) {
+        if (isLocked) {
+            e.preventDefault();
+            e.returnValue = 'Transaksi belum selesai. Yakin ingin meninggalkan halaman?';
+        }
+    });
+
+    // 2. MESIN PEMBUAT MODAL 10 DETIK (Tanpa merusak HTML asli)
+    function showDynamicModal(type) {
+        isLocked = false; // Buka kunci layar biar bisa pindah halaman nanti
+        
+        const isSuccess = type === 'success';
+        const bgColor = isSuccess ? '#10B981' : '#EF4444'; // Emerald buat sukses, Merah buat error
+        const title = isSuccess ? 'Pembayaran Berhasil!' : 'Transaksi Gagal / Expired';
+        const msg = isSuccess ? 'Mohon tunggu, E-Ticket Anda sedang diproses ke sistem.' : 'Waktu habis. Silakan mengulang pendaftaran kembali.';
+        
+        // Ciptakan elemen Overlay Hitam melayang di seluruh layar
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(0,12,40,0.85); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(5px); font-family:sans-serif; padding:1rem; text-align:center;';
+        
+        // Ciptakan Kotak Putih Modal
+        const box = document.createElement('div');
+        box.style.cssText = 'background:#ffffff; padding:2rem; border-radius:1rem; max-width:320px; width:100%; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);';
+        
+        // Isi Kotak dengan Teks & Loading Bar
+        box.innerHTML = `
+            <h3 style="font-size:1.25rem; font-weight:800; color:#000C28; margin-bottom:0.5rem; letter-spacing:-0.025em;">${title}</h3>
+            <p style="font-size:0.75rem; color:#4B5563; margin-bottom:1.5rem; line-height:1.5;">${msg}</p>
+            <div style="background:#F3F4F6; border-radius:999px; height:6px; width:100%; overflow:hidden; margin-bottom:0.75rem;">
+                <div id="loading-bar" style="height:100%; width:100%; background:${bgColor}; transition:width 1s linear;"></div>
+            </div>
+            <p style="font-size:0.65rem; font-weight:700; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.05em;">Kembali ke awal dalam <span id="countdown-text" style="color:${bgColor};">10</span> detik...</p>
+        `;
+        
+        // Tempel modal ini secara paksa ke dalam body HTML
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        // 3. LOGIKA HITUNG MUNDUR & TENDANG BALIK KE REGISTER
+        let timeLeft = 10;
+        const bar = document.getElementById('loading-bar');
+        const text = document.getElementById('countdown-text');
+        
+        const timer = setInterval(() => {
+            timeLeft--;
+            text.innerText = timeLeft;
+            bar.style.width = (timeLeft * 10) + '%';
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = '/register'; // Lempar balik ke titik nol
+            }
+        }, 1000);
+    }
+
+    // 4. EKSEKUSI MIDTRANS SNAP
     document.addEventListener("DOMContentLoaded", function() {
         var snapToken = "{{ $registration->snap_token }}";
         
@@ -150,13 +194,16 @@
             window.snap.embed(snapToken, {
                 embedId: 'snap-container',
                 onSuccess: function (result) {
-                    window.location.href = '/confirmation';
+                    showDynamicModal('success'); // Panggil modal sukses
                 },
                 onPending: function (result) {
-                    alert('Menunggu pembayaran Anda.');
+                    // Biarkan user anteng milih metode bayar
                 },
                 onError: function (result) {
-                    alert('Pembayaran gagal, silakan coba lagi.');
+                    showDynamicModal('error'); // Panggil modal gagal
+                },
+                onClose: function () {
+                    // Biarkan saja, user mungkin mau ganti bank
                 }
             });
         }

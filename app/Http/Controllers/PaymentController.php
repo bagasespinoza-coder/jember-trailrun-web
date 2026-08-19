@@ -28,20 +28,19 @@ class PaymentController extends Controller
     {
         $registration = Registration::where('order_id', $orderId)->first();
 
-        if (empty($registration->snap_token)) {
-            return redirect('/')->with('error', 'Sistem pembayaran sedang sibuk. Silakan coba daftar ulang.');
+        if (!$registration || empty($registration->snap_token)) {
+            return redirect('/')->with('error', 'Sistem pembayaran sedang sibuk atau data tidak ditemukan.');
         }
 
-        // Kalau udah lunas, langsung arahin ke halaman sukses biar user tenang
         if ($registration->payment_status === 'paid') {
-            return redirect()->route('confirmation'); 
+            return redirect('/')->with('success', 'Pembayaran untuk tiket ini sudah lunas! Silakan cek Email Anda.'); 
         }
 
         if ($registration->payment_status !== 'pending') {
             return redirect('/')->with('error', 'Transaksi sudah kedaluwarsa atau dibatalkan.');
         }
 
-        return view('registration.payment', compact('registration'));
+        return view('payment', compact('registration'));
     }
 
     /**

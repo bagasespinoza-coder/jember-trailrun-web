@@ -26,7 +26,7 @@
             </div>
 
             <!-- Stepper Section: Paksa Horizontal di HP & Desktop (Hapus arah vertikal) -->
-<section class="mb-6">
+            <section class="mb-6">
                 <div class="flex items-center justify-center max-w-xs mx-auto">
                     <!-- Step 1: Registration (Active) -->
                     <div class="flex flex-col items-center shrink-0">
@@ -47,19 +47,6 @@
                             2
                         </div>
                         <span class="text-[9px] font-semibold uppercase tracking-wider text-gray-400 mt-1">Payment</span>
-                    </div>
-
-                    <!-- Connector 2 -->
-                    <div class="flex-1 flex items-center justify-center px-1.5 mb-4">
-                        <div class="h-0.5 w-full bg-gray-300"></div>
-                    </div>
-
-                    <!-- Step 3: Confirmation -->
-                    <div class="flex flex-col items-center shrink-0">
-                        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-white border border-gray-300 text-gray-400 font-bold text-xs">
-                            3
-                        </div>
-                        <span class="text-[9px] font-semibold uppercase tracking-wider text-gray-400 mt-1">Confirmation</span>
                     </div>
                 </div>
             </section>
@@ -107,15 +94,18 @@
                 <p class="text-sm font-semibold text-red-800" x-text="errors.quota?.[0]"></p>
             </div>
 
-<!-- Form Section -->
+            <!-- Form Section -->
             <form x-ref="form" @submit.prevent="submitForm" novalidate class="space-y-4">
 
                 <!-- Section 1: Data Diri -->
                 <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
                     <div class="flex items-center gap-2 mb-3.5">
                         <div class="flex items-center justify-center w-7 h-7 rounded-full bg-orange-50 text-[#FD4801]">
-                        <span class="text-xs">👤</span>
-                    </div>
+                            <!-- Icon User -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Data Diri</h2>
                     </div>
 
@@ -218,7 +208,9 @@
                     
                     <div class="flex items-center gap-2 mb-3.5">
                         <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-[#FD4801] shrink-0">
-                        <span class="text-sm">📱</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
                     </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Kontak & Komunikasi</h2>
                     </div>
@@ -265,7 +257,9 @@
                 <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
                     <div class="flex items-center gap-2 mb-3.5">
                         <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-[#FD4801] shrink-0">
-                        <span class="text-sm">🏃</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                        </svg>
                     </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Event Details</h2>
                     </div>
@@ -315,7 +309,9 @@
                 <section class="bg-white rounded-xl shadow-sm p-4 sm:p-5 border-t-4 border-[#FD4801]">
                     <div class="flex items-center gap-2 mb-3.5">
                         <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-[#FD4801] shrink-0">
-                        <span class="text-sm">🏥</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
                         <h2 class="text-sm sm:text-base font-bold text-[#000C28]">Profil Medis & Kontak Darurat</h2>
                     </div>
@@ -440,9 +436,37 @@
             isSubmitting: false,
             errors: {},
             generalError: '',
-            notification: '',
-            
+            notification: '',          
             usia: '', 
+
+            init() {
+                // 1. Load Draft saat halaman dibuka
+                const draft = JSON.parse(localStorage.getItem('jtr_register_draft') || '{}');
+                const form = this.$refs.form;
+                
+                Object.keys(draft).forEach(key => {
+                    const input = form.querySelector(`[name="${key}"]`);
+                    if (input) {
+                        if (input.type === 'radio' || input.type === 'checkbox') {
+                            if (input.value === draft[key]) input.checked = true;
+                        } else {
+                            input.value = draft[key];
+                        }
+                    }
+                });
+
+                // Trigger hitung umur kalau dob ada di draft
+                if (draft.dob) {
+                    this.hitungUmur({ target: { value: draft.dob } });
+                }
+
+                // 2. Auto-Save Draft tiap kali user ngetik/milih
+                form.addEventListener('input', () => {
+                    const fd = new FormData(form);
+                    const data = Object.fromEntries(fd.entries());
+                    localStorage.setItem('jtr_register_draft', JSON.stringify(data));
+                });
+            },
 
             hitungUmur(event) {
                 const dob = event.target.value;
@@ -485,7 +509,7 @@
                 this.generalError = '';
             },
 
-findFirstInvalidField() {
+            findFirstInvalidField() {
                 // 1. Ambil key error pertama yang dikembalikan oleh Laravel (status 422)
                 const errorKeys = Object.keys(this.errors || {});
                 if (errorKeys.length > 0) {
@@ -529,7 +553,6 @@ findFirstInvalidField() {
 
             async submitForm() {
                 if (this.isSubmitting) return;
-
                 this.isSubmitting = true;
                 this.clearErrors();
                 this.notification = '';
@@ -568,7 +591,7 @@ findFirstInvalidField() {
                         return;
                     }
 
-                    if (data.success && data.redirect_url) {
+                    if (data.success && data.redirect_url) {                      
                         window.location.href = data.redirect_url;
                     } else {
                         this.generalError = data.message || 'Gagal memproses pendaftaran. Silakan coba lagi.';
