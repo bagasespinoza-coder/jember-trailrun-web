@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB; // 🔥 TAMBAHAN UNTUK LOCK DATABASE
 use Midtrans\Config;
 use Midtrans\Notification;
 
@@ -21,9 +22,6 @@ class PaymentController extends Controller
         $this->makeService = $makeService; 
     }
 
-    /**
-     * Tampilkan Halaman Pembayaran (Embed QRIS)
-     */
     public function showPayment($orderId)
     {
         $registration = Registration::where('order_id', $orderId)->first();
@@ -33,33 +31,28 @@ class PaymentController extends Controller
         }
 
         if ($registration->payment_status === 'paid') {
-            return redirect('/')->with('success', 'Pembayaran untuk tiket ini sudah lunas! Silakan cek Email Anda.'); 
+            return view('registration.payment', compact('registration')); 
         }
 
         if ($registration->payment_status !== 'pending') {
-            return redirect('/')->with('error', 'Transaksi sudah kedaluwarsa atau dibatalkan.');
+            return redirect('/register')->with('error', 'Transaksi sudah kedaluwarsa atau dibatalkan. Silakan daftar ulang.');
         }
 
-        return view('payment', compact('registration'));
+        return view('registration.payment', compact('registration'));
     }
 
-    /**
-     * Webhook Callback Handler untuk Midtrans
-     */
     public function handleNotification(Request $request): JsonResponse
     {
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
 
         try {
-            
             $transactionStatus = $request->transaction_status;
             $orderId           = $request->order_id;
             $statusCode        = $request->status_code;
             $grossAmount       = $request->gross_amount;
             $signatureKey      = $request->signature_key;
 
-            // 1. Verifikasi Signature Key (Security Check)
             $serverKey           = config('midtrans.server_key');
             $calculatedSignature = hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey);
 
@@ -68,42 +61,46 @@ class PaymentController extends Controller
                 return response()->json(['message' => 'Invalid signature key'], 403);
             }
 
-            // 2. Cari Data Peserta di Database
-            $registration = Registration::where('order_id', $orderId)->first();
+            DB::transaction(function () use ($orderId, $transactionStatus) {
+                
+                // Kunci baris data ini selama proses berlangsung
+                $registration = Registration::where('order_id', $orderId)->lockForUpdate()->first();
 
-            if (!$registration) {
-                return response()->json(['message' => 'Registration not found'], 404);
-            }
-
-            // 3. Update Status Pembayaran & Trigger Otomatisasi
-            if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
-                if ($registration->payment_status !== 'paid') {
-                    $registration->update([
-                        'payment_status' => 'paid',
-                        'paid_at'        => now(),
-                    ]);
-                    Log::info("Payment SUCCESS (Settlement) for Order ID: {$orderId}");
-
-                    // A. Kirim Data ke Make.com -> Google Sheets
-                    $this->makeService->sendRunnerData($registration);
-
-                    // B. Kirim Email E-Ticket via Brevo SMTP
-                    try {
-                        Mail::to($registration->email)->send(new ETicketMail($registration));
-                        Log::info("E-Ticket Email sent successfully to: {$registration->email}");
-                    } catch (\Exception $emailError) {
-                        Log::error("Failed sending E-Ticket to {$registration->email}: " . $emailError->getMessage());
-                    }
+                if (!$registration) {
+                    throw new \Exception('Registration not found');
                 }
-            } else if ($transactionStatus == 'pending') {
-                Log::info("Payment PENDING (Menunggu Transfer) for Order ID: {$orderId}");
 
-            } else if (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
-                $registration->update([
-                    'payment_status' => 'cancelled',
-                ]);
-                Log::info("Payment CANCELLED/EXPIRED for Order ID: {$orderId}");
-            }
+                if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
+                    if ($registration->payment_status !== 'paid') {
+                        $registration->update([
+                            'payment_status' => 'paid',
+                            'paid_at'        => now(),
+                        ]);
+                        Log::info("Payment SUCCESS (Settlement) for Order ID: {$orderId}");
+
+                        try {
+                            $this->makeService->sendRunnerData($registration);
+                        } catch (\Exception $makeError) {
+                            Log::error("Failed sending data to Make.com for {$orderId}: " . $makeError->getMessage());
+                        }
+
+                        try {
+                            Mail::to($registration->email)->send(new ETicketMail($registration));
+                            Log::info("E-Ticket Email sent successfully to: {$registration->email}");
+                        } catch (\Exception $emailError) {
+                            Log::error("Failed sending E-Ticket to {$registration->email}: " . $emailError->getMessage());
+                        }
+                    }
+                } else if ($transactionStatus == 'pending') {
+                    Log::info("Payment PENDING (Menunggu Transfer) for Order ID: {$orderId}");
+
+                } else if (in_array($transactionStatus, ['deny', 'expire', 'cancel'])) {
+                    $registration->update([
+                        'payment_status' => 'cancelled',
+                    ]);
+                    Log::info("Payment CANCELLED/EXPIRED for Order ID: {$orderId}");
+                }
+            });
 
             return response()->json([
                 'status'  => 'success',
@@ -117,5 +114,47 @@ class PaymentController extends Controller
                 'message' => 'Failed to process notification: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function verifyStatus($orderId)
+    {
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$isProduction = config('midtrans.is_production');
+
+        $registration = Registration::where('order_id', $orderId)->first();
+
+        if (!$registration) {
+            return response()->json(['status' => 'not_found'], 404);
+        }
+
+        if ($registration->payment_status === 'paid') {
+            return response()->json(['status' => 'paid']);
+        }
+
+        try {
+            // Cek langsung ke API Midtrans
+            $status = \Midtrans\Transaction::status($orderId);
+            
+            if (in_array($status->transaction_status, ['settlement', 'capture'])) {
+                $registration->update([
+                    'payment_status' => 'paid',
+                    'paid_at'        => now(),
+                ]);
+
+                // Kirim data ke Make.com & Email E-Ticket secara instan
+                try {
+                    $this->makeService->sendRunnerData($registration);
+                    Mail::to($registration->email)->send(new ETicketMail($registration));
+                } catch (\Exception $e) {
+                    Log::error("Failed sending data/email on verify: " . $e->getMessage());
+                }
+
+                return response()->json(['status' => 'paid']);
+            }
+        } catch (\Exception $e) {
+            Log::error("Midtrans API Check Error: " . $e->getMessage());
+        }
+
+        return response()->json(['status' => $registration->payment_status]);
     }
 }

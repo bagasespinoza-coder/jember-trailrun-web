@@ -404,20 +404,20 @@
                 </section>
 
                 <!-- CTA Button -->
-<div class="flex justify-center pt-2">
-    <button type="submit"
-        :disabled="isSubmitting"
-        :class="{ 'opacity-60 cursor-not-allowed hover:scale-100 active:scale-100': isSubmitting }"
-        class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-3.5 py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition duration-300 hover:scale-105 active:scale-95 shadow-sm">
-        
-        <!-- Loading Circle Spinner -->
-        <div x-show="isSubmitting" x-cloak class="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent mr-1.5"></div>
+        <div class="flex justify-center pt-2">
+            <button type="submit"
+                :disabled="isSubmitting"
+                :class="{ 'opacity-60 cursor-not-allowed hover:scale-100 active:scale-100': isSubmitting }"
+                class="inline-flex items-center justify-center rounded-full bg-[#FD4801] px-3.5 py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition duration-300 hover:scale-105 active:scale-95 shadow-sm">
+                
+                <!-- Loading Circle Spinner -->
+                <div x-show="isSubmitting" x-cloak class="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent mr-1.5"></div>
 
-        <!-- Teks Tombol -->
-        <span x-show="!isSubmitting">Lanjut ke Pembayaran</span>
-        <span x-show="isSubmitting" x-cloak>Memproses...</span>
-    </button>
-</div>
+                <!-- Teks Tombol -->
+                <span x-show="!isSubmitting">Lanjut ke Pembayaran</span>
+                <span x-show="isSubmitting" x-cloak>Memproses...</span>
+            </button>
+        </div>
                 </div>
 
             </form>

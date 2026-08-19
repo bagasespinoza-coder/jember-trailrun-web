@@ -18,7 +18,7 @@ class StoreRegistrationRequest extends FormRequest
         return [
             // Data Diri
             'full_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\']+$/'],
-            'identity_number' => ['required', 'numeric', 'digits_between:15,17', 'unique:registrations,identity_number'], // NIK wajib angka
+            'identity_number' => ['required', 'numeric', 'digits_between:15,17'], 
             'gender' => ['required', 'in:L,P'],
             'pob' => ['required', 'string', 'max:100'],
             'dob' => ['required', 'date', 'before:today'],
@@ -44,22 +44,23 @@ class StoreRegistrationRequest extends FormRequest
     /**
      * Terjemahan Error Bahasa Indonesia
      */
-    public function messages(): array
+   public function messages(): array
     {
         return [
             // 👤 Data Diri
             'full_name.required' => 'Nama lengkap wajib diisi.',
+            'full_name.max' => 'Nama lengkap maksimal 255 karakter.',
             'full_name.regex' => 'Format nama tidak valid. Hanya boleh menggunakan huruf, spasi, dan tanda baca dasar.',
             
             'identity_number.required' => 'Nomor Identitas (NIK/Passport) wajib diisi.',
             'identity_number.numeric' => 'Nomor Identitas wajib berupa angka.',
             'identity_number.digits_between' => 'Nomor Identitas harus terdiri dari 15 hingga 17 digit angka.',
-            'identity_number.unique' => 'Nomor Identitas ini sudah terdaftar sebelumnya.',
             
             'gender.required' => 'Jenis kelamin wajib dipilih.',
             'gender.in' => 'Pilihan jenis kelamin tidak valid.',
             
             'pob.required' => 'Tempat lahir wajib diisi.',
+            'pob.max' => 'Tempat lahir maksimal 100 karakter.',
             
             'dob.required' => 'Tanggal lahir wajib diisi.',
             'dob.date' => 'Format tanggal lahir tidak valid.',
@@ -73,6 +74,7 @@ class StoreRegistrationRequest extends FormRequest
             
             'email.required' => 'Alamat email wajib diisi.',
             'email.email' => 'Format alamat email tidak valid (harus mengandung @).',
+            'email.max' => 'Alamat email maksimal 255 karakter.',
 
             // 🏃 Event Details
             'category.required' => 'Kategori lari wajib diisi.',

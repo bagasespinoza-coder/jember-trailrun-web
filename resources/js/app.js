@@ -7,11 +7,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.querySelector("[data-menu-toggle]");
     const closeButton = document.querySelector("[data-menu-close]");
 
-    // Tambahkan selektor untuk logo
+    // Selektor untuk logo
     const logoWhite = document.getElementById("nav-logo-white");
     const logoBlack = document.getElementById("nav-logo-black");
 
+    const navbarElement = document.querySelector('#main-header'); 
+    
     const updateNavbar = () => {
+        // Safe check: pastikan navbar ada sebelum manipulasi class
+        if (!navbar) return;
+
         if (window.scrollY > 24) {
             navbar.classList.add("bg-white", "shadow-sm");
             navbar.classList.remove("text-white");
@@ -43,20 +48,23 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const openMenu = () => {
-        mobileMenu.classList.remove("-translate-x-full");
-        menuOverlay.classList.remove("hidden");
+        if (mobileMenu) mobileMenu.classList.remove("-translate-x-full");
+        if (menuOverlay) menuOverlay.classList.remove("hidden");
     };
 
     const closeMenu = () => {
-        mobileMenu.classList.add("-translate-x-full");
-        menuOverlay.classList.add("hidden");
+        if (mobileMenu) mobileMenu.classList.add("-translate-x-full");
+        if (menuOverlay) menuOverlay.classList.add("hidden");
     };
 
     toggleButton?.addEventListener("click", openMenu);
     closeButton?.addEventListener("click", closeMenu);
     menuOverlay?.addEventListener("click", closeMenu);
-    window.addEventListener("scroll", updateNavbar);
-    updateNavbar();
+    
+    if (navbarElement || navbar) {
+        window.addEventListener("scroll", updateNavbar);
+        updateNavbar();
+    }
 
     if (mobileMenu) {
         const mobileLinks = mobileMenu.querySelectorAll("a");
@@ -87,10 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         ).addTo(map);
 
+        // Fetch GPX sekali saja untuk semua kebutuhan (Peta, Statistik, Google Maps Button)
         fetch("/routes/trail-run-10k.gpx")
             .then((response) => {
-                if (!response.ok)
-                    throw new Error("Network response was not ok");
+                if (!response.ok) throw new Error("Network response was not ok");
                 return response.text();
             })
             .then((data) => {
@@ -133,16 +141,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
-                // Update Statistic Cards
+                // 1. Update Statistic Cards
                 const distEl = document.getElementById("stat-distance");
                 const eleEl = document.getElementById("stat-elevation");
 
-                if (distEl)
-                    distEl.textContent = totalDistance.toFixed(2) + " KM";
-                if (eleEl)
-                    eleEl.textContent = "+" + Math.round(elevationGain) + " M";
+                if (distEl) distEl.textContent = totalDistance.toFixed(2) + " KM";
+                if (eleEl) eleEl.textContent = "+" + Math.round(elevationGain) + " M";
 
-                // Render Route Polyline (Orange Accent)
+                // 2. Setup Google Maps Start Button
+                const btnViewStart = document.getElementById("btn-view-start");
+                if (btnViewStart && latLngs.length > 0) {
+                    const googleMapsUrl = `https://www.google.com/maps?q=${latLngs[0][0]},${latLngs[0][1]}`;
+                    btnViewStart.href = googleMapsUrl;
+                    btnViewStart.setAttribute("target", "_blank");
+                    btnViewStart.setAttribute("rel", "noopener noreferrer");
+                    btnViewStart.style.opacity = "1";
+                    btnViewStart.style.pointerEvents = "auto";
+                    btnViewStart.onclick = null;
+                }
+
+                // 3. Render Route Polyline (Orange Accent)
                 const routePolyline = L.polyline(latLngs, {
                     color: "#f97316",
                     weight: 4,
@@ -173,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 L.marker(startPoint, { icon: startIcon }).addTo(map);
                 L.marker(endPoint, { icon: finishIcon }).addTo(map);
 
-                // Render Elevation Profile SVG
+                // 4. Render Elevation Profile SVG
                 renderElevationSvg(elevations);
             })
             .catch((error) => {
@@ -214,9 +232,7 @@ function renderElevationSvg(elevations) {
 
     const minEle = Math.min(...elevations);
     const maxEle = Math.max(...elevations);
-    const midEle = Math.round((minEle + maxEle) / 2);
 
-    // Update teks info Min & Max di HTML
     const minEleEl = document.getElementById("min-elev");
     const maxEleEl = document.getElementById("max-elev");
     if (minEleEl) minEleEl.textContent = Math.round(minEle) + "M";
@@ -241,7 +257,6 @@ function renderElevationSvg(elevations) {
     const bottomY = height;
     const polygonPoints = `${firstX},${bottomY} ${points} ${lastX},${bottomY}`;
 
-    // Render SVG dengan tambahan garis grid tipis dan elemen hover
     svg.innerHTML = `
         <defs>
             <linearGradient id="eleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -250,32 +265,26 @@ function renderElevationSvg(elevations) {
             </linearGradient>
         </defs>
         
-        <!-- Garis Grid Horizontal Tipis (Background) -->
         <line x1="0" y1="${padding}" x2="${width}" y2="${padding}" stroke="#334155" stroke-dasharray="4" stroke-width="0.5" opacity="0.5"/>
         <line x1="0" y1="${height / 2}" x2="${width}" y2="${height / 2}" stroke="#334155" stroke-dasharray="4" stroke-width="0.5" opacity="0.5"/>
         <line x1="0" y1="${height - padding}" x2="${width}" y2="${height - padding}" stroke="#334155" stroke-dasharray="4" stroke-width="0.5" opacity="0.5"/>
 
-        <!-- Label Angka Grid di dalam SVG (Opsional) -->
         <text x="5" y="${padding - 4}" fill="#64748b" font-size="8" font-family="monospace">${Math.round(maxEle)}m</text>
         <text x="5" y="${height - padding + 10}" fill="#64748b" font-size="8" font-family="monospace">${Math.round(minEle)}m</text>
 
-        <!-- Grafik Utama -->
         <polygon points="${polygonPoints}" fill="url(#eleGrad)" />
         <polyline fill="none" stroke="#f97316" stroke-width="2.5" points="${points}" />
 
-        <!-- Garis Indikator Hover (Awalnya disembunyikan) -->
         <g id="hover-group" style="display: none;">
             <line id="hover-line" x1="0" y1="0" x2="0" y2="${height}" stroke="#ffffff" stroke-width="1" stroke-dasharray="2"/>
             <circle id="hover-circle" cx="0" cy="0" r="4" fill="#f97316" stroke="#ffffff" stroke-width="1.5"/>
         </g>
     `;
 
-    // Tambahkan Event Listener untuk Interaksi Hover Mouse
     svg.onmousemove = function (evt) {
         const rect = svg.getBoundingClientRect();
         const mouseX = ((evt.clientX - rect.left) / rect.width) * width;
 
-        // Cari index data terdekat berdasarkan posisi X kursor
         const index = Math.min(
             Math.max(0, Math.round(mouseX / step)),
             elevations.length - 1,
@@ -297,7 +306,6 @@ function renderElevationSvg(elevations) {
             hoverCircle.setAttribute("cy", cy);
         }
 
-        // Jika Anda ingin menampilkan informasi dinamis saat hover di teks Min/Max atau elemen lain:
         if (maxEleEl)
             maxEleEl.textContent = Math.round(currentEle) + "M (Hover)";
     };
@@ -305,57 +313,6 @@ function renderElevationSvg(elevations) {
     svg.onmouseleave = function () {
         const hoverGroup = document.getElementById("hover-group");
         if (hoverGroup) hoverGroup.style.display = "none";
-        // Kembalikan teks Max ke nilai semula
         if (maxEleEl) maxEleEl.textContent = Math.round(maxEle) + "M";
     };
 }
-
-fetch("/routes/trail-run-10k.gpx")
-    .then((response) => {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.text();
-    })
-    .then((data) => {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data, "text/xml");
-
-        const trackPoints = xmlDoc.getElementsByTagName("trkpt");
-        if (trackPoints.length === 0)
-            throw new Error("No track points found in GPX");
-
-        const latlngs = [];
-        const elevations = [];
-
-        for (let i = 0; i < trackPoints.length; i++) {
-            const lat = parseFloat(trackPoints[i].getAttribute("lat"));
-            const lon = parseFloat(trackPoints[i].getAttribute("lon"));
-            latlngs.push([lat, lon]);
-
-            const eleTag = trackPoints[i].getElementsByTagName("ele")[0];
-            elevations.push(eleTag ? parseFloat(eleTag.textContent) : 0);
-        }
-
-        // --- 1. AMBIL TITIK PERTAMA SEBAGAI START ---
-        const startPoint = latlngs[0];
-
-        // --- 2. SET URL GOOGLE MAPS KETIKA STARTPOINT SUDAH PASTI ADA ---
-        const btnViewStart = document.getElementById("btn-view-start");
-        if (btnViewStart && startPoint) {
-            const startLat = startPoint[0];
-            const startLng = startPoint[1];
-            const googleMapsUrl = `https://www.google.com/maps?q=${startLat},${startLng}`;
-
-            btnViewStart.href = googleMapsUrl;
-            btnViewStart.setAttribute("target", "_blank");
-            btnViewStart.setAttribute("rel", "noopener noreferrer");
-            btnViewStart.style.opacity = "1";
-            btnViewStart.style.pointerEvents = "auto";
-            btnViewStart.onclick = null;
-        }
-
-        // ... (lanjutan kode render map, polyline, marker, dan elevation chart Anda di sini) ...
-    })
-    .catch((error) => {
-        console.error("Error loading GPX:", error);
-        document.getElementById("map-fallback")?.classList.remove("hidden");
-    });

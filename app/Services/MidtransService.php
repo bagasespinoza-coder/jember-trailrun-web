@@ -39,9 +39,15 @@ class MidtransService
                     'name'     => 'Tiket Pendaftaran Jember 10k Trail Run',
                 ]
             ],
+            
             'enabled_payments' => [
-                'bca_va'
+                'other_qris'
             ],
+
+            'custom_expiry' => [
+                'expiry_duration' => 15,
+                'unit'          => 'minute'
+            ]
         ];
 
         // 🚀 TEMBAK API LANGSUNG (PAKSA TANPA VERIFIKASI SSL)
@@ -57,8 +63,7 @@ class MidtransService
         if ($response->successful()) {
             return $response->json('token');
         }
-
-        // Kalau gagal, lempar pesan eror aslinya
+        
         throw new Exception('Midtrans API Error: ' . $response->body());
     }
 }

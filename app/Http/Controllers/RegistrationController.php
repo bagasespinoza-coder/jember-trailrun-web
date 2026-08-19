@@ -18,37 +18,84 @@ class RegistrationController extends Controller
 
     public function store(StoreRegistrationRequest $request): JsonResponse
     {
-        // 1. Ambil data yang udah Lolos Validation
         $validated = $request->validated();
         
-        // 🔥 LOGIKA PENCEGAT (OPSI 1) MULAI DI SINI
-        $existingPeserta = Registration::where('email', $validated['email'])
-            ->orWhere('identity_number', $validated['identity_number'])
+        // Cari data berdasarkan NIK ATAU Email yang sudah ada
+        $existingPeserta = Registration::where('identity_number', $validated['identity_number'])
+            ->orWhere('email', $validated['email'])
+            ->latest()
             ->first();
 
         if ($existingPeserta) {
-            // Kalau udah lunas, tolak mentah-mentah
+            // 🔥 LOGIKA BARU: Cek spesifik kolom mana yang duplikat
+            $errors = [];
+            
+            if ($existingPeserta->identity_number === $validated['identity_number']) {
+                $errors['identity_number'] = ['NIK ini sudah terdaftar.'];
+            }
+            if ($existingPeserta->email === $validated['email']) {
+                $errors['email'] = ['Email ini sudah terdaftar.'];
+            }
+
+            // 1. Tolak kalau statusnya udah lunas
             if (in_array(strtolower($existingPeserta->payment_status), ['paid', 'settled', 'success'])) {
+                // Ubah pesannya jadi lebih spesifik kalau udah lunas
+                if (isset($errors['identity_number'])) $errors['identity_number'] = ['NIK ini sudah terdaftar dan lunas.'];
+                if (isset($errors['email'])) $errors['email'] = ['Email ini sudah terdaftar dan lunas.'];
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Validasi gagal',
-                    'errors'  => [
-                        'email' => ['Email atau NIK ini sudah terdaftar dan lunas.'],
-                        'identity_number' => ['Email atau NIK ini sudah terdaftar dan lunas.']
-                    ]
+                    'errors'  => $errors // Cuma nampilin error di input yang beneran kembar
                 ], 422);
             }
 
-            // Kalau masih pending, tendang balik ke link pembayaran aslinya!
-            return response()->json([
-                'success'      => true,
-                'status'       => 'success',
-                'message'      => 'Melanjutkan pembayaran sebelumnya...',
-                // Pastikan mengarah ke order_id yang lama
-                'redirect_url' => url('/payment/' . $existingPeserta->order_id), 
-            ], 200);
+            // 2. Cek waktu 15 Menit ATAU statusnya sudah batal/expired
+            if ($existingPeserta->created_at->diffInMinutes(now()) >= 15 || in_array($existingPeserta->payment_status, ['cancelled', 'expired'])) {
+
+                $ticketPrice = 192500;
+                $orderId = 'JTR-' . strtoupper(uniqid());
+
+                try {
+                    $snapToken = $this->midtransService->createSnapToken([
+                        'order_id'   => $orderId,
+                        'amount'     => $ticketPrice,
+                        'user_name'  => $validated['full_name'],
+                        'user_email' => $validated['email'],
+                        'user_phone' => $validated['whatsapp_number'],
+                    ]);
+
+                    $existingPeserta->update(array_merge($validated, [
+                        'order_id'       => $orderId,
+                        'gross_amount'   => $ticketPrice,
+                        'payment_status' => 'pending',
+                        'snap_token'     => $snapToken,
+                    ]));
+
+                    return response()->json([
+                        'success'      => true,
+                        'status'       => 'success',
+                        'message'      => 'Pendaftaran diperbarui, mengalihkan ke pembayaran....',
+                        'redirect_url' => url('/payment/' . $orderId),
+                    ], 200);
+
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status'  => 'error',
+                        'message' => 'Gagal memperbarui transaksi: ' . $e->getMessage(),
+                    ], 500);
+                }
+
+            } else {
+                // Belum 15 menit, lempar balik ke pembayaran yang aktif.
+                return response()->json([
+                    'success'      => true,
+                    'status'       => 'success',
+                    'message'      => 'Melanjutkan pembayaran sebelumnya...',
+                    'redirect_url' => url('/payment/' . $existingPeserta->order_id), 
+                ], 200);
+            }
         }
-        // 🔥 LOGIKA PENCEGAT SELESAI
 
         // ==========================================
         // PROSES NORMAL (BUAT PENDAFTAR BARU)

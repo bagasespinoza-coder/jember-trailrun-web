@@ -29,7 +29,7 @@ class ETicketMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'E-TICKET RESMI: ' . $this->registration->order_id . ' - Jember 10k Trail Run',
+            subject: 'E-TICKET RESMI: ' . $this->registration->order_id . ' - Jember Trail Run',
         );
     }
 

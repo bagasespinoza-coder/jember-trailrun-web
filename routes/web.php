@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\PaymentController;
 
+Route::get('/payment/verify/{orderId}', [PaymentController::class, 'verifyStatus']);
+
 // 1. Landing Page & Form Registration
 Route::get('/', function () {
     return view('landing');

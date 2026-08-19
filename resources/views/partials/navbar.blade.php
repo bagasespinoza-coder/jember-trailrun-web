@@ -15,8 +15,8 @@
     }
 @endphp
 
-<header id="main-header" class="fixed w-screen left-1/2 -translate-x-1/2 top-0 z-50 transition-all duration-300 {{ $isSubpage ? 'bg-white shadow-sm border-b border-gray-100 text-[#000C28]' : 'bg-transparent text-white' }} hidden lg:block" {{ $isSubpage ? 'data-navbar-static' : '' }}>
-    <nav data-navbar class="w-full mx-auto flex h-12 items-center justify-between px-4 transition-all duration-300 lg:px-8 max-w-7xl">
+<header id="main-header" data-navbar class="fixed w-full left-0 top-0 z-50 transition-all duration-300 {{ $isSubpage ? 'bg-white shadow-sm border-b border-gray-100 text-[#000C28]' : 'bg-transparent text-white' }} hidden lg:block" {{ $isSubpage ? 'data-navbar-static' : '' }}>
+    <nav class="w-full mx-auto flex h-12 items-center justify-between px-4 transition-all duration-300 lg:px-8 max-w-7xl">
         
         <!-- 1. Bagian Logo (Otomatis menyesuaikan Putih / Hitam) -->
         <div class="flex items-center">
