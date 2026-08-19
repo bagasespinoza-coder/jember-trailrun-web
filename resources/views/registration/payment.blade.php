@@ -78,9 +78,18 @@
                                 <span class="text-gray-500 text-[11px]">Category</span>
                                 <span class="font-bold text-xs text-[#000C28]">{{ $registration->category ?? '10K Trail Run' }}</span>
                             </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-gray-500 text-[11px]">Ticket Price</span>
+                                <span class="font-medium text-xs text-[#000C28]">Rp190.000</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-gray-500 text-[11px]">Admin Fee</span>
+                                <span class="font-medium text-xs text-[#000C28]">Rp2.500</span>
+                            </div>
                             <div class="flex justify-between items-center pt-1.5 border-t border-dashed border-gray-200">
                                 <span class="text-gray-500 text-[11px]">Total Amount</span>
-                                <span class="font-semibold text-xs text-[#FD4801]">Rp{{ number_format($registration->gross_amount ?? 165000, 0, ',', '.') }}</span>
+                                <!-- Fallback disesuaikan ke 192500 (190.000 + 2.500) -->
+                                <span class="font-semibold text-xs text-[#FD4801]">Rp{{ number_format($registration->gross_amount ?? 192500, 0, ',', '.') }}</span>
                             </div>
                         </div>
 
