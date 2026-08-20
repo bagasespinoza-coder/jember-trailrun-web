@@ -19,7 +19,7 @@ class PaymentController extends Controller
 
     public function __construct(MakeService $makeService)
     {
-        $this->makeService = $makeService; 
+        $this->makeService = $makeService;
     }
 
     public function showPayment($orderId)
@@ -135,7 +135,7 @@ class PaymentController extends Controller
             // Cek langsung ke API Midtrans
             $status = \Midtrans\Transaction::status($orderId);
             
-            if (in_array($status->transaction_status, ['settlement', 'capture'])) {
+            if (isset($status['transaction_status']) && in_array($status['transaction_status'], ['settlement', 'capture'])) {
                 $registration->update([
                     'payment_status' => 'paid',
                     'paid_at'        => now(),
