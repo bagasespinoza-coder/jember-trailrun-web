@@ -112,11 +112,6 @@
                 </article>
                 
             </div>
-
-            <!-- Tombol CTA Download -->
-            <a href="#" aria-label="Download Full Racer's Guide" class="mt-5 sm:mt-6 lg:mt-8 flex w-full lg:inline-flex lg:w-auto items-center justify-center rounded-full bg-[#FD4801] px-5 py-3 lg:py-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_6px_15px_rgba(253,72,1,0.2)] transition duration-300 hover:scale-[1.02] active:scale-95">
-                Download Full Racer’s Guide (PDF)
-            </a>
         </div>
 
         <!-- ========================================== -->

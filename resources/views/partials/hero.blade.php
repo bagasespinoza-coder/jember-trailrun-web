@@ -36,7 +36,7 @@
             <!-- Title -->
             <h1 class="font-race max-w-3xl lg:max-w-full text-3xl font-black uppercase leading-[1.1] tracking-[-0.02em] text-white sm:text-4xl lg:text-[3.5rem]">
                 Jember <br class="hidden lg:block" />
-                <span class="inline-block">Trail Run</span> <span class="text-[#FD4801]">10K</span>
+                <span class="inline-block">Trail </span> <span class="text-[#FD4801]">Run</span>
             </h1>
             
             <!-- Deskripsi -->

@@ -37,7 +37,7 @@
         <div class="bg-[#011638] border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
             <!-- Header Kecil -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-800 pb-4 mb-6 gap-2">
-                <span class="text-xs font-bold tracking-widest text-[#E2E2E2] uppercase">10K Trail Run Jember</span>
+                <span class="text-xs font-bold tracking-widest text-[#E2E2E2] uppercase">Map Route racer</span>
                 <div class="text-xs text-gray-400 space-x-3">
                 </div>
             </div>
