@@ -20,7 +20,7 @@
         @endphp
 
 <!-- DESKTOP: HORIZONTAL TIMELINE -->
-        <div class="hidden lg:block mt-8 relative">
+        <div class="hidden lg:block mt-10 relative">
             <!-- Garis Penghubung Horizontal -->
             <div class="absolute top-4 left-8 right-8 h-[2px] bg-white/20 -z-0"></div>
 
@@ -57,8 +57,17 @@
                         <h3 class="text-xs font-bold text-white">{{ $step[1] }}</h3>
                         <p class="mt-0.5 text-[11px] leading-4 text-white/70">{{ $step[2] }}</p>
                     </div>
+
                 </div>
             @endforeach
         </div>
+            <!-- cta buttons -->
+    <div class="order-2 mt-8 lg:order-none lg:mt-10">
+        <a href="/register" aria-label="Register Now" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-[#FD4801] px-5 py-3 lg:py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105 shadow-lg shadow-[#FD4801]/30 w-full lg:w-auto">
+            Register Now
+        </a>
     </div>
+
+    </div>
+        
 </section>
