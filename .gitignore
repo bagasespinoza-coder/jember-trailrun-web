@@ -1,0 +1,24 @@
+# Hosting/temporary folders
+.builds/
+.trash/
+
+# Laravel environment
+jember-trailrun-web/.env
+
+# Dependencies
+jember-trailrun-web/vendor/
+jember-trailrun-web/node_modules/
+
+# Laravel generated files
+jember-trailrun-web/storage/logs/*
+jember-trailrun-web/storage/framework/cache/*
+jember-trailrun-web/storage/framework/sessions/*
+jember-trailrun-web/storage/framework/views/*
+
+# Local IDE/system
+*.log
+.DS_Store
+Thumbs.db
+
+# Old Git metadata backup
+public_html/.git_backup/
