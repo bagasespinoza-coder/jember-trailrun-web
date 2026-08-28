@@ -29,7 +29,7 @@
             <div class="flex justify-center lg:justify-start">
                 <p class="mb-3 lg:mb-2 inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3.5 py-1 text-[10px] lg:text-xs font-semibold uppercase tracking-[0.15em] text-white/90 backdrop-blur-sm">
                     <span class="w-2 h-2 rounded-full bg-[#FD4801] animate-pulse"></span>
-                    Registration For 2026
+                    Registration
                 </p>
             </div>
             

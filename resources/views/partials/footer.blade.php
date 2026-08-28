@@ -57,6 +57,6 @@
 
     <!-- Copyright -->
     <div class="mx-auto max-w-[1000px] mt-6 border-t border-white/10 pt-4 text-center text-[10px] text-white/50">
-        © Jember Trail Run 10k 2026. All rights reserved.
+        © Jember Trail Run. All rights reserved.
     </div>
 </footer>

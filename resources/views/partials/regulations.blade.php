@@ -129,7 +129,7 @@
                     <p class="mt-0.5 text-xs font-semibold text-white">jembertrailrun@gmail.com</p>
                 </article>
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
-                    <p class="text-[10px] text-white/70">Instagram</p>
+                    <p class="text-[10px] text-white/70">Social Media</p>
                     <p class="mt-0.5 text-xs font-semibold text-white">@jembertrailrun</p>
                 </article>
             </div>

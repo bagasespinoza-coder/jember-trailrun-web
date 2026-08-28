@@ -92,7 +92,7 @@
                         </div>
                     </div>
 
-                   <!-- 2. Info Cards (Mobile: 3 Horizontal, Desktop: Vertikal ke Bawah) -->
+                <!-- 2. Info Cards (Mobile: 3 Horizontal, Desktop: Vertikal ke Bawah) -->
                     <div class="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
                         
                         <!-- Card 1: Time Limit -->

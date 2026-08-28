@@ -61,6 +61,19 @@
                 </div>
             @endforeach
         </div>
+
+        <!-- REGISTRATION FEE INFO -->
+        <div class="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm lg:mt-10">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <span class="text-xs font-medium uppercase tracking-[0.1em] text-white/60">Registration Fee</span>
+                    <div class="mt-1 flex items-baseline gap-2">
+                        <span class="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Rp190.000</span>
+                        <span class="text-xs text-white/50">/ participant</span>
+                    </div>
+                    <p class="mt-1 text-[11px] text-white/60">Payment processing fee may apply.</p>
+                </div>
+                
             <!-- cta buttons -->
     <div class="order-2 mt-8 lg:order-none lg:mt-10">
         <a href="/register" aria-label="Register Now" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-[#FD4801] px-5 py-3 lg:py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105 shadow-lg shadow-[#FD4801]/30 w-full lg:w-auto">
