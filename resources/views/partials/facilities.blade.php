@@ -82,19 +82,7 @@
                 <p class="mt-1.5 lg:mt-2 text-[9px] lg:text-[11px] leading-relaxed text-[#000C28]/70 line-clamp-3">Hydration stations and recovery snacks provided along the route and after the race.</p>
             </article>
 
-            <!-- Kartu 6: Insurance -->
-            <article class="flex flex-col items-center text-center rounded-xl border border-[#FD4801]/20 bg-white p-4 sm:p-5 shadow-[0_8px_20px_rgba(0,0,0,0.03)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(253,72,1,0.08)] hover:border-[#FD4801]/50">
-                <div class="flex h-8 w-8 lg:h-10 lg:w-10 items-center justify-center rounded-xl bg-[#FD4801]/10 text-[#FD4801]">
-                    <!-- Ikon Insurance -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                </div>
-                <h3 class="mt-3 lg:mt-4 text-xs lg:text-sm font-bold text-[#000C28]">Insurance</h3>
-                <p class="mt-1.5 lg:mt-2 text-[9px] lg:text-[11px] leading-relaxed text-[#000C28]/70 line-clamp-3">Personal accident insurance coverage included for all registered participants.</p>
-            </article>
-
-            <!-- Kartu 7: Timing Chip -->
+            <!-- Kartu 6: Timing Chip -->
             <article class="flex flex-col items-center text-center rounded-xl border border-[#FD4801]/20 bg-white p-4 sm:p-5 shadow-[0_8px_20px_rgba(0,0,0,0.03)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(253,72,1,0.08)] hover:border-[#FD4801]/50">
                 <div class="flex h-8 w-8 lg:h-10 lg:w-10 items-center justify-center rounded-xl bg-[#FD4801]/10 text-[#FD4801]">
                     <!-- Ikon Stopwatch / Timer -->
@@ -102,7 +90,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <h3 class="mt-3 lg:mt-4 text-xs lg:text-sm font-bold text-[#000C28]">Timing Chip Technology</h3>
+                <h3 class="mt-3 lg:mt-4 text-xs lg:text-sm font-bold text-[#000C28]">Timing Chip </h3>
                 <p class="mt-1.5 lg:mt-2 text-[9px] lg:text-[11px] leading-relaxed text-[#000C28]/70 line-clamp-3">High-precision sensor attached to your BIB for real-time split times and finish results.</p>
             </article>
 

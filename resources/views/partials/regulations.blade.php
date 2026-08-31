@@ -112,11 +112,6 @@
                 </article>
                 
             </div>
-
-            <!-- Tombol CTA Download -->
-            <a href="#" aria-label="Download Full Racer's Guide" class="mt-5 sm:mt-6 lg:mt-8 flex w-full lg:inline-flex lg:w-auto items-center justify-center rounded-full bg-[#FD4801] px-5 py-3 lg:py-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_6px_15px_rgba(253,72,1,0.2)] transition duration-300 hover:scale-[1.02] active:scale-95">
-                Download Full Racer’s Guide (PDF)
-            </a>
         </div>
 
         <!-- ========================================== -->
@@ -126,15 +121,15 @@
             <p class="text-xs font-semibold uppercase tracking-[0.35em] text-[#FD4801] text-center lg:text-left">Need Help?</p>
             <div class="mt-3.5 space-y-2 lg:space-y-2.5">
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
-                    <p class="text-[10px] text-white/70">WhatsApp</p>
-                    <p class="mt-0.5 text-xs font-semibold text-white">+62 877 976 695 35</p>
+                    <p class="text-[10px] text-white/70">Call center</p>
+                    <p class="mt-0.5 text-xs font-semibold text-white">+62 822-3651-6043</p>
                 </article>
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
                     <p class="text-[10px] text-white/70">Email Support</p>
                     <p class="mt-0.5 text-xs font-semibold text-white">jembertrailrun@gmail.com</p>
                 </article>
                 <article class="rounded-xl bg-white/5 border border-white/10 p-3 shadow-sm transition duration-300 hover:border-[#FD4801]">
-                    <p class="text-[10px] text-white/70">Instagram</p>
+                    <p class="text-[10px] text-white/70">Social Media</p>
                     <p class="mt-0.5 text-xs font-semibold text-white">@jembertrailrun</p>
                 </article>
             </div>

@@ -35,8 +35,8 @@
             <p class="text-[10px] font-semibold uppercase tracking-[0.35em] text-[#FF5A1F]">Official Contact</p>
             <div class="mt-2 space-y-2 text-[11px] text-white/70">
                 <div>
-                    <span class="text-[9px] uppercase tracking-wider text-white/40 block">WhatsApp Center</span>
-                    <a href="https://wa.me/6287797669535" class="font-medium text-white hover:text-[#FF5A1F] transition">+62 877 976 695 35</a>
+                    <span class="text-[9px] uppercase tracking-wider text-white/40 block">Call center</span>
+                    <a href="https://wa.me/6282236516043" class="font-medium text-white hover:text-[#FF5A1F] transition">+62 822-3651-6043</a>
                 </div>
                 <div>
                     <span class="text-[9px] uppercase tracking-wider text-white/40 block">Email Support</span>
@@ -57,6 +57,6 @@
 
     <!-- Copyright -->
     <div class="mx-auto max-w-[1000px] mt-6 border-t border-white/10 pt-4 text-center text-[10px] text-white/50">
-        © Jember Trail Run 10k 2026. All rights reserved.
+        © Jember Trail Run. All rights reserved.
     </div>
 </footer>

@@ -267,12 +267,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- Kategori Lari -->
                         <div>
-                            <label for="category" class="block text-[11px] sm:text-xs font-semibold text-[#000C28] mb-1">
-                                Kategori Lari
+                            <label for="bib_name" class="block text-[11px] sm:text-xs font-semibold text-[#000C28] mb-1">
+                                Nama BIB
                             </label>
-                            <input type="text" id="category" name="category" value="10K Trail Run" readonly
-                                class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs text-gray-700 bg-gray-100 cursor-not-allowed focus:outline-none shadow-sm">
-                            <p x-show="errors.category" x-text="errors.category?.[0]" class="mt-0.5 text-[10px] text-red-600"></p>
+                            <input type="text" id="bib_name" name="bib_name" placeholder="Masukkan nama untuk BIB"
+                                class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm">
+                            <p x-show="errors.bib_name" x-text="errors.bib_name?.[0]" class="mt-0.5 text-[10px] text-red-600"></p>
                         </div>
 
                         <!-- Race Tee Size -->

@@ -29,9 +29,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <p class="text-[9px] lg:text-[11px] uppercase tracking-wider lg:tracking-[0.15em] text-white/60 font-medium">Date</p>
+                    <p class="text-[9px] lg:text-[11px] uppercase tracking-wider lg:tracking-[0.15em] text-white/60 font-medium">Open Registration</p>
                 </div>
-                <p class="mt-2.5 lg:mt-4 text-xs sm:text-sm lg:text-base font-semibold text-white">August 25, 2026</p>
+                <p class="mt-2.5 lg:mt-4 text-xs sm:text-sm lg:text-base font-semibold text-white">1 september, 2026</p>
             </article>
 
             <!-- Card 2: Location -->
@@ -61,7 +61,7 @@
                     </div>
                     <p class="text-[9px] lg:text-[11px] uppercase tracking-wider lg:tracking-[0.15em] text-white/60 font-medium">Start</p>
                 </div>
-                <p class="mt-2.5 lg:mt-4 text-xs sm:text-sm lg:text-base font-semibold text-white">05:30 AM WIB</p>
+                <p class="mt-2.5 lg:mt-4 text-xs sm:text-sm lg:text-base font-semibold text-white">05:30 WIB</p>
             </article>
 
             <!-- Card 4: Distance -->

@@ -83,7 +83,7 @@
                         </div>
                     </div>
 
-                    <!-- Info Cards -->
+                <!-- 2. Info Cards (Mobile: 3 Horizontal, Desktop: Vertikal ke Bawah) -->
                     <div class="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-t-[3px] border-t-[#FD4801] p-2.5 flex flex-col justify-center items-center lg:flex-row lg:justify-between text-center lg:text-left">
                             <div class="w-full">
