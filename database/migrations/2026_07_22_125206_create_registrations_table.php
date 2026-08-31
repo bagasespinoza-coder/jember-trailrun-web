@@ -16,7 +16,7 @@ return new class extends Migration
 
             // 1. Data Diri
             $table->string('full_name');
-            $table->string('identity_number')->unique(); // NIK / Paspor
+            $table->string('identity_number'); // NIK / Paspor
             $table->enum('gender', ['L', 'P']);
             $table->string('pob');
             $table->date('dob'); // Usia nanti dihitung otomatis via Carbon/PHP
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('community')->nullable(); // Opsional
 
             // 2. Kontak & Sosial Media
-            $table->string('whatsapp_number');
-            $table->string('email');
+            $table->string('whatsapp_number')->index(); // Index untuk pencarian cepat
+            $table->string('email')->index(); // Index untuk pencarian cepat / emailer
             $table->string('instagram_handle')->nullable(); // Opsional
 
             // 3. Detail Event & Logistics
@@ -41,9 +41,10 @@ return new class extends Migration
 
             // 5. Status Pembayaran / Registrasi
             $table->string('order_id')->unique(); // Kode transaksi
-            $table->enum('payment_status', ['pending', 'paid', 'cancelled'])->default('pending');
-            $table->string('snap_token')->nullable(); //Tempat nyimpen token
-            $table->integer('gross_amount'); //Biaya registrasi
+            $table->string('payment_status')->default('pending'); // Diubah dari ENUM ke STRING agar kompatibel Midtrans/Manual
+            $table->string('snap_token')->nullable(); // Tempat simpan token Midtrans
+            $table->string('payment_proof')->nullable(); // [PERBAIKAN] Untuk menampung path file bukti transfer manual
+            $table->unsignedBigInteger('gross_amount'); // [PERBAIKAN] Tipe data nominal pembayaran
             $table->timestamp('paid_at')->nullable(); 
 
             $table->timestamps();

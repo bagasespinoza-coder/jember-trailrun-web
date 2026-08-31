@@ -39,7 +39,7 @@ class MakeService
                 'community'                  => $registration->community ?? '-',
                 'address'                    => $registration->address,
                 'whatsapp_number'            => $registration->whatsapp_number,
-                'instagram_username'         => $registration->intagram_username ?? '-',
+                'instagram_username'         => $registration->instagram_username ?? '-',
                 'email'                      => $registration->email,
                 'category'                   => $registration->category,
                 'jersey_size'                => $registration->jersey_size,
