@@ -22,6 +22,7 @@ class StoreRegistrationRequest extends FormRequest
             'gender' => ['required', 'in:L,P'],
             'pob' => ['required', 'string', 'max:100'],
             'dob' => ['required', 'date', 'before:today'],
+            'usia' => ['required', 'integer'],
             'address' => ['required', 'string'], 
             'community' => ['nullable', 'string', 'max:100'],
 
@@ -31,7 +32,7 @@ class StoreRegistrationRequest extends FormRequest
             'instagram_handle' => ['nullable', 'string', 'max:100'],
 
             // Event & Medis
-            'category' => ['required', 'string'],
+            'bib_name' => ['required', 'string', 'max:50'], // <--- Validasi Nama BIB
             'jersey_size' => ['required', 'in:S,M,L,XL,XXL'],
             'blood_type' => ['required', 'in:A,B,AB,O'], 
             'medical_history' => ['nullable', 'string'],
@@ -44,10 +45,10 @@ class StoreRegistrationRequest extends FormRequest
     /**
      * Terjemahan Error Bahasa Indonesia
      */
-   public function messages(): array
+    public function messages(): array
     {
         return [
-            // 👤 Data Diri
+            // Data Diri
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.max' => 'Nama lengkap maksimal 255 karakter.',
             'full_name.regex' => 'Format nama tidak valid. Hanya boleh menggunakan huruf, spasi, dan tanda baca dasar.',
@@ -65,10 +66,12 @@ class StoreRegistrationRequest extends FormRequest
             'dob.required' => 'Tanggal lahir wajib diisi.',
             'dob.date' => 'Format tanggal lahir tidak valid.',
             'dob.before' => 'Tanggal lahir harus sebelum hari ini.',
+
+            'usia.required' => 'Usia wajib terisi otomatis.',
             
             'address.required' => 'Alamat domisili wajib diisi.',
 
-            // 📱 Kontak & Komunikasi
+            // Kontak & Komunikasi
             'whatsapp_number.required' => 'Nomor WhatsApp wajib diisi.',
             'whatsapp_number.regex' => 'Format nomor WhatsApp harus diawali "08" dan hanya berisi angka (contoh: 0812...).',
             
@@ -76,13 +79,14 @@ class StoreRegistrationRequest extends FormRequest
             'email.email' => 'Format alamat email tidak valid (harus mengandung @).',
             'email.max' => 'Alamat email maksimal 255 karakter.',
 
-            // 🏃 Event Details
+            // Event Details
+            'bib_name.max' => 'Nama untuk BIB maksimal 50 karakter.', // <--- Pesan Error Nama BIB
             'category.required' => 'Kategori lari wajib diisi.',
             
             'jersey_size.required' => 'Ukuran jersey (Race Tee Size) wajib dipilih.',
             'jersey_size.in' => 'Pilihan ukuran jersey tidak valid.',
 
-            // 🏥 Profil Medis & Kontak Darurat
+            // Profil Medis & Kontak Darurat
             'blood_type.required' => 'Golongan darah wajib dipilih.',
             'blood_type.in' => 'Pilihan golongan darah tidak valid.',
             

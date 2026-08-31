@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('identity_number'); // NIK / Paspor
             $table->enum('gender', ['L', 'P']);
             $table->string('pob');
-            $table->date('dob'); // Usia nanti dihitung otomatis via Carbon/PHP
+            $table->date('dob'); 
+            $table->integer('usia')->nullable();
             $table->text('address');
             $table->string('community')->nullable(); // Opsional
 
@@ -29,6 +30,8 @@ return new class extends Migration
             $table->string('instagram_handle')->nullable(); // Opsional
 
             // 3. Detail Event & Logistics
+            $table->string('bib_name')->nullable(); // Nama custom di BIB
+            $table->string('bib_number')->nullable()->unique(); // Nomor BIB (cth: M10001, F10002)
             $table->string('category')->default('10K'); // Misal: 10K, 21K
             $table->enum('jersey_size', ['S', 'M', 'L', 'XL', 'XXL']);
 
@@ -41,10 +44,10 @@ return new class extends Migration
 
             // 5. Status Pembayaran / Registrasi
             $table->string('order_id')->unique(); // Kode transaksi
-            $table->string('payment_status')->default('pending'); // Diubah dari ENUM ke STRING agar kompatibel Midtrans/Manual
+            $table->string('payment_status')->default('pending'); // STRING agar kompatibel Midtrans/Manual
             $table->string('snap_token')->nullable(); // Tempat simpan token Midtrans
-            $table->string('payment_proof')->nullable(); // [PERBAIKAN] Untuk menampung path file bukti transfer manual
-            $table->unsignedBigInteger('gross_amount'); // [PERBAIKAN] Tipe data nominal pembayaran
+            $table->string('payment_proof')->nullable(); // Path file bukti transfer manual
+            $table->unsignedBigInteger('gross_amount'); // Nominal pembayaran
             $table->timestamp('paid_at')->nullable(); 
 
             $table->timestamps();

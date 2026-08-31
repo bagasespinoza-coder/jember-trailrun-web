@@ -10,21 +10,23 @@ class Registration extends Model
 {
     use HasFactory;
 
-    /**
-     * Proteksi Mass Assignment ($fillable)
-     * Hanya kolom di bawah ini yang boleh diisi secara massal lewat Registration::create()
-     */
     protected $fillable = [
         'full_name',
         'identity_number',
         'gender',
         'pob',
         'dob',
+        'usia',
         'address',
         'community',
         'whatsapp_number',
         'email',
         'instagram_handle',
+        
+        // --- TAMBAHKAN 2 BARIS INI ---
+        'bib_name',
+        'bib_number',
+
         'category',
         'jersey_size',
         'blood_type',
@@ -39,29 +41,19 @@ class Registration extends Model
         'paid_at',
     ];
 
-    /**
-     * Casting tipe data otomatis
-     */
     protected $casts = [
         'dob' => 'date',
         'paid_at' => 'datetime',
         'gross_amount' => 'integer'
     ];
 
-    /// Const Total Kuota Event
     public const MAX_QUOTA = 300;
 
-    /**
-     * Accessor: Hitung Usia Otomatis dari DOB
-     */
     public function getAgeAttribute(): int
     {
         return Carbon::parse($this->dob)->age;
     }
 
-    /**
-     * Scope: Hitung Pendaftar Lunas (Paid)
-     */
     public static function paidCount(): int
     {
         return static::where('payment_status', 'paid')->count();

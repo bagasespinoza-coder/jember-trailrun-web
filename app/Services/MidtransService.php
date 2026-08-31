@@ -8,12 +8,16 @@ use Exception;
 class MidtransService
 {
     /**
-     * Generate Snap Token pake Laravel HTTP Client (Bypass SSL)
+     * Generate Snap Token pake Laravel HTTP Client
      */
     public function createSnapToken(array $orderData): string
     {
         $serverKey = config('midtrans.server_key');
-        $isProduction = config('midtrans.is_production');
+        $isProduction = config('midtrans.is_production', false);
+
+        if (!$serverKey) {
+            throw new Exception('Midtrans Server Key belum dikonfigurasi pada file .env!');
+        }
 
         // Tentukan URL API Midtrans (Sandbox atau Production)
         $baseUrl = $isProduction
@@ -40,26 +44,28 @@ class MidtransService
                 ]
             ],
             
+            // Opsi metode pembayaran berbasis QRIS (GoPay + Dynamic QRIS)
             'enabled_payments' => [
+                'gopay',
+                'qris',
                 'other_qris'
             ],
 
             'custom_expiry' => [
                 'expiry_duration' => 15,
-                'unit'          => 'minute'
+                'unit'            => 'minute'
             ]
         ];
 
-        // 🚀 TEMBAK API LANGSUNG (PAKSA TANPA VERIFIKASI SSL)
-        $response = Http::withoutVerifying()
-            ->withBasicAuth($serverKey, '')
+        // HTTP Client dengan Basic Auth & SSL Verification aktif
+        $response = Http::withBasicAuth($serverKey, '')
             ->withHeaders([
                 'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
             ])
             ->post($baseUrl, $payload);
 
-        // Kalau sukses, ambil tokennya
+        // Ambil token jika request sukses
         if ($response->successful()) {
             return $response->json('token');
         }

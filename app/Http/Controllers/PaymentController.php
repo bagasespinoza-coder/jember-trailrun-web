@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http; 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Midtrans\Config;
 
@@ -69,11 +70,23 @@ class PaymentController extends Controller
 
                 if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
                     if ($registration->payment_status !== 'paid') {
+                        
+                        $genderPrefix = ($registration->gender ?? 'L') === 'L' ? 'M' : 'F';
+                        
+                        $latestSequence = Registration::whereNotNull('bib_number')
+                            ->lockForUpdate()
+                            ->selectRaw("MAX(CAST(SUBSTRING(bib_number, 4) AS UNSIGNED)) as max_seq")
+                            ->value('max_seq');
+
+                        $nextSequence = str_pad(($latestSequence ? $latestSequence + 1 : 1), 3, '0', STR_PAD_LEFT);
+                        $bibNumber = $genderPrefix . '10' . $nextSequence;
+
                         $registration->update([
                             'payment_status' => 'paid',
+                            'bib_number'     => $bibNumber, 
                             'paid_at'        => now(),
                         ]);
-                        Log::info("Payment SUCCESS (Settlement) for Order ID: {$orderId}");
+                        Log::info("Payment SUCCESS (Settlement) for Order ID: {$orderId} with BIB: {$bibNumber}");
 
                         try {
                             $this->makeService->sendRunnerData($registration);
@@ -120,7 +133,6 @@ class PaymentController extends Controller
             return redirect('/')->with('success', 'Transaksi ini sudah lunas.');
         }
 
-        // PERBAIKAN: Hanya passing variable $registration yang valid
         return view('payment', compact('registration'));
     }
 
@@ -128,7 +140,7 @@ class PaymentController extends Controller
     {
         $registration = Registration::where('order_id', $orderId)->firstOrFail();
 
-        // 1. Cek Status & Bukti Transfer Ganda (Anti Overwrite)
+        // 1. Cek Status & Bukti Transfer Ganda
         if (strtolower($registration->payment_status) !== 'pending') {
             return back()->with('error', 'Transaksi sudah tidak aktif atau telah diproses.');
         }
@@ -154,9 +166,10 @@ class PaymentController extends Controller
             return back()->with('error', 'File gambar tidak valid atau rusak.');
         }
 
-        // 3. Simpan dengan Nama Acak 40 Karakter (Anti Web Shell)
-        $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
-        $path     = $file->storeAs('payment_proofs', $fileName, 'public');
+        // 3. Simpan dengan Nama Acak 40 Karakter & Ekstensi Tebakan Server (Anti Web Shell)
+        $extension = $file->guessExtension() ?? 'jpg';
+        $fileName  = 'proof_' . Str::random(40) . '.' . $extension;
+        $path      = $file->storeAs('payment_proofs', $fileName, 'public');
 
         // 4. Update Database
         $registration->update([
@@ -181,8 +194,68 @@ class PaymentController extends Controller
         return redirect('/')->with('success', 'Bukti transfer berhasil dikirim! Tunggu panitia memverifikasi.');
     }
 
+    public function uploadProof(Request $request, $orderId)
+    {
+        $request->validate([
+            'payment_proof' => [
+                'required',
+                'file',
+                'image',
+                'mimes:jpg,jpeg,png',
+                'max:2048',
+            ],
+        ], [
+            'payment_proof.required' => 'File bukti transfer wajib diupload.',
+            'payment_proof.image'    => 'File harus berupa gambar.',
+            'payment_proof.mimes'    => 'Format gambar hanya boleh JPG, JPEG, atau PNG.',
+            'payment_proof.max'      => 'Ukuran file maksimal 2 MB.',
+        ]);
+
+        $registration = Registration::where('order_id', $orderId)->firstOrFail();
+
+        if ($request->hasFile('payment_proof')) {
+            $file = $request->file('payment_proof');
+
+            if (!@getimagesize($file->getPathname())) {
+                return response()->json(['message' => 'File gambar tidak valid atau rusak.'], 422);
+            }
+
+            $extension = $file->guessExtension() ?? 'jpg';
+            $filename  = 'proof_' . Str::random(40) . '.' . $extension;
+
+            $path = $file->storeAs('payment_proofs', $filename, 'public');
+
+            if ($registration->payment_proof) {
+                Storage::disk('public')->delete($registration->payment_proof);
+            }
+
+            $registration->update([
+                'payment_proof'  => $path,
+                'payment_status' => 'pending',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bukti pembayaran berhasil diupload. Mohon tunggu verifikasi admin.',
+            ]);
+        }
+
+        return response()->json(['message' => 'File tidak ditemukan.'], 400);
+    }
+
     public function updateManualStatus(Request $request): JsonResponse
     {
+        $secretToken = $request->header('X-Webhook-Secret');
+        $expectedSecret = config('services.make.webhook_secret');
+
+        if (!$secretToken || $secretToken !== $expectedSecret) {
+            Log::warning("Unauthorized Webhook Make.com attempt on Order ID: " . $request->order_id);
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Unauthorized Access: Invalid or missing webhook secret header.'
+            ], 401);
+        }
+
         $request->validate([
             'order_id' => 'required|string',
             'status'   => 'required|string',
@@ -197,23 +270,39 @@ class PaymentController extends Controller
             ], 404);
         }
 
-        // Mapping status dari Make.com (approved/rejected) ke enum database lu
+        // Mapping status dari Make.com (approved/rejected) ke status database
         $newStatus = match (strtolower($request->status)) {
-            'approved', 'paid' => 'paid',
-            'rejected', 'cancelled' => 'cancelled',
-            default => 'pending',
+            'approved', 'paid', 'settled' => 'paid',
+            'rejected', 'cancelled'      => 'cancelled',
+            default                      => 'pending',
         };
+
+        $bibNumber = $registration->bib_number;
+
+        if ($newStatus === 'paid' && empty($bibNumber)) {
+            $genderPrefix = ($registration->gender ?? 'L') === 'L' ? 'M' : 'F';
+            
+            $latestSequence = Registration::where('bib_number', 'LIKE', $genderPrefix . '10%')
+                ->lockForUpdate()
+                ->selectRaw("MAX(CAST(SUBSTRING(bib_number, 4) AS UNSIGNED)) as max_seq")
+                ->value('max_seq');
+
+            $nextSequence = str_pad(($latestSequence ? $latestSequence + 1 : 1), 3, '0', STR_PAD_LEFT);
+            $bibNumber = $genderPrefix . '10' . $nextSequence;
+        }
 
         $registration->update([
             'payment_status' => $newStatus,
+            'bib_number'     => $bibNumber,
             'paid_at'        => $newStatus === 'paid' ? now() : null,
         ]);
 
-        Log::info("Webhook Make.com: Status Order {$request->order_id} berhasil diubah jadi {$newStatus}");
+        Log::info("Webhook Make.com: Status Order {$request->order_id} berhasil diubah jadi {$newStatus} dengan BIB {$bibNumber}");
 
         return response()->json([
-            'status'  => 'success',
-            'message' => 'Status updated successfully'
+            'status'     => 'success',
+            'message'    => 'Status updated successfully',
+            'bib_number' => $bibNumber,
         ], 200);
     }
 }

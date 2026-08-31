@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Registration;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon; // 🚀 WAJIB TAMBAHIN INI BIAR CARBON BISA DIPAKAI
 
 class MakeService
 {
@@ -22,24 +21,23 @@ class MakeService
         }
 
         try {
-            // 🚀 LOGIKA NGITUNG UMUR OTOMATIS
-            // Kasih fallback angka 0 kalau misal user daftar nggak ngisi tanggal lahir
-            $umur = $registration->dob ? Carbon::parse($registration->dob)->age : 0;
-
             // Request HTTP POST dengan timeout 5 detik & non-blocking
-            // (withoutVerifying udah gua hapus karena SSL lu sekarang udah bener)
             $response = Http::timeout(5)->post($webhookUrl, [
                 'order_id'                   => $registration->order_id,
                 'full_name'                  => $registration->full_name,
+                
+                'bib_name'                   => $registration->bib_name,
+                'bib_number'                 => $registration->bib_number,
+
                 'identity_number'            => $registration->identity_number,
                 'gender'                     => $registration->gender == 'L' ? 'Laki-laki' : 'Perempuan',
                 'pob'                        => $registration->pob,
                 'dob'                        => $registration->dob?->format('Y-m-d'),
-                'age'                        => $umur, 
+                'age'                        => $registration->age ?? 0, 
                 'community'                  => $registration->community ?? '-',
                 'address'                    => $registration->address,
                 'whatsapp_number'            => $registration->whatsapp_number,
-                'instagram_username'         => $registration->instagram_username ?? '-',
+                'instagram_handle'           => $registration->instagram_handle ?? '-', 
                 'email'                      => $registration->email,
                 'category'                   => $registration->category,
                 'jersey_size'                => $registration->jersey_size,
@@ -59,7 +57,6 @@ class MakeService
             }
 
         } catch (\Exception $e) {
-            // Isolasi exception agar tidak mengganggu return HTTP 200 ke Midtrans
             Log::error("Automation Make.com Exception: " . $e->getMessage());
         }
     }

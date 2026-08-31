@@ -36,14 +36,15 @@ return [
     ],
 
     'make' => [
-        'webhook_url' => env('MAKE_WEBHOOK_URL'),
+        'webhook_url'    => env('MAKE_WEBHOOK_URL'),
+        'webhook_secret' => env('MAKE_WEBHOOK_SECRET'), // 🚀 Tambahkan ini
     ],
 
     'midtrans' => [
-        'enabled' => env('MIDTRANS_ENABLED', false),
-        'merchant_id' => env('MIDTRANS_MERCHANT_ID'),
-        'client_key' => env('MIDTRANS_CLIENT_KEY'),
-        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'enabled'       => env('MIDTRANS_ENABLED', false),
+        'merchant_id'   => env('MIDTRANS_MERCHANT_ID'),
+        'client_key'    => env('MIDTRANS_CLIENT_KEY'),
+        'server_key'    => env('MIDTRANS_SERVER_KEY'),
         'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
     ],
 
