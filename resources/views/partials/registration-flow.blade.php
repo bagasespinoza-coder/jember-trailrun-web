@@ -1,4 +1,3 @@
-
 <section id="register-flow" class="bg-[#000C28] px-4 py-8 lg:px-8">
     <div class="mx-auto max-w-[900px]">
         <div class="max-w-xl">
@@ -19,22 +18,25 @@
             ];
         @endphp
 
-<!-- DESKTOP: HORIZONTAL TIMELINE -->
+        <!-- DESKTOP: HORIZONTAL TIMELINE -->
         <div class="hidden lg:block mt-10 relative">
-            <!-- Garis Penghubung Horizontal -->
-            <div class="absolute top-4 left-8 right-8 h-[2px] bg-white/20 -z-0"></div>
-
             <div class="grid grid-cols-5 gap-4 relative z-10">
                 @foreach ($steps as $index => $step)
-                    <div class="flex flex-col items-start">
+                    <div class="relative flex flex-col items-center text-center">
+                        
+                        <!-- Garis Penghubung (Presisi Tengah Lingkaran) -->
+                        @if ($index < count($steps) - 1)
+                            <div class="absolute top-[15px] left-1/2 w-full h-[2px] bg-white/20 z-0"></div>
+                        @endif
+
                         <!-- Nomor Step / Icon -->
-                        <div class="flex h-8 w-8 items-center justify-center rounded-xl text-xs font-bold shadow-md {{ $index === 0 ? 'bg-[#FD4801] text-white shadow-[#FD4801]/30' : 'bg-blue-600 text-white shadow-blue-600/30' }}">
+                        <div class="relative z-10 flex h-8 w-8 items-center justify-center rounded-xl text-xs font-bold shadow-md {{ $index === 0 ? 'bg-[#FD4801] text-white shadow-[#FD4801]/30' : 'bg-blue-600 text-white shadow-blue-600/30' }}">
                             {{ $step[0] }}
                         </div>
                         
                         <!-- Teks Konten -->
                         <h3 class="mt-3 text-xs font-bold text-white">{{ $step[1] }}</h3>
-                        <p class="mt-1 text-[11px] leading-4 text-white/70">{{ $step[2] }}</p>
+                        <p class="mt-1 text-[11px] leading-4 text-white/70 px-1">{{ $step[2] }}</p>
                     </div>
                 @endforeach
             </div>
@@ -42,12 +44,15 @@
 
         <!-- MOBILE: VERTICAL TIMELINE -->
         <div class="lg:hidden mt-6 relative pl-2 space-y-6">
-            <!-- Garis Penghubung Vertikal -->
-            <div class="absolute top-2 bottom-2 left-[19px] w-[2px] bg-white/20"></div>
-
             @foreach ($steps as $index => $step)
                 <div class="relative flex items-start space-x-4">
-                    <!-- Nomor Step / Icon (Absolute Positioning untuk menimpa garis) -->
+                    
+                    <!-- Garis Penghubung Vertikal (Hanya dirender untuk Step 1-4) -->
+                    @if ($index < count($steps) - 1)
+                        <div class="absolute top-3 left-[13px] w-[2px] h-[calc(100%+1.5rem)] bg-white/20 z-0"></div>
+                    @endif
+
+                    <!-- Nomor Step / Icon -->
                     <div class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold shadow-md {{ $index === 0 ? 'bg-[#FD4801] text-white shadow-[#FD4801]/30' : 'bg-blue-600 text-white shadow-blue-600/30' }}">
                         {{ $step[0] }}
                     </div>
@@ -74,13 +79,13 @@
                     <p class="mt-1 text-[11px] text-white/60">Payment processing fee may apply.</p>
                 </div>
                 
-            <!-- cta buttons -->
-    <div class="order-2 mt-8 lg:order-none lg:mt-10">
-        <a href="/register" aria-label="Register Now" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-[#FD4801] px-5 py-3 lg:py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105 shadow-lg shadow-[#FD4801]/30 w-full lg:w-auto">
-            Register Now
-        </a>
+                <!-- CTA Button -->
+                <div class="order-2 sm:order-none">
+                    <a href="/register" aria-label="Register Now" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-[#FD4801] px-5 py-3 lg:py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition duration-300 hover:scale-105 shadow-lg shadow-[#FD4801]/30 w-full sm:w-auto">
+                        Register Now
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-
-    </div>
-        
 </section>

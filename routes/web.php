@@ -9,11 +9,8 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get('/register', function () {
-    return view('registration.register');
-})->name('register');
+Route::get('/register', [RegistrationController::class, 'index'])->name('register');
 
-// 🚀 KEAMANAN POIN 3: Pasang Rate Limiter (Max 5x submit per 1 menit per IP)
 Route::post('/register', [RegistrationController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('register.store');
@@ -21,6 +18,10 @@ Route::post('/register', [RegistrationController::class, 'store'])
 // 2. Payment Views & Verification (Read-Only)
 Route::get('/payment/{orderId}', [PaymentController::class, 'showPayment'])->name('payment.page');
 Route::get('/payment/manual/{orderId}', [PaymentController::class, 'showManualPayment'])->name('payment.manual');
+
+// Route Batal & Edit Data Pendaftaran (Melepas Lock & Redirect ke Register)
+Route::post('/payment/cancel-edit/{orderId}', [PaymentController::class, 'cancelAndEdit'])
+    ->name('payment.cancel-edit');
 
 // Cek status dipasangi limit 30x/menit biar aman dari brute force enumerasi Order ID
 Route::get('/payment/verify/{orderId}', [RegistrationController::class, 'checkStatus'])

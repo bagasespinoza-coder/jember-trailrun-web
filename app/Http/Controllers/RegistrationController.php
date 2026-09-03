@@ -20,6 +20,25 @@ class RegistrationController extends Controller
         $this->midtransService = $midtransService;
     }
 
+    public function index()
+    {
+        if (session()->has('pending_order_id')) {
+            $pendingOrderId = session('pending_order_id');
+            $registration = Registration::where('order_id', $pendingOrderId)
+                ->where('payment_status', 'pending')
+                ->first();
+
+            if ($registration) {
+                return redirect('/payment/' . $pendingOrderId)
+                    ->with('warning', 'Selesaikan pembayaran kamu terlebih dahulu.');
+            } else {
+                session()->forget('pending_order_id');
+            }
+        }
+
+        return view('registration.register');
+    }
+
     public function store(StoreRegistrationRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -28,83 +47,51 @@ class RegistrationController extends Controller
         if (!empty($validated['dob'])) {
             $age = Carbon::parse($validated['dob'])->age;
         }
-        
-        // 0. CEK KUOTA MAKSIMAL 300 PESERTA
-        $totalRegistered = Registration::whereIn('payment_status', ['pending', 'paid', 'approved', 'settled', 'success'])->count();
 
-        if ($totalRegistered >= 300) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal',
-                'errors'  => [
-                    'general' => ['Mohon maaf, kuota pendaftaran Jember Trail Run 2026 sudah penuh (Maksimal 300 peserta).']
-                ]
-            ], 422);
-        }
-
-        // 1. CEK NIK SAJA (Email Bebas)
-        $blockedNik = Registration::where('identity_number', $validated['identity_number'])
-            ->whereIn('payment_status', ['pending', 'paid', 'approved', 'settled', 'success'])
-            ->latest()
-            ->first();
-
-        if ($blockedNik) {
-            $status = strtolower($blockedNik->payment_status);
-
-            if ($status === 'pending') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validasi gagal',
-                    'errors'  => [
-                        'identity_number' => ['NIK ini masih memiliki transaksi yang PENDING. Silakan selesaikan pembayaran sebelumnya.']
-                    ]
-                ], 422);
-            }
-
-            if (in_array($status, ['paid', 'approved', 'settled', 'success'])) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validasi gagal',
-                    'errors'  => [
-                        'identity_number' => ['NIK ini sudah terdaftar dan pembayarannya telah terverifikasi.']
-                    ]
-                ], 422);
-            }
-        }
-
-        // ==========================================
-        // PROSES REGISTRASI BARU (RACE-CONDITION PROOF)
-        // ==========================================
         $ticketPrice = 192500;
         $orderId = 'JTR-' . strtoupper(Str::random(12));
 
         try {
-            $registration = DB::transaction(function () use ($validated, $orderId, $ticketPrice, $age) {
+            // 1. Generate Snap Token Midtrans DILUAR DB Transaction
+            $snapToken = $this->midtransService->createSnapToken([
+                'order_id'   => $orderId,
+                'amount'     => $ticketPrice,
+                'user_name'  => $validated['full_name'],
+                'user_email' => $validated['email'],
+                'user_phone' => $validated['whatsapp_number'],
+            ]);
+
+            // 2. Transaksi DB: Cek NIK + Cek Kuota + Simpan Registrasi
+            $registration = DB::transaction(function () use ($validated, $orderId, $ticketPrice, $age, $snapToken) {
                 
-                // 2. GENERATE NOMOR BIB AUTOMATIC DENGAN PESSIMISTIC LOCKING
-                $genderPrefix = ($validated['gender'] ?? 'L') === 'L' ? 'M' : 'F';
-                
-                $latestSequence = Registration::where('bib_number', 'LIKE', $genderPrefix . '10%')
+                // CEK NIK DENGAN LOCK
+                $blockedNik = Registration::where('identity_number', $validated['identity_number'])
+                    ->whereIn('payment_status', ['pending', 'paid', 'approved', 'settled', 'success'])
                     ->lockForUpdate()
-                    ->selectRaw("MAX(CAST(SUBSTRING(bib_number, 4) AS UNSIGNED)) as max_seq")
-                    ->value('max_seq');
+                    ->latest()
+                    ->first();
 
-                $nextSequence = str_pad(($latestSequence ? $latestSequence + 1 : 1), 3, '0', STR_PAD_LEFT);
-                $bibNumber = $genderPrefix . '10' . $nextSequence;
+                if ($blockedNik) {
+                    $status = strtolower($blockedNik->payment_status);
+                    if ($status === 'pending') {
+                        throw new \Exception('NIK_PENDING');
+                    }
+                    if (in_array($status, ['paid', 'approved', 'settled', 'success'])) {
+                        throw new \Exception('NIK_PAID');
+                    }
+                }
 
-                // 3. SET NAMA BIB
+                // CEK KUOTA DENGAN LOCK
+                $totalRegistered = Registration::whereIn('payment_status', ['pending', 'paid', 'approved', 'settled', 'success'])
+                    ->lockForUpdate()
+                    ->count();
+
+                if ($totalRegistered >= 300) {
+                    throw new \Exception('QUOTA_FULL');
+                }
+
                 $bibName = !empty($validated['bib_name']) ? $validated['bib_name'] : $validated['full_name'];
 
-                // 4. GENERATE SNAP TOKEN MIDTRANS
-                $snapToken = $this->midtransService->createSnapToken([
-                    'order_id'   => $orderId,
-                    'amount'     => $ticketPrice,
-                    'user_name'  => $validated['full_name'],
-                    'user_email' => $validated['email'],
-                    'user_phone' => $validated['whatsapp_number'],
-                ]);
-
-                // 5. SIMPAN KE DATABASE
                 $registrationData = array_merge($validated, [
                     'bib_name'       => $bibName,
                     'bib_number'     => null,
@@ -118,6 +105,8 @@ class RegistrationController extends Controller
                 return Registration::create($registrationData);
             });
 
+            session(['pending_order_id' => $orderId]);
+
             return response()->json([
                 'success'      => true,
                 'status'       => 'success',
@@ -126,6 +115,36 @@ class RegistrationController extends Controller
             ], 201);
 
         } catch (\Exception $e) {
+            if ($e->getMessage() === 'NIK_PENDING') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors'  => [
+                        'identity_number' => ['NIK ini masih memiliki transaksi yang PENDING. Silakan selesaikan pembayaran sebelumnya.']
+                    ]
+                ], 422);
+            }
+
+            if ($e->getMessage() === 'NIK_PAID') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors'  => [
+                        'identity_number' => ['NIK ini sudah terdaftar dan pembayarannya telah terverifikasi.']
+                    ]
+                ], 422);
+            }
+
+            if ($e->getMessage() === 'QUOTA_FULL') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors'  => [
+                        'general' => ['Mohon maaf, kuota pendaftaran Jember Trail Run 2026 sudah penuh (Maksimal 300 peserta).']
+                    ]
+                ], 422);
+            }
+
             Log::error("Registration Exception: " . $e->getMessage());
 
             return response()->json([
@@ -146,12 +165,16 @@ class RegistrationController extends Controller
             ], 404);
         }
 
+        if (in_array(strtolower($registration->payment_status), ['paid', 'approved', 'settled', 'success'])) {
+            session()->forget('pending_order_id');
+        }
+
         return response()->json([
             'success'        => true,
             'order_id'       => $registration->order_id,
             'payment_status' => $registration->payment_status,
             'bib_number'     => in_array($registration->payment_status, ['paid', 'approved', 'settled']) ? $registration->bib_number : null,
-            'redirect_url'   => in_array($registration->payment_status, ['paid', 'approved', 'settled']) ? url('/') : null,
+            'redirect_url' => in_array($registration->payment_status, ['paid', 'approved', 'settled']) ? route('dashboard') : null,
         ]);
     }
 }

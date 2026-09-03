@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Script Midtrans Snap (Hanya di-load jika Midtrans Aktif) -->
+    <!-- Script Midtrans Snap -->
     @if($midtransEnabled)
         <script type="text/javascript"
             src="{{ config('services.midtrans.is_production') ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}"
@@ -9,161 +9,189 @@
     @endif
 
     <!-- Main Content -->
-    <main class="py-6 bg-[#E2E2E2] min-h-screen text-[#000C28]">
-        <!-- Inisialisasi State Alpine.js dengan Feature Toggle $midtransEnabled -->
+    <main class="py-6 sm:py-10 bg-[#E2E2E2] min-h-screen text-[#000C28]">
         <div x-data="{ 
             midtransEnabled: {{ json_encode($midtransEnabled) }},
             activeTab: '{{ $midtransEnabled ? 'midtrans' : 'manual' }}' 
-        }" class="mx-auto max-w-5xl px-4 sm:px-6">
+        }" class="mx-auto max-w-3xl px-4 sm:px-6">
 
-            <!-- Stepper Section -->
-            <section class="mb-6">
-                <div class="flex items-center justify-center max-w-xs mx-auto">
-                    <div class="flex flex-col items-center shrink-0">
-                        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-white border border-gray-300 text-gray-500 font-bold text-xs">✓</div>
-                        <span class="text-[9px] font-semibold uppercase tracking-wider text-gray-500 mt-1">Registration</span>
+            <!-- ================= HEADER HERO CARD ================= -->
+            <header class="relative overflow-hidden rounded-3xl p-5 sm:p-6 text-white shadow-2xl mb-6" 
+                    style="background: radial-gradient(ellipse at top right, #FD3801 0%, #011B63 40%, #000F3B 100%);">
+                
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-[#FD3801]/30 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="relative z-10 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <a href="{{ url('/') }}" 
+                            title="Kembali ke Beranda"
+                            class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/15 transition duration-200 hover:scale-105 shadow-2xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h7.5" />
+                            </svg>
+                        </a>
+
+                        <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-sm">
+                            <span class="font-sporty font-black italic tracking-wider text-xs uppercase text-white">
+                                JEMBER TRAIL <span class="text-[#FD3801]">RUN</span> <span class="text-gray-300">2026</span>
+                            </span>
+                        </div>
                     </div>
-                    <div class="flex-1 flex items-center justify-center px-1.5 mb-4">
-                        <div class="h-0.5 w-full bg-[#FD4801]"></div>
+
+                    <div class="text-center px-2 pt-1">
+                        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white mb-2">
+                            Pembayaran Tiket
+                        </h1>
+                        <p class="text-xs sm:text-sm text-gray-200 max-w-sm mx-auto font-normal leading-relaxed opacity-85">
+                            Selesaikan pembayaran Anda untuk mengamankan tiket Jember Trail Run 2026.
+                        </p>
                     </div>
-                    <div class="flex flex-col items-center shrink-0">
-                        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-[#FD4801] text-white font-bold text-xs">2</div>
-                        <span class="text-[9px] font-semibold uppercase tracking-wider text-[#FD4801] mt-1">Payment</span>
+
+                    <!-- Stepper Progress Widget -->
+                    <div class="bg-black/30 backdrop-blur-md rounded-2xl py-2 px-3.5 max-w-xs mx-auto shadow-xl border border-white/15">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2 opacity-80">
+                                <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-500/30">
+                                    ✓
+                                </div>
+                                <span class="text-xs font-semibold text-gray-200">Data Diri</span>
+                            </div>
+
+                            <div class="flex-1 mx-2.5 h-1 bg-gradient-to-r from-emerald-500 to-[#FD3801] rounded-full"></div>
+
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-[#FD3801] text-white font-black text-xs shadow-md shadow-[#FD3801]/40">
+                                    2
+                                </div>
+                                <span class="text-xs font-extrabold text-white">Pembayaran</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
+            </header>
 
-            <!-- Main Layout Grid -->
+            <!-- Grid Content -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-                <!-- KIRI: Summary Card Dinamis -->
-                <div class="lg:col-span-4 flex flex-col gap-4">
-                    <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 flex flex-col justify-between">
+                <!-- Ringkasan Pendaftaran -->
+                <div class="lg:col-span-5 flex flex-col gap-4">
+                    <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-5 border border-gray-100 flex flex-col justify-between">
                         <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Registration Summary</h2>
+                            <h2 class="text-xs font-extrabold uppercase tracking-wider text-[#01217C] mb-3">Ringkasan Pendaftaran</h2>
 
-                            <!-- Profile Box -->
-                            <div class="flex items-center gap-2.5 bg-[#F5F7FA] rounded-lg p-2.5 mb-3.5">
-                                <div class="w-8 h-8 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center text-gray-600 overflow-hidden shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.654 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div class="flex items-center gap-2.5 bg-gray-50/80 rounded-xl p-3 mb-4 border border-gray-100">
+                                <div class="w-9 h-9 rounded-full bg-[#FD3801]/10 border border-[#FD3801]/20 flex items-center justify-center text-[#FD3801] shrink-0 font-bold">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                 </div>
                                 <div class="overflow-hidden">
-                                    <h3 class="font-bold text-xs text-[#000C28] truncate">{{ $registration->full_name ?? 'Nama Peserta' }}</h3>
+                                    <h3 class="font-bold text-xs text-[#01217C] truncate">{{ $registration->full_name ?? 'Nama Peserta' }}</h3>
                                     <p class="text-[10px] text-gray-500 truncate">{{ $registration->email ?? 'email@domain.com' }}</p>
                                 </div>
                             </div>
 
-                            <!-- Details List dengan Respon Dinamis Alpine -->
-                            <div class="space-y-2 text-xs border-b border-gray-100 pb-3 mb-3">
+                            <div class="space-y-2.5 text-xs border-b border-gray-100 pb-3.5 mb-3.5">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-gray-500 text-[11px]">Category</span>
-                                    <span class="font-bold text-xs text-[#000C28]">{{ $registration->category ?? '10K Trail Run' }}</span>
+                                    <span class="text-gray-500 text-[11px]">Kategori</span>
+                                    <span class="font-bold text-xs text-[#01217C]">{{ $registration->category ?? '10K Trail Run' }}</span>
                                 </div>
-                                <div class="flex justify-between items-center pt-1">
-                                    <span class="text-gray-500 text-[11px]">Ticket Price</span>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500 text-[11px]">Harga Tiket</span>
                                     <span class="font-medium text-xs text-[#000C28]">Rp190.000</span>
                                 </div>
-                                <div class="flex justify-between items-center pt-1">
-                                    <span class="text-gray-500 text-[11px]">Admin Fee</span>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500 text-[11px]">Biaya Admin</span>
                                     <span class="font-medium text-xs text-[#000C28]" x-text="activeTab === 'midtrans' ? 'Rp2.500' : 'Rp0 (Gratis)'"></span>
                                 </div>
-                                <div class="flex justify-between items-center pt-1.5 border-t border-dashed border-gray-200">
-                                    <span class="text-gray-500 text-[11px]">Total Amount</span>
-                                    <span class="font-bold text-xs text-[#FD4801]" x-text="activeTab === 'midtrans' ? 'Rp192.500' : 'Rp190.000'"></span>
+                                <div class="flex justify-between items-center pt-2 border-t border-dashed border-gray-200">
+                                    <span class="text-[#01217C] font-bold text-[11px]">Total Tagihan</span>
+                                    <span class="font-extrabold text-sm text-[#FD3801]" x-text="activeTab === 'midtrans' ? 'Rp192.500' : 'Rp190.000'"></span>
                                 </div>
                             </div>
 
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-500 uppercase tracking-wider text-[10px] font-semibold">Status</span>
-                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-orange-50 text-[#FD4801] border border-orange-100">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-[#FD4801] animate-pulse"></span>
+                                <span class="text-gray-500 uppercase tracking-wider text-[10px] font-bold">Status Tagihan</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-orange-50 text-[#FD3801] border border-orange-100">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#FD3801] animate-pulse"></span>
                                     {{ strtoupper($registration->payment_status ?? 'PENDING') }}
                                 </span>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- 3 Info Badges -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="bg-gray-50/80 rounded-xl p-2.5 border border-gray-100/80 flex flex-col items-center justify-center text-center">
+                            <span class="text-[9px] font-extrabold uppercase tracking-wider text-gray-400 mb-0.5">Batas Waktu</span>
+                            <span class="font-extrabold text-xs text-[#01217C]" x-text="activeTab === 'midtrans' ? '15 Menit' : '1x24 Jam'"></span>
+                        </div>
 
-                <!-- 2. Info Cards (Mobile: 3 Horizontal, Desktop: Vertikal ke Bawah) -->
-                    <div class="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-t-[3px] border-t-[#FD4801] p-2.5 flex flex-col justify-center items-center lg:flex-row lg:justify-between text-center lg:text-left">
-                            <div class="w-full">
-                                <h3 class="font-black text-[8px] sm:text-[9px] text-[#FD4801] uppercase tracking-wider mb-0.5">Validity</h3>
-                                <p class="font-bold text-[10px] sm:text-xs text-[#000C28] leading-none" x-text="activeTab === 'midtrans' ? '15 Mins' : '1x24 Jam'"></p>
-                            </div>
+                        <div class="bg-gray-50/80 rounded-xl p-2.5 border border-gray-100/80 flex flex-col items-center justify-center text-center">
+                            <span class="text-[9px] font-extrabold uppercase tracking-wider text-gray-400 mb-0.5">Metode</span>
+                            <span class="font-extrabold text-xs text-[#01217C]" x-text="activeTab === 'midtrans' ? 'QRIS' : 'Manual'"></span>
                         </div>
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-t-[3px] border-t-[#FD4801] p-2.5 flex flex-col justify-center items-center lg:flex-row lg:justify-between text-center lg:text-left">
-                            <div class="w-full">
-                                <h3 class="font-black text-[8px] sm:text-[9px] text-[#FD4801] uppercase tracking-wider mb-0.5">Method</h3>
-                                <p class="font-bold text-[10px] sm:text-xs text-[#000C28] leading-none" x-text="activeTab === 'midtrans' ? 'QRIS / Instant' : 'Manual Transfer'"></p>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-t-[3px] border-t-[#FD4801] p-2.5 flex flex-col justify-center items-center lg:flex-row lg:justify-between text-center lg:text-left">
-                            <div class="w-full">
-                                <h3 class="font-black text-[8px] sm:text-[9px] text-[#FD4801] uppercase tracking-wider mb-0.5">Ticket</h3>
-                                <p class="font-bold text-[10px] sm:text-xs text-[#000C28] leading-none" x-text="activeTab === 'midtrans' ? 'Instant Email' : 'After Verification'"></p>
-                            </div>
+
+                        <div class="bg-gray-50/80 rounded-xl p-2.5 border border-gray-100/80 flex flex-col items-center justify-center text-center">
+                            <span class="text-[9px] font-extrabold uppercase tracking-wider text-gray-400 mb-0.5">E-Ticket</span>
+                            <span class="font-extrabold text-xs text-[#01217C]" x-text="activeTab === 'midtrans' ? 'Otomatis' : 'Verifikasi'"></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- KANAN: Payment Tab Container -->
-                <div class="lg:col-span-8 w-full">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <!-- Payment Form Tab -->
+                <div class="lg:col-span-7 w-full">
+                    <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
         
-                        <!-- Tab Navigation Header dengan Feature Toggle -->
-                        <div class="flex border-b border-gray-200 bg-gray-50">
-                            <!-- Tab Midtrans (QRIS) -->
+                        <!-- Tab Header -->
+                        <div class="flex border-b border-gray-100 bg-gray-50/60 p-1.5 gap-1.5">
                             <button 
                                 @click="if(midtransEnabled) activeTab = 'midtrans'" 
                                 :disabled="!midtransEnabled"
                                 :class="{
-                                    'border-b-2 border-[#FD4801] text-[#FD4801] font-bold bg-white': activeTab === 'midtrans',
+                                    'bg-white text-[#FD3801] font-extrabold shadow-sm rounded-xl': activeTab === 'midtrans',
                                     'text-gray-400 opacity-60 cursor-not-allowed': !midtransEnabled,
-                                    'text-gray-500 hover:text-gray-700': midtransEnabled && activeTab !== 'midtrans'
+                                    'text-gray-500 hover:text-[#01217C] font-semibold': midtransEnabled && activeTab !== 'midtrans'
                                 }"
-                                class="flex-1 py-3 px-3 text-center text-xs sm:text-sm font-semibold transition-colors outline-none flex flex-col sm:flex-row items-center justify-center gap-1.5">
+                                class="flex-1 py-2.5 px-3 text-center text-xs transition-all outline-none flex flex-col items-center justify-center gap-0.5 rounded-xl">
                                 <span>Bayar Otomatis (QRIS)</span>
-                                
                                 <template x-if="midtransEnabled">
-                                    <span class="text-[9px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-bold">Tiket Instant</span>
+                                    <span class="text-[9px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md font-bold">Instan</span>
                                 </template>
                                 <template x-if="!midtransEnabled">
-                                    <span class="text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-bold">Segera Hadir</span>
+                                    <span class="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md font-bold">Maintenance</span>
                                 </template>
                             </button>
 
-                            <!-- Tab Manual -->
                             <button 
                                 @click="activeTab = 'manual'" 
-                                :class="activeTab === 'manual' ? 'border-b-2 border-[#FD4801] text-[#FD4801] font-bold bg-white' : 'text-gray-500 hover:text-gray-700'"
-                                class="flex-1 py-3 px-3 text-center text-xs sm:text-sm font-semibold transition-colors outline-none flex flex-col sm:flex-row items-center justify-center gap-1.5">
-                                <span>Transfer Manual</span>
-                                <span class="text-[9px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded font-bold">Proses 1x24 Jam</span>
+                                :class="activeTab === 'manual' ? 'bg-white text-[#FD3801] font-extrabold shadow-sm rounded-xl' : 'text-gray-500 hover:text-[#01217C] font-semibold'"
+                                class="flex-1 py-2.5 px-3 text-center text-xs transition-all outline-none flex flex-col items-center justify-center gap-0.5 rounded-xl">
+                                <span>Transfer Bank Manual</span>
+                                <span class="text-[9px] bg-gray-200/70 text-gray-700 px-2 py-0.5 rounded-md font-bold">Verifikasi 1x24 Jam</span>
                             </button>
                         </div>
 
-                        <!-- Alert Informasi jika Midtrans Belum Aktif -->
+                        <!-- Alert Midtrans -->
                         <template x-if="!midtransEnabled">
-                            <div class="p-3 bg-amber-50 border-b border-amber-200 text-amber-800 text-xs flex items-center gap-2">
-                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                                <span>Metode Pembayaran Otomatis (QRIS) sedang dalam pemeliharaan sistem. Silakan lakukan pembayaran via <b>Transfer Bank Manual</b> di bawah ini.</span>
+                            <div class="p-3.5 bg-amber-50/80 border-b border-amber-200/60 text-amber-900 text-xs flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                <span>Metode QRIS otomatis sedang pemeliharaan. Silakan gunakan **Transfer Bank Manual**.</span>
                             </div>
                         </template>
 
-                        <!-- Tab Content Body -->
-                        <div class="p-4 sm:p-6">
+                        <!-- Tab Body -->
+                        <div class="p-5 sm:p-6">
                             
                             <!-- TAB 1: MIDTRANS -->
                             <div x-show="activeTab === 'midtrans'" x-transition>
                                 <div class="mb-4">
-                                    <h3 class="text-sm sm:text-base font-bold text-[#000C28]">Pembayaran Otomatis QRIS</h3>
-                                    <p class="text-xs text-gray-500">Scan QRIS menggunakan Mobile Banking / E-Wallet. Tiket otomatis terbit setelah bayar.</p>
+                                    <h3 class="text-sm font-extrabold text-[#01217C]">Pembayaran QRIS Otomatis</h3>
+                                    <p class="text-xs text-gray-500">Scan via Mobile Banking / E-Wallet favorit Anda.</p>
                                 </div>
                                 
-                                <div class="relative w-full min-h-[520px] rounded-xl bg-gray-50 border border-gray-200 overflow-hidden flex items-center justify-center">
-                                    <div id="snap-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-50 z-10 transition-opacity duration-300">
-                                        <div class="w-7 h-7 border-3 border-[#FD4801] border-t-transparent rounded-full animate-spin mb-2"></div>
-                                        <span class="text-xs font-semibold text-gray-500">Memuat QRIS Midtrans...</span>
+                                <div class="relative w-full min-h-[460px] rounded-xl bg-gray-50/60 border border-gray-200 overflow-hidden flex items-center justify-center">
+                                    <div id="snap-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-50/90 z-10 transition-opacity">
+                                        <div class="w-8 h-8 border-3 border-[#FD3801] border-t-transparent rounded-full animate-spin mb-2"></div>
+                                        <span class="text-xs font-bold text-[#01217C]">Memuat QRIS Midtrans...</span>
                                     </div>
                                     <div id="snap-container" class="w-full h-full flex justify-center items-center"></div>
                                 </div>
@@ -171,37 +199,42 @@
 
                             <!-- TAB 2: MANUAL -->
                             <div x-show="activeTab === 'manual'" x-transition x-cloak>
-                                <h3 class="text-sm sm:text-base font-bold text-[#000C28] mb-1">Transfer Bank Manual</h3>
-                                <p class="text-xs text-gray-500 mb-4">Transfer pas <b>Rp190.000</b> (bebas biaya admin) ke rekening panitia di bawah ini.</p>
+                                <h3 class="text-sm font-extrabold text-[#01217C] mb-1">Transfer Bank Manual</h3>
+                                <p class="text-xs text-gray-500 mb-4">Transfer tepat <b>Rp190.000</b> ke rekening resmi panitia.</p>
                                 
-                                <div class="bg-[#F5F7FA] p-3.5 rounded-lg border border-gray-200 mb-4 text-xs space-y-2">
+                                <div class="bg-gray-50/80 p-4 rounded-xl border border-gray-200/80 mb-5 text-xs space-y-2">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-500">Total Transfer:</span>
-                                        <span class="font-bold text-sm text-[#FD4801]">Rp190.000</span>
+                                        <span class="text-gray-500 font-medium">Total Transfer:</span>
+                                        <span class="font-extrabold text-sm text-[#FD3801]">Rp190.000</span>
                                     </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Bank Tujuan:</span>
-                                        <span class="font-bold text-[#000C28]">BCA</span>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-500 font-medium">Bank Tujuan:</span>
+                                        <span class="font-bold text-[#01217C]">BANK MANDIRI</span>
                                     </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">No. Rekening:</span>
-                                        <span class="font-mono font-bold text-[#FD4801] select-all">1234567890</span>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-500 font-medium">Nomor Rekening:</span>
+                                        <span class="font-mono font-bold text-[#FD3801] bg-white px-2 py-0.5 rounded border border-gray-200 select-all">1710018413784</span>
                                     </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Atas Nama:</span>
-                                        <span class="font-bold text-[#000C28]">Panitia Jember 10K</span>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-500 font-medium">Atas Nama:</span>
+                                        <span class="font-bold text-[#01217C]">SITI UMMI NUR FADHILA</span>
                                     </div>
                                 </div>
 
                                 <form id="manual-payment-form" action="{{ url('/payment/manual/'.$registration->order_id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                                     @csrf
                                     <div>
-                                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Upload Bukti Transfer (JPG/PNG, Max 2MB)</label>
+                                        <label for="payment_proof_input" class="block text-xs font-bold text-[#01217C] mb-1.5">
+                                            Upload Bukti Transfer <span class="text-[#FD3801]">*</span>
+                                        </label>
                                         <input type="file" name="payment_proof" id="payment_proof_input" required accept="image/jpeg, image/png" 
-                                            class="w-full border border-gray-300 rounded-lg p-2 text-xs text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-[#FD4801] hover:file:bg-orange-100">
-                                        <span id="manual-error-msg" class="text-red-500 text-[10px] mt-1 hidden block"></span>
+                                            class="w-full rounded-xl border border-gray-200 bg-gray-50/60 p-2 text-xs text-gray-700 file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#FD3801]/10 file:text-[#FD3801] hover:file:bg-[#FD3801]/20 transition cursor-pointer">
+                                        <p class="text-[10px] text-gray-400 mt-1.5">*Format: JPG/PNG, Maksimal: 2MB.</p>
+                                        <span id="manual-error-msg" class="text-red-500 text-[10px] font-medium mt-1 hidden block"></span>
                                     </div>
-                                    <button type="submit" id="btn-submit-manual" class="w-full bg-[#FD4801] text-white font-bold py-2.5 px-4 rounded-lg hover:bg-[#e03f00] transition shadow-sm text-xs flex items-center justify-center gap-2">
+
+                                    <button type="submit" id="btn-submit-manual" 
+                                        class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-[#01217C] via-[#01217C] to-[#FD3801] text-white font-extrabold text-xs tracking-wide shadow-md hover:shadow-lg hover:scale-[1.005] active:scale-[0.995] transition duration-200 flex items-center justify-center gap-2">
                                         <span>Kirim Bukti Transfer</span>
                                     </button>
                                 </form>
@@ -216,25 +249,91 @@
     </main>
 
     <style> [x-cloak] { display: none !important; } </style>
-
-    @include('partials.footer')
 @endsection
 
 @push('scripts')
 <script>
-    let isLocked = true;
+    // Modal Konfirmasi Edit Data Registration
+    function showEditConfirmationModal() {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(0,12,40,0.85); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(5px); font-family:sans-serif; padding:1rem; text-align:center;';
 
-    // Protection handler saat menutup/mengisi ulang halaman
-    window.addEventListener('beforeunload', function (e) {
-        if (isLocked) {
-            e.preventDefault();
-            e.returnValue = 'Transaksi belum selesai. Yakin ingin meninggalkan halaman?';
-        }
-    });
+        const box = document.createElement('div');
+        box.style.cssText = 'background:#ffffff; padding:1.75rem; border-radius:1.5rem; max-width:340px; width:100%; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);';
 
-    // 1. MODAL OTOMATIS (MIDTRANS)
+        const iconHtml = `
+            <div style="margin: 0 auto 1rem; width: 56px; height: 56px; background: #FEF2F2; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <svg style="width: 28px; height: 28px; color: #DC2626;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+            </div>`;
+
+        box.innerHTML = `
+            ${iconHtml}
+            <h3 style="font-size:1.15rem; font-weight:800; color:#000C28; margin-bottom:0.5rem; letter-spacing:-0.025em;">Edit Data Registration?</h3>
+            <p style="font-size:0.75rem; color:#4B5563; margin-bottom:1.5rem; line-height:1.5;">
+                Pendaftaran saat ini akan dibatalkan agar Anda dapat memperbaiki data diri. Draft data sebelumnya akan otomatis terisi kembali di form.
+            </p>
+            <div style="display:flex; gap:0.5rem;">
+                <button id="btn-edit-cancel" style="flex:1; padding:0.75rem; border-radius:0.75rem; background:#F3F4F6; color:#4B5563; font-weight:700; font-size:0.75rem; border:none; cursor:pointer;">Batal</button>
+                <button id="btn-edit-confirm" style="flex:1; padding:0.75rem; border-radius:0.75rem; background:#DC2626; color:#ffffff; font-weight:800; font-size:0.75rem; border:none; cursor:pointer; box-shadow:0 4px 6px -1px rgba(220,38,38,0.3);">Ya, Edit Data</button>
+            </div>
+        `;
+
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        document.getElementById('btn-edit-cancel').onclick = function() {
+            overlay.remove();
+        };
+
+        document.getElementById('btn-edit-confirm').onclick = function() {
+            overlay.remove();
+            document.getElementById('cancel-edit-form').submit();
+        };
+    }
+    // 1. Modal Konfirmasi Sebelum Upload Bukti
+    function showConfirmationModal(onConfirm) {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(0,12,40,0.85); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(5px); font-family:sans-serif; padding:1rem; text-align:center;';
+
+        const box = document.createElement('div');
+        box.style.cssText = 'background:#ffffff; padding:1.75rem; border-radius:1.5rem; max-width:340px; width:100%; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);';
+
+        const iconHtml = `
+            <div style="margin: 0 auto 1rem; width: 56px; height: 56px; background: #EEF2FF; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <svg style="width: 28px; height: 28px; color: #01217C;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M12 18h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>`;
+
+        box.innerHTML = `
+            ${iconHtml}
+            <h3 style="font-size:1.15rem; font-weight:800; color:#000C28; margin-bottom:0.5rem; letter-spacing:-0.025em;">Konfirmasi Pengiriman</h3>
+            <p style="font-size:0.75rem; color:#4B5563; margin-bottom:1.5rem; line-height:1.5;">
+                Apakah data pendaftaran dan bukti transfer yang Anda unggah sudah benar?
+            </p>
+            <div style="display:flex; gap:0.5rem;">
+                <button id="btn-modal-cancel" style="flex:1; padding:0.75rem; border-radius:0.75rem; background:#F3F4F6; color:#4B5563; font-weight:700; font-size:0.75rem; border:none; cursor:pointer;">Cek Lagi</button>
+                <button id="btn-modal-confirm" style="flex:1; padding:0.75rem; border-radius:0.75rem; background:linear-gradient(to right, #01217C, #FD3801); color:#ffffff; font-weight:800; font-size:0.75rem; border:none; cursor:pointer; box-shadow:0 4px 6px -1px rgba(253,56,1,0.3);">Ya, Kirim</button>
+            </div>
+        `;
+
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        document.getElementById('btn-modal-cancel').onclick = function() {
+            overlay.remove();
+        };
+
+        document.getElementById('btn-modal-confirm').onclick = function() {
+            overlay.remove();
+            if (typeof onConfirm === 'function') onConfirm();
+        };
+    }
+
+    // 2. Modal Status Midtrans Dynamic
     function showDynamicModal(type) {
-        isLocked = false;
         localStorage.removeItem('jtr_register_draft');
         
         const isSuccess = type === 'success';
@@ -290,9 +389,8 @@
         }, 1000);
     }
 
-    // 2. MODAL KONFIRMASI TRANSFER MANUAL (Khusus Verifikasi 1x24 jam)
+    // 3. Modal Sukses Transfer Manual
     function showManualSuccessModal() {
-        isLocked = false;
         localStorage.removeItem('jtr_register_draft');
 
         const overlay = document.createElement('div');
@@ -338,16 +436,60 @@
         }, 1000);
     }
 
-    // 3. EVENT HANDLER & SUBMIT AJAX
+    // Eksekusi Submit Manual
+    function executeManualSubmit(formElement) {
+        const btn = document.getElementById('btn-submit-manual');
+        const errorMsg = document.getElementById('manual-error-msg');
+        errorMsg.classList.add('hidden');
+
+        btn.disabled = true;
+        btn.innerHTML = `
+            <div class="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <span>Mengirim Bukti...</span>
+        `;
+
+        const formData = new FormData(formElement);
+
+        fetch(formElement.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(async response => {
+            if (response.ok) {
+                showManualSuccessModal();
+            } else {
+                const data = await response.json().catch(() => ({}));
+                const message = data.message || (data.errors && data.errors.payment_proof ? data.errors.payment_proof[0] : 'Gagal mengunggah bukti transfer.');
+                
+                errorMsg.innerText = message;
+                errorMsg.classList.remove('hidden');
+                
+                btn.disabled = false;
+                btn.innerHTML = '<span>Kirim Bukti Transfer</span>';
+            }
+        })
+        .catch(err => {
+            console.error('Upload error:', err);
+            errorMsg.innerText = 'Gagal terhubung ke server. Periksa koneksi internet Anda dan coba lagi.';
+            errorMsg.classList.remove('hidden');
+
+            btn.disabled = false;
+            btn.innerHTML = '<span>Kirim Bukti Transfer</span>';
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        
         var paymentStatus = "{{ $registration->payment_status }}";
         if (paymentStatus === 'paid') {
             showDynamicModal('success');
             return;
         }
 
-        // Embed Snap HANYA jika Midtrans Aktif
         @if($midtransEnabled)
             var snapToken = "{{ $registration->snap_token }}";
             if (snapToken && typeof window.snap !== 'undefined') {
@@ -357,8 +499,16 @@
                         fetch('/payment/verify/' + "{{ $registration->order_id }}", {
                             method: 'GET',
                             headers: { 'Accept': 'application/json' }
-                        }).finally(() => {
-                            showDynamicModal('success');
+                        })
+                        .then(res => {
+                            if (res.ok) {
+                                showDynamicModal('success');
+                            } else {
+                                showDynamicModal('error');
+                            }
+                        })
+                        .catch(() => {
+                            showDynamicModal('error');
                         });
                     },
                     onPending: function (result) {},
@@ -382,52 +532,30 @@
             }
         @endif
 
-        // Manual Payment Form Submission (AJAX & No Reload)
         const manualForm = document.getElementById('manual-payment-form');
         if (manualForm) {
             manualForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
-                isLocked = false; 
 
-                const btn = document.getElementById('btn-submit-manual');
+                const fileInput = document.getElementById('payment_proof_input');
                 const errorMsg = document.getElementById('manual-error-msg');
-                errorMsg.classList.add('hidden');
 
-                btn.disabled = true;
-                btn.innerHTML = `
-                    <div class="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Mengirim Bukti...</span>
-                `;
+                if (!fileInput.files || fileInput.files.length === 0) {
+                    errorMsg.innerText = 'Silakan pilih file bukti transfer terlebih dahulu.';
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
 
-                const formData = new FormData(this);
+                // Validasi ukuran file (Maksimal 2MB) di client-side
+                const file = fileInput.files[0];
+                if (file.size > 2 * 1024 * 1024) {
+                    errorMsg.innerText = 'Ukuran file melebihi batas maksimal (2MB).';
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
 
-                fetch(this.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                })
-                .then(async response => {
-                    if (response.ok) {
-                        showManualSuccessModal();
-                    } else {
-                        const data = await response.json().catch(() => ({}));
-                        const message = data.message || (data.errors && data.errors.payment_proof ? data.errors.payment_proof[0] : 'Gagal mengunggah bukti transfer.');
-                        
-                        errorMsg.innerText = message;
-                        errorMsg.classList.remove('hidden');
-                        
-                        btn.disabled = false;
-                        btn.innerHTML = '<span>Kirim Bukti Transfer</span>';
-                        isLocked = true;
-                    }
-                })
-                .catch(err => {
-                    showManualSuccessModal();
+                showConfirmationModal(() => {
+                    executeManualSubmit(manualForm);
                 });
             });
         }
