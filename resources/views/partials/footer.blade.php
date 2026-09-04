@@ -34,7 +34,7 @@
                 </div>
                 <div>
                     <span class="text-[9px] uppercase tracking-wider text-white/40 block">Venue Area</span>
-                    <span class="font-medium text-white">Rembangan Hill</span>
+                    <span class="font-medium text-white">Lapangan Kalijompo</span>
                 </div>
             </div>
         </div>
