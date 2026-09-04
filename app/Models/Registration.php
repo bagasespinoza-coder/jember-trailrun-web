@@ -39,19 +39,20 @@ class Registration extends Model
         'snap_token',
         'gross_amount',
         'paid_at',
+        'payment_proof',
     ];
 
     protected $casts = [
         'dob' => 'date',
         'paid_at' => 'datetime',
-        'gross_amount' => 'integer'
+        'gross_amount' => 'integer',
     ];
 
     public const MAX_QUOTA = 300;
 
     public function getAgeAttribute(): int
     {
-        return Carbon::parse($this->dob)->age;
+        return $this->dob ? $this->dob->age : 0;
     }
 
     public static function paidCount(): int

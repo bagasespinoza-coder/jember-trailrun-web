@@ -1,69 +1,69 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>E-Ticket Jember 10k Trail Run</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
-        .container { max-width: 600px; background: #ffffff; padding: 30px; border-radius: 8px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .header { text-align: center; border-bottom: 2px solid #ea580c; padding-bottom: 15px; }
-        .header h2 { color: #c2410c; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-        .header p { color: #475569; margin: 5px 0 0 0; }
-        .ticket-info { margin: 20px 0; background: #fff7ed; padding: 15px; border-radius: 6px; border: 1px solid #ffedd5; }
-        .ticket-info table { width: 100%; border-collapse: collapse; }
-        .ticket-info td { padding: 8px 0; border-bottom: 1px dashed #fed7aa; color: #1e293b; font-size: 14px; }
-        .badge { background: #ea580c; color: #fff; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 12px; }
-        .footer { text-align: center; margin-top: 25px; font-size: 12px; color: #64748b; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>JEMBER 10K TRAIL RUN</h2>
-            <p>Bukti Pembayaran & E-Ticket Resmi</p>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>E-Ticket Jember 10k Trail Run</title>
+        <style>
+            body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+            .container { max-width: 600px; background: #ffffff; padding: 30px; border-radius: 8px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+            .header { text-align: center; border-bottom: 2px solid #FD4801; padding-bottom: 15px; }
+            .header h2 { color: #063FC2; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+            .header p { color: #475569; margin: 5px 0 0 0; }
+            .ticket-info { margin: 20px 0; background: #f0f4ff; padding: 15px; border-radius: 6px; border: 1px solid #dbeafe; }
+            .ticket-info table { width: 100%; border-collapse: collapse; }
+            .ticket-info td { padding: 8px 0; border-bottom: 1px dashed #cbd5e1; color: #1e293b; font-size: 14px; }
+            .badge { background: #16a34a; color: #fff; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 12px; }
+            .footer { text-align: center; margin-top: 25px; font-size: 12px; color: #64748b; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h2>JEMBER 10K TRAIL RUN</h2>
+                <p>Bukti Pembayaran & E-Ticket Resmi</p>
+            </div>
+
+            <p>Halo, <strong>{{ $registration->full_name }}</strong>!</p>
+            <p>Pembayaran pendaftaran kamu telah kami terima. Berikut adalah rincian E-Ticket resmi kamu:</p>
+
+            <div class="ticket-info">
+                <table>
+                    <tr>
+                        <td><strong>Order ID</strong></td>
+                        <td>: {{ $registration->order_id }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Status Pembayaran</strong></td>
+                        <td>: <span class="badge">LUNAS</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nama BIB</strong></td>
+                        <td>: {{ $registration->bib_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nomor BIB</strong></td>
+                        <td>: {{ $registration->bib_number ?? 'Belum Ditentukan' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ukuran Jersey</strong></td>
+                        <td>: {{ $registration->jersey_size }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nomor WhatsApp</strong></td>
+                        <td>: {{ $registration->whatsapp_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanggal Lunas</strong></td>
+                        <td>: {{ $registration->paid_at?->format('d M Y, H:i') }} WIB</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>Tunjukkan email ini saat pengambilan Race Pack (RPC). Sampai jumpa di garis start!</p>
+
+            <div class="footer">
+                <p>&copy; Panitia Jember 10k Trail Run. Email ini dikirim secara otomatis.</p>
+            </div>
         </div>
-
-        <p>Halo, <strong>{{ $registration->full_name }}</strong>!</p>
-        <p>Pembayaran pendaftaran kamu telah kami terima. Berikut adalah rincian E-Ticket resmi kamu:</p>
-
-        <div class="ticket-info">
-            <table>
-                <tr>
-                    <td><strong>Order ID</strong></td>
-                    <td>: {{ $registration->order_id }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Status Pembayaran</strong></td>
-                    <td>: <span class="badge">LUNAS</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Nama BIB</strong></td>
-                    <td>: {{ $registration->bib_name }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Nomor BIB</strong></td>
-                    <td>: {{ $registration->bib_number ?? 'Belum Ditentukan' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Ukuran Jersey</strong></td>
-                    <td>: {{ $registration->jersey_size }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Nomor WhatsApp</strong></td>
-                    <td>: {{ $registration->whatsapp_number }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Tanggal Lunas</strong></td>
-                    <td>: {{ $registration->paid_at?->format('d M Y, H:i') }} WIB</td>
-                </tr>
-            </table>
-        </div>
-
-        <p>Tunjukkan email ini saat pengambilan Race Pack (RPC). Sampai jumpa di garis start!</p>
-
-        <div class="footer">
-            <p>&copy; Panitia Jember 10k Trail Run. Email ini dikirim secara otomatis.</p>
-        </div>
-    </div>
-</body>
+    </body>
 </html>

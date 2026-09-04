@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Midtrans Snap.js -->
+    <!-- Midtrans Snap.js (Dinamis Sandbox/Production) -->
     <script type="text/javascript"
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        src="{{ config('services.midtrans.is_production', false) ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}"
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <!-- Main Content -->
@@ -14,11 +14,9 @@
             <header class="relative overflow-hidden rounded-3xl p-5 sm:p-6 text-white shadow-2xl mb-6" 
                     style="background: radial-gradient(ellipse at top right, #FD3801 0%, #011B63 40%, #000F3B 100%);">
                 
-                <!-- Ambient Glow Overlay -->
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-[#FD3801]/30 rounded-full blur-2xl pointer-events-none"></div>
 
                 <div class="relative z-10 space-y-4">
-                    <!-- Top Bar: Home CTA (Kiri) & Label Event (Pojok Kanan) -->
                     <div class="flex items-center justify-between">
                         <a href="{{ url('/') }}" 
                             title="Kembali ke Beranda"
@@ -28,7 +26,6 @@
                             </svg>
                         </a>
 
-                        <!-- Event Label (Pojok Kanan, Tanpa Bulatan) -->
                         <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-sm">
                             <span class="font-sporty font-black italic tracking-wider text-xs uppercase text-white">
                                 JEMBER TRAIL <span class="text-[#FD3801]">RUN</span> <span class="text-gray-300">2026</span>
@@ -36,9 +33,7 @@
                         </div>
                     </div>
 
-                    <!-- Title & Description Section -->
                     <div class="text-center px-2 pt-1">
-                        <!-- Judul Formulir Pendaftaran (Lebih Besar) -->
                         <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-2">
                             Formulir Pendaftaran
                         </h1>
@@ -47,10 +42,8 @@
                         </p>
                     </div>
 
-                    <!-- Stepper Progress Widget (Glassmorphism Dark) -->
                     <div class="bg-black/30 backdrop-blur-md rounded-2xl py-2 px-3.5 max-w-xs mx-auto shadow-xl border border-white/15">
                         <div class="flex items-center justify-between">
-                            <!-- Step 1: Active -->
                             <div class="flex items-center gap-2">
                                 <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-[#FD3801] text-white font-black text-xs shadow-md shadow-[#FD3801]/40">
                                     1
@@ -58,10 +51,8 @@
                                 <span class="text-xs font-extrabold text-white">Data Diri</span>
                             </div>
 
-                            <!-- Step Divider Bar -->
                             <div class="flex-1 mx-2.5 h-1 bg-gradient-to-r from-[#FD3801] to-white/20 rounded-full"></div>
 
-                            <!-- Step 2: Inactive -->
                             <div class="flex items-center gap-2">
                                 <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-white/10 border border-white/10 text-gray-300 font-bold text-xs">
                                     2
@@ -73,9 +64,7 @@
                 </div>
             </header>
 
-            <!-- ================= END HEADER ================= -->
-
-            <!-- Alpine.js: General Error Banner -->
+            <!-- Notifications / Banners -->
             <div x-show="generalError" x-cloak x-transition
                 class="mb-5 bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
                 <svg class="w-5 h-5 text-red-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -89,7 +78,6 @@
                 </button>
             </div>
 
-            <!-- Alpine.js: Notification Banner -->
             <div x-show="notification" x-cloak x-transition
                 class="mb-5 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
                 <svg class="w-5 h-5 text-amber-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -103,7 +91,6 @@
                 </button>
             </div>
 
-            <!-- Alpine.js: Quota Full Banner -->
             <div x-show="errors.quota" x-cloak x-transition
                 class="mb-5 bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
                 <svg class="w-5 h-5 text-red-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -135,7 +122,10 @@
                             <label for="full_name" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Nama Lengkap (Sesuai KTP/Passport) <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="text" id="full_name" name="full_name" placeholder="Masukkan nama lengkap" 
+                            <input type="text" id="full_name" name="full_name" 
+                                autocomplete="name"
+                                value="{{ old('full_name', session('edit_draft.full_name')) }}"
+                                placeholder="Masukkan nama lengkap" 
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.full_name }"
                                 required>
@@ -147,7 +137,9 @@
                             <label for="identity_number" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Nomor Identitas (NIK/Passport) <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="text" id="identity_number" name="identity_number" placeholder="3509XXXXXXXXXXXX"
+                            <input type="text" id="identity_number" name="identity_number" 
+                                value="{{ old('identity_number', session('edit_draft.identity_number')) }}"
+                                placeholder="3509XXXXXXXXXXXX"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.identity_number }"
                                 required>
@@ -159,16 +151,17 @@
                             <label class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Jenis Kelamin <span class="text-[#FD3801]">*</span>
                             </label>
-                            <div class="grid grid-cols-2 gap-2">
+                            <fieldset class="grid grid-cols-2 gap-2">
+                                <legend class="sr-only">Jenis Kelamin</legend>
                                 <label class="relative flex items-center justify-center py-2 px-3 rounded-xl border border-gray-200 bg-gray-50/60 cursor-pointer transition hover:border-gray-300 has-[:checked]:border-[#FD3801] has-[:checked]:bg-[#FD3801]/10 has-[:checked]:text-[#FD3801] has-[:checked]:font-bold text-gray-600 text-xs shadow-2xs">
-                                    <input type="radio" name="gender" value="L" class="sr-only">
+                                    <input type="radio" name="gender" value="L" {{ old('gender', session('edit_draft.gender')) == 'L' ? 'checked' : '' }} class="sr-only">
                                     <span>Laki-laki</span>
                                 </label>
                                 <label class="relative flex items-center justify-center py-2 px-3 rounded-xl border border-gray-200 bg-gray-50/60 cursor-pointer transition hover:border-gray-300 has-[:checked]:border-[#FD3801] has-[:checked]:bg-[#FD3801]/10 has-[:checked]:text-[#FD3801] has-[:checked]:font-bold text-gray-600 text-xs shadow-2xs">
-                                    <input type="radio" name="gender" value="P" class="sr-only">
+                                    <input type="radio" name="gender" value="P" {{ old('gender', session('edit_draft.gender')) == 'P' ? 'checked' : '' }} class="sr-only">
                                     <span>Perempuan</span>
                                 </label>
-                            </div>
+                            </fieldset>
                             <p x-show="errors.gender" x-text="errors.gender?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
                         </div>
 
@@ -177,7 +170,10 @@
                             <label for="pob" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Tempat Lahir <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="text" id="pob" name="pob" placeholder="Contoh: Jember"
+                            <input type="text" id="pob" name="pob" 
+                                autocomplete="address-level2"
+                                value="{{ old('pob', session('edit_draft.pob')) }}"
+                                placeholder="Contoh: Jember"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.pob }"
                                 required>
@@ -189,8 +185,14 @@
                             <label for="dob" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Tanggal Lahir <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="date" id="dob" name="dob" @change="hitungUmur"
-                                class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs" required>
+                            <input type="date" id="dob" name="dob" 
+                                value="{{ old('dob', isset(session('edit_draft')['dob']) ? \Carbon\Carbon::parse(session('edit_draft')['dob'])->format('Y-m-d') : '') }}"
+                                x-init="if($el.value) hitungUmur()"
+                                @change="hitungUmur" @input="hitungUmur"
+                                class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
+                                :class="{ 'border-red-400 focus:ring-red-400': errors.dob }"
+                                required>
+                            <p x-show="errors.dob" x-text="errors.dob?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
                         </div>
 
                         <!-- Usia -->
@@ -206,7 +208,9 @@
                             <label for="community" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Komunitas / Klub Lari <span class="text-gray-400 font-normal">(Opsional)</span>
                             </label>
-                            <input type="text" id="community" name="community" placeholder="e.g., Jember Runners"
+                            <input type="text" id="community" name="community" 
+                                value="{{ old('community', session('edit_draft.community')) }}"
+                                placeholder="e.g., Jember Runners"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.community }">
                             <p x-show="errors.community" x-text="errors.community?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
@@ -219,7 +223,7 @@
                             </label>
                             <textarea id="address" name="address" placeholder="Masukkan alamat lengkap saat ini" rows="2"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
-                                :class="{ 'border-red-400 focus:ring-red-400': errors.address }"></textarea>
+                                :class="{ 'border-red-400 focus:ring-red-400': errors.address }">{{ old('address', session('edit_draft.address')) }}</textarea>
                             <p x-show="errors.address" x-text="errors.address?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
                         </div>
                     </div>
@@ -245,7 +249,10 @@
                             <label for="whatsapp_number" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Nomor WhatsApp <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="tel" id="whatsapp_number" name="whatsapp_number" placeholder="Contoh: 081234567890"
+                            <input type="tel" id="whatsapp_number" name="whatsapp_number"
+                                autocomplete="tel" 
+                                value="{{ old('whatsapp_number', session('edit_draft.whatsapp_number')) }}"
+                                placeholder="Contoh: 081234567890"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.whatsapp_number }"
                                 required>
@@ -257,7 +264,9 @@
                             <label for="email" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Alamat Email <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="email" id="email" name="email" autocomplete="off" placeholder="nama@email.com"
+                            <input type="email" id="email" name="email" autocomplete="off" 
+                                value="{{ old('email', session('edit_draft.email')) }}"
+                                placeholder="nama@email.com"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.email }"
                                 required>
@@ -269,7 +278,9 @@
                             <label for="instagram_handle" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Akun Instagram <span class="text-gray-400 font-normal">(Opsional)</span>
                             </label>
-                            <input type="text" id="instagram_handle" name="instagram_handle" placeholder="@username"
+                            <input type="text" id="instagram_handle" name="instagram_handle" 
+                                value="{{ old('instagram_handle', session('edit_draft.instagram_handle')) }}"
+                                placeholder="@username"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.instagram_handle }">
                             <p x-show="errors.instagram_handle" x-text="errors.instagram_handle?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
@@ -297,7 +308,9 @@
                             <label for="bib_name" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Nama BIB <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="text" id="bib_name" name="bib_name" placeholder="Masukkan nama untuk BIB"
+                            <input type="text" id="bib_name" name="bib_name" 
+                                value="{{ old('bib_name', session('edit_draft.bib_name')) }}"
+                                placeholder="Masukkan nama untuk BIB"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.bib_name }"
                                 required>
@@ -312,7 +325,9 @@
                             <fieldset class="flex gap-2 flex-wrap">
                                 @foreach(['S', 'M', 'L', 'XL', 'XXL'] as $size)
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="jersey_size" value="{{ $size }}" class="sr-only peer">
+                                        <input type="radio" name="jersey_size" value="{{ $size }}" 
+                                            {{ old('jersey_size', session('edit_draft.jersey_size')) == $size ? 'checked' : '' }} 
+                                            class="sr-only peer">
                                         <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-200 bg-gray-50/60 text-xs font-bold text-gray-700 peer-checked:border-[#FD3801] peer-checked:bg-[#FD3801]/10 peer-checked:text-[#FD3801] transition shadow-2xs hover:border-gray-300">{{ $size }}</span>
                                     </label>
                                 @endforeach
@@ -342,15 +357,16 @@
                             <label for="blood_type" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Golongan Darah <span class="text-[#FD3801]">*</span>
                             </label>
+                            @php $selectedBlood = old('blood_type', session('edit_draft.blood_type')); @endphp
                             <select id="blood_type" name="blood_type"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.blood_type }"
                                 required>
-                                <option value="">-- Pilih Golongan Darah --</option>
-                                <option value="O">O</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="AB">AB</option>
+                                <option value="">Pilih Golongan Darah</option>
+                                <option value="O" {{ $selectedBlood == 'O' ? 'selected' : '' }}>O</option>
+                                <option value="A" {{ $selectedBlood == 'A' ? 'selected' : '' }}>A</option>
+                                <option value="B" {{ $selectedBlood == 'B' ? 'selected' : '' }}>B</option>
+                                <option value="AB" {{ $selectedBlood == 'AB' ? 'selected' : '' }}>AB</option>
                             </select>
                             <p x-show="errors.blood_type" x-text="errors.blood_type?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
                         </div>
@@ -360,7 +376,9 @@
                             <label for="medical_history" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Riwayat Medis / Alergi <span class="text-gray-400 font-normal">(Opsional)</span>
                             </label>
-                            <input type="text" id="medical_history" name="medical_history" placeholder="Contoh: Asma, Alergi Obat"
+                            <input type="text" id="medical_history" name="medical_history" 
+                                value="{{ old('medical_history', session('edit_draft.medical_history')) }}"
+                                placeholder="Contoh: Asma, Alergi Obat"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.medical_history }">
                             <p x-show="errors.medical_history" x-text="errors.medical_history?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
@@ -371,7 +389,9 @@
                             <label for="emergency_contact_name" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Nama Kontak Darurat <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="text" id="emergency_contact_name" name="emergency_contact_name" autocomplete="off" placeholder="Nama lengkap wali / keluarga"
+                            <input type="text" id="emergency_contact_name" name="emergency_contact_name" autocomplete="off" 
+                                value="{{ old('emergency_contact_name', session('edit_draft.emergency_contact_name')) }}"
+                                placeholder="Nama lengkap wali / keluarga"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_name }"
                                 required>
@@ -383,19 +403,15 @@
                             <label for="emergency_contact_relation" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Hubungan <span class="text-[#FD3801]">*</span>
                             </label>
+                            @php $selectedRelation = old('emergency_contact_relation', session('edit_draft.emergency_contact_relation')); @endphp
                             <select id="emergency_contact_relation" name="emergency_contact_relation"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_relation }"
                                 required>
-                                <option value="">-- Pilih Hubungan --</option>
-                                <option value="Ayah">Ayah</option>
-                                <option value="Ibu">Ibu</option>
-                                <option value="Saudara Laki-laki">Saudara Laki-laki</option>
-                                <option value="Saudara Perempuan">Saudara Perempuan</option>
-                                <option value="Suami">Suami</option>
-                                <option value="Istri">Istri</option>
-                                <option value="Teman">Teman</option>
-                                <option value="Lainnya">Lainnya</option>
+                                <option value="">Pilih Hubungan</option>
+                                @foreach(['Ayah', 'Ibu', 'Saudara Laki-laki', 'Saudara Perempuan', 'Suami', 'Istri', 'Teman', 'Lainnya'] as $relation)
+                                    <option value="{{ $relation }}" {{ $selectedRelation == $relation ? 'selected' : '' }}>{{ $relation }}</option>
+                                @endforeach
                             </select>
                             <p x-show="errors.emergency_contact_relation" x-text="errors.emergency_contact_relation?.[0]" class="mt-1 text-[10px] font-medium text-red-600"></p>
                         </div>
@@ -405,7 +421,9 @@
                             <label for="emergency_contact_phone" class="block text-xs font-bold text-[#01217C] mb-1.5">
                                 Nomor Telepon Darurat <span class="text-[#FD3801]">*</span>
                             </label>
-                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Contoh: 081122334455"
+                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" 
+                                value="{{ old('emergency_contact_phone', session('edit_draft.emergency_contact_phone')) }}"
+                                placeholder="Contoh: 081122334455"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"
                                 :class="{ 'border-red-400 focus:ring-red-400': errors.emergency_contact_phone }"
                                 required>
@@ -417,7 +435,9 @@
                 <!-- Checkbox Persetujuan -->
                 <section class="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-5 sm:p-6">
                     <label class="flex items-start gap-3 cursor-pointer">
-                        <input type="checkbox" name="terms" required class="mt-0.5 rounded-md border-gray-300 text-[#FD3801] focus:ring-[#FD3801]/20 w-4 h-4 shrink-0 transition">
+                        <input type="checkbox" name="terms" id="terms" value="1" required
+                            {{ old('terms') || session('edit_draft') ? 'checked' : '' }}
+                            class="mt-0.5 rounded-md border-gray-300 text-[#FD3801] focus:ring-[#FD3801]/20 w-4 h-4 shrink-0 transition">
                         <span class="text-xs text-gray-600 leading-relaxed">
                             Saya menyatakan bahwa data yang diisi adalah benar, saya dalam kondisi sehat untuk mengikuti acara ini, dan menyetujui seluruh <a href="#" class="text-[#FD3801] underline font-semibold hover:text-[#e03000]">Syarat & Ketentuan</a> yang berlaku.
                         </span>
@@ -432,9 +452,6 @@
                         <template x-if="!loading">
                             <span class="flex items-center gap-2">
                                 <span>Lanjut ke Pembayaran</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                </svg>
                             </span>
                         </template>
                         <template x-if="loading">
@@ -455,6 +472,69 @@
 
 @push('scripts')
 <script>
+    function showPendingRecoveryBottomSheet(orderId) {
+        const existingSheet = document.getElementById('recovery-bottom-sheet');
+        if (existingSheet) existingSheet.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'recovery-bottom-sheet';
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(0,12,40,0.75); display:flex; align-items:flex-end; justify-content:center; backdrop-filter:blur(4px); font-family:sans-serif;';
+
+        const sheet = document.createElement('div');
+        sheet.style.cssText = 'background:#ffffff; width:100%; max-width:600px; padding:2rem 1.5rem 2.5rem 1.5rem; border-top-left-radius:1.5rem; border-top-right-radius:1.5rem; box-shadow:0 -10px 25px -5px rgba(0,0,0,0.15);';
+
+        sheet.innerHTML = `
+            <div style="width: 40px; height: 4px; background: #E5E7EB; border-radius: 2px; margin: 0 auto 1.5rem auto;"></div>
+            
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+                <div style="width: 40px; height: 40px; background: #EFF6FF; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg style="width: 22px; height: 22px; color: #063FC2;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 style="font-size:1.1rem; font-weight:800; color:#063FC2; margin:0;">Pendaftaran Ditemukan!</h3>
+                    <p style="font-size:0.75rem; color:#6B7280; margin:0;">NIK kamu tersangkut pada tagihan yang belum dibayar.</p>
+                </div>
+            </div>
+
+            <p style="font-size:0.8rem; color:#4B5563; margin-bottom:1.5rem; line-height:1.5; background:#F8FAFC; padding:0.75rem 1rem; border-radius:0.75rem; border:1px solid #E2E8F0;">
+                Order ID: <strong style="color:#1F2937;">${orderId}</strong><br>
+                Lanjutkan pembayaran atau batalkan kalau mau daftar ulang dari awal.
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                <a href="/payment/${orderId}" style="width:100%; padding:0.85rem; border-radius:0.75rem; background:#063FC2; color:#ffffff; font-weight:800; font-size:0.8rem; text-align:center; text-decoration:none;">
+                    Lanjutkan Pembayaran
+                </a>
+                <button type="button" id="btn-cancel-draft" style="width:100%; padding:0.85rem; border-radius:0.75rem; background:#FEF2F2; color:#DC2626; font-weight:700; font-size:0.8rem; border:none; cursor:pointer;">
+                    Batalkan & Hapus Pendaftaran Lama
+                </button>
+            </div>
+        `;
+
+        overlay.appendChild(sheet);
+        document.body.appendChild(overlay);
+
+        // Tombol buat batalkan draft lama biar NIK-nya merdeka lagi
+        sheet.querySelector('#btn-cancel-draft').onclick = () => {
+            if(confirm('Yakin ingin membatalkan pendaftaran lama ini?')) {
+                fetch(`/payment/${orderId}/cancel`, {
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'), 'Content-Type': 'application/json' }
+                }).then(() => {
+                    overlay.remove();
+                    alert('Pendaftaran lama dibatalkan. Silakan submit ulang form-nya.');
+                    location.reload();
+                });
+            }
+        };
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) overlay.remove();
+        };
+    }
+
     function registrationForm() {
         return {
             isSubmitting: false,
@@ -465,12 +545,14 @@
             usia: '', 
 
             init() {
-                // Kosongkan atau biarkan kosong jika tidak ada setup lain yang dibutuhkan saat halaman dimuat
+                // Hitung umur otomatis pas Halaman dimuat jika tanggal lahir sudah terisi (misal dari session draft)
+                const dobElem = document.getElementById('dob');
+                if (dobElem && dobElem.value) {
+                    this.hitungUmur({ target: dobElem });
+                }
             },
 
-            clearDraft() {
-                // Dikosongkan agar fungsi pemanggil lain tidak error
-            },
+            clearDraft() {},
 
             hitungUmur(event) {
                 const dob = event.target.value;
@@ -480,6 +562,11 @@
                 }
 
                 const birthDate = new Date(dob);
+                if (isNaN(birthDate.getTime())) {
+                    this.usia = '';
+                    return;
+                }
+
                 const raceYear = 2026; 
                 let calculatedAge = raceYear - birthDate.getFullYear();
 
@@ -508,6 +595,7 @@
                     emergency_contact_name:     fd.get('emergency_contact_name'),
                     emergency_contact_relation: fd.get('emergency_contact_relation'),
                     emergency_contact_phone:    fd.get('emergency_contact_phone'),
+                    terms:                      fd.get('terms') ? '1' : null,
                 };
             },
 
@@ -555,11 +643,15 @@
 
             async submitForm() {
                 if (this.isSubmitting || this.loading) return;
+                const termsInput = this.$refs.form.querySelector('input[name="terms"]');
+                if (termsInput && !termsInput.checked) {
+                    this.errors = { terms: ['Anda wajib menyetujui Syarat & Ketentuan untuk melanjutkan.'] };
+                    this.scrollToFirstError();
+                    return;
+                }
+
                 this.isSubmitting = true;
                 this.loading = true;
-
-                this.clearErrors();
-                this.notification = '';
 
                 try {
                     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
@@ -582,21 +674,23 @@
                         throw new Error('Server mengembalikan respons yang tidak valid.');
                     }
 
-                    // Validation Error (422)
                     if (response.status === 422) {
+                        if (data.status === 'pending_exists' && data.order_id) {
+                            showPendingRecoveryBottomSheet(data.order_id);
+                            return;
+                        }
+
                         this.errors = data.errors || {};
                         this.scrollToFirstError();
                         return;
                     }
 
-                    // Server Error / Other status
                     if (!response.ok) {
                         this.generalError = data.message || 'Terjadi kesalahan pada server. Silakan coba lagi.';
                         this.$nextTick(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
                         return;
                     }
 
-                    // Handle Midtrans Snap Popup vs Direct Redirect
                     if (data.snap_token && typeof window.snap !== 'undefined') {
                         window.snap.pay(data.snap_token, {
                             onSuccess: (res) => {

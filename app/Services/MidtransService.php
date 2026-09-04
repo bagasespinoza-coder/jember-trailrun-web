@@ -12,8 +12,8 @@ class MidtransService
      */
     public function createSnapToken(array $orderData): string
     {
-        $serverKey = config('midtrans.server_key');
-        $isProduction = config('midtrans.is_production', false);
+        $serverKey = config('services.midtrans.server_key');
+        $isProduction = config('services.midtrans.is_production', false);
 
         if (!$serverKey) {
             throw new Exception('Midtrans Server Key belum dikonfigurasi pada file .env!');

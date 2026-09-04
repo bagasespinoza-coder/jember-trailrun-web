@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http; 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Midtrans\Config;
 
@@ -27,9 +28,9 @@ class PaymentController extends Controller
     {
         $registration = Registration::where('order_id', $orderId)->firstOrFail();
 
-        // PENGAMANAN: Jika status masih pending, pastikan session browser ini yang membuat order tersebut
+        // UBAH INI: Kalau session-nya nggak cocok, langsung banting ke 403 Forbidden
         if (strtolower($registration->payment_status) === 'pending' && session('pending_order_id') !== $orderId) {
-            return redirect('/register')->with('error', 'Akses ditolak. Sesi pembayaran tidak valid atau Anda menggunakan perangkat/browser yang berbeda.');
+            abort(403, 'Akses ditolak');
         }
 
         $midtransEnabled = config('services.midtrans.enabled');
@@ -51,6 +52,7 @@ class PaymentController extends Controller
         try {
             $grossAmount        = number_format((float) $request->gross_amount, 2, '.', '');
             $transactionStatus  = $request->transaction_status;
+            $fraudStatus        = $request->fraud_status;
             $orderId            = $request->order_id;
             $statusCode         = $request->status_code;
             $signatureKey       = $request->signature_key;
@@ -65,25 +67,25 @@ class PaymentController extends Controller
 
             $registrationToSend = null;
 
-            DB::transaction(function () use ($orderId, $transactionStatus, &$registrationToSend) {
+            DB::transaction(function () use ($orderId, $transactionStatus, $fraudStatus, &$registrationToSend) {
                 $registration = Registration::where('order_id', $orderId)->lockForUpdate()->first();
 
                 if (!$registration) {
                     throw new \Exception('Registration not found');
                 }
 
-                if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
-                    if ($registration->payment_status !== 'paid') {
-                        
-                        $genderPrefix = ($registration->gender ?? 'L') === 'L' ? 'M' : 'F';
-                        
-                        $latestSequence = Registration::where('bib_number', 'LIKE', $genderPrefix . '10%')
-                            ->lockForUpdate()
-                            ->selectRaw("MAX(CAST(SUBSTRING(bib_number, 4) AS UNSIGNED)) as max_seq")
-                            ->value('max_seq');
+                $isPaid = false;
+                if ($transactionStatus == 'capture') {
+                    if ($fraudStatus == 'accept') {
+                        $isPaid = true;
+                    }
+                } else if ($transactionStatus == 'settlement') {
+                    $isPaid = true;
+                }
 
-                        $nextSequence = str_pad(($latestSequence ? $latestSequence + 1 : 1), 3, '0', STR_PAD_LEFT);
-                        $bibNumber = $genderPrefix . '10' . $nextSequence;
+                if ($isPaid) {
+                    if ($registration->payment_status !== 'paid') {
+                        $bibNumber = $registration->bib_number ?: $this->generateBibNumber($registration);
 
                         $registration->update([
                             'payment_status' => 'paid',
@@ -92,7 +94,7 @@ class PaymentController extends Controller
                         ]);
                         
                         $registrationToSend = $registration;
-                        Log::info("Payment SUCCESS (Settlement) for Order ID: {$orderId} with BIB: {$bibNumber}");
+                        Log::info("Payment SUCCESS (Settlement/Capture) for Order ID: {$orderId} with BIB: {$bibNumber}");
                     }
                 } else if ($transactionStatus == 'pending') {
                     Log::info("Payment PENDING for Order ID: {$orderId}");
@@ -104,7 +106,6 @@ class PaymentController extends Controller
                 }
             });
 
-            // Kirim E-Ticket via Laravel khusus transaksi Midtrans
             if ($registrationToSend) {
                 try {
                     $this->makeService->sendRunnerData($registrationToSend);
@@ -134,20 +135,23 @@ class PaymentController extends Controller
         }
     }
 
-    public function processManualPayment(Request $request, $orderId)
+    public function processManualPayment(Request $request, $orderId = null)
     {
-        $registration = Registration::where('order_id', $orderId)->firstOrFail();
+        // Ambil order_id dari URL atau dari body request (form hidden input)
+        $targetOrderId = $orderId ?? $request->input('order_id');
+
+        $registration = Registration::where('order_id', $targetOrderId)->firstOrFail();
 
         if (strtolower($registration->payment_status) !== 'pending') {
             $msg = 'Transaksi sudah tidak aktif atau telah diproses.';
-            return $request->ajax() 
+            return $request->expectsJson() 
                 ? response()->json(['message' => $msg], 422) 
                 : back()->with('error', $msg);
         }
 
         if (!empty($registration->payment_proof)) {
             $msg = 'Bukti pembayaran sudah pernah dikirim dan sedang diverifikasi.';
-            return $request->ajax() 
+            return $request->expectsJson() 
                 ? response()->json(['message' => $msg], 422) 
                 : back()->with('error', $msg);
         }
@@ -165,7 +169,7 @@ class PaymentController extends Controller
 
         if (!@getimagesize($file->getPathname())) {
             $msg = 'File gambar tidak valid atau rusak.';
-            return $request->ajax() 
+            return $request->expectsJson() 
                 ? response()->json(['message' => $msg], 422) 
                 : back()->with('error', $msg);
         }
@@ -174,10 +178,23 @@ class PaymentController extends Controller
         $fileName  = 'proof_' . Str::random(40) . '.' . $extension;
         $path      = $file->storeAs('payment_proofs', $fileName, 'public');
 
-        $registration->update([
-            'payment_proof'  => $path,
-            'payment_status' => 'pending', 
-        ]);
+        try {
+            $registration->update([
+                'payment_proof'  => $path,
+                'payment_status' => 'pending', 
+            ]);
+            
+            session()->forget('pending_order_id');
+
+        } catch (\Exception $e) {
+            Storage::disk('public')->delete($path);
+            Log::error("Gagal simpan bukti bayar ke DB untuk Order ID {$targetOrderId}: " . $e->getMessage());
+
+            $msg = 'Terjadi kesalahan sistem saat menyimpan bukti bayar.';
+            return $request->expectsJson() 
+                ? response()->json(['message' => $msg], 500) 
+                : back()->with('error', $msg);
+        }
 
         $webhookUrl = config('services.make.webhook_url');
         if ($webhookUrl) {
@@ -192,7 +209,7 @@ class PaymentController extends Controller
             }
         }
 
-        if ($request->ajax()) {
+        if ($request->expectsJson()) {
             return response()->json([
                 'status'  => 'success',
                 'message' => 'Bukti transfer berhasil dikirim!'
@@ -240,15 +257,7 @@ class PaymentController extends Controller
                 $isNewlyPaid = ($newStatus === 'paid' && $registration->payment_status !== 'paid');
 
                 if ($isNewlyPaid && empty($bibNumber)) {
-                    $genderPrefix = ($registration->gender ?? 'L') === 'L' ? 'M' : 'F';
-                    
-                    $latestSequence = Registration::where('bib_number', 'LIKE', $genderPrefix . '10%')
-                        ->lockForUpdate()
-                        ->selectRaw("MAX(CAST(SUBSTRING(bib_number, 4) AS UNSIGNED)) as max_seq")
-                        ->value('max_seq');
-
-                    $nextSequence = str_pad(($latestSequence ? $latestSequence + 1 : 1), 3, '0', STR_PAD_LEFT);
-                    $bibNumber = $genderPrefix . '10' . $nextSequence;
+                    $bibNumber = $this->generateBibNumber($registration);
                 }
 
                 $registration->update([
@@ -268,7 +277,6 @@ class PaymentController extends Controller
                 ];
             });
 
-            // Kirim balik data BIB ke Make.com
             return response()->json([
                 'status'  => 'success',
                 'message' => 'Status updated successfully',
@@ -283,9 +291,11 @@ class PaymentController extends Controller
         }
     }
 
-    public function cancelAndEdit($orderId)
+    public function cancelAndEdit(Request $request, $orderId = null)
     {
-        $registration = Registration::where('order_id', $orderId)
+        $targetOrderId = $orderId ?? $request->input('order_id');
+
+        $registration = Registration::where('order_id', $targetOrderId)
             ->where('payment_status', 'pending')
             ->first();
 
@@ -295,9 +305,49 @@ class PaymentController extends Controller
 
         session()->forget('pending_order_id');
 
-        return redirect('/register?edit=' . $orderId)->with([
+        return redirect('/register?edit=' . $targetOrderId)->with([
             'old_data' => $registration->toArray(),
-            'info' => 'Silakan perbaiki data pendaftaran kamu.'
+            'info'     => 'Silakan perbaiki data pendaftaran kamu.'
         ]);
+    }
+
+    public function cancelOrder(Request $request, $orderId): JsonResponse
+    {
+        $registration = Registration::where('order_id', $orderId)
+            ->where('payment_status', 'pending')
+            ->first();
+
+        if ($registration) {
+            // Hapus data dari database agar NIK dan kuotanya langsung bersih
+            $registration->delete();
+        }
+
+        // Bersihkan sesi terkait
+        session()->forget('pending_order_id');
+        session()->forget('edit_draft');
+
+        return response()->json([
+            'status'       => 'success',
+            'message'      => 'Pendaftaran berhasil dibatalkan dan data dihapus.',
+            'redirect_url' => url('/') // atau url('/dashboard')
+        ]);
+    }
+
+    private function generateBibNumber(Registration $registration): string
+    {
+        return DB::transaction(function () use ($registration) {
+            $genderPrefix = ($registration->gender ?? 'L') === 'L' ? 'M' : 'F';
+            
+            // Mengunci seluruh baris data pendaftaran berstatus 'paid' untuk mencegah pembacaan berbarengan
+            $latestSequence = Registration::whereNotNull('bib_number')
+                ->where('bib_number', 'LIKE', $genderPrefix . '10%')
+                ->lockForUpdate()
+                ->selectRaw("MAX(CAST(SUBSTRING(bib_number, 4) AS UNSIGNED)) as max_seq")
+                ->value('max_seq');
+
+            $nextSequence = str_pad(($latestSequence ? $latestSequence + 1 : 1), 3, '0', STR_PAD_LEFT);
+
+            return $genderPrefix . '10' . $nextSequence;
+        });
     }
 }

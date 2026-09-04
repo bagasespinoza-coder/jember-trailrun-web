@@ -31,7 +31,7 @@ return new class extends Migration
 
             // 3. Detail Event & Logistics
             $table->string('bib_name')->nullable(); // Nama custom di BIB
-            $table->string('bib_number')->nullable()->unique(); // Nomor BIB (cth: M10001, F10002)
+            $table->string('bib_number')->nullable()->index(); // Nomor BIB (cth: M10001, F10002)
             $table->string('category')->default('10K'); // Misal: 10K, 21K
             $table->enum('jersey_size', ['S', 'M', 'L', 'XL', 'XXL']);
 
