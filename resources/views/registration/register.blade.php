@@ -18,7 +18,7 @@
 
                 <div class="relative z-10 space-y-4">
                     <div class="flex items-center justify-between">
-                        <a href="{{ url('/') }}" 
+                        <a href="{{ url('/') }}"
                             title="Kembali ke Beranda"
                             class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/15 transition duration-200 hover:scale-105 shadow-2xs">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -250,7 +250,7 @@
                                 Nomor WhatsApp <span class="text-[#FD3801]">*</span>
                             </label>
                             <input type="tel" id="whatsapp_number" name="whatsapp_number"
-                                autocomplete="tel" 
+                                autocomplete="tel"
                                 value="{{ old('whatsapp_number', session('edit_draft.whatsapp_number')) }}"
                                 placeholder="Contoh: 081234567890"
                                 class="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-[#FD3801] focus:ring-2 focus:ring-[#FD3801]/20 transition shadow-2xs"

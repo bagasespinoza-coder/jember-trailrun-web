@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoWhite = document.getElementById("nav-logo-white");
     const logoBlack = document.getElementById("nav-logo-black");
 
-    const navbarElement = document.querySelector('#main-header'); 
-    
+    const navbarElement = document.querySelector("#main-header");
+
     const updateNavbar = () => {
         // Safe check: pastikan navbar ada sebelum manipulasi class
         if (!navbar) return;
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleButton?.addEventListener("click", openMenu);
     closeButton?.addEventListener("click", closeMenu);
     menuOverlay?.addEventListener("click", closeMenu);
-    
+
     if (navbarElement || navbar) {
         window.addEventListener("scroll", updateNavbar);
         updateNavbar();
@@ -87,18 +87,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         L.control.zoom({ position: "topright" }).addTo(map);
 
-        L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-            {
-                maxZoom: 19,
-                subdomains: "abcd",
-            },
-        ).addTo(map);
+        L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: "&copy; OpenStreetMap contributors, HOT",
+        }).addTo(map);
 
         // Fetch GPX sekali saja untuk semua kebutuhan (Peta, Statistik, Google Maps Button)
         fetch("/routes/trail-run-10k.gpx")
             .then((response) => {
-                if (!response.ok) throw new Error("Network response was not ok");
+                if (!response.ok)
+                    throw new Error("Network response was not ok");
                 return response.text();
             })
             .then((data) => {
@@ -145,8 +143,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 const distEl = document.getElementById("stat-distance");
                 const eleEl = document.getElementById("stat-elevation");
 
-                if (distEl) distEl.textContent = totalDistance.toFixed(2) + " KM";
-                if (eleEl) eleEl.textContent = "+" + Math.round(elevationGain) + " M";
+                if (distEl)
+                    distEl.textContent = totalDistance.toFixed(2) + " KM";
+                if (eleEl)
+                    eleEl.textContent = "+" + Math.round(elevationGain) + " M";
 
                 // 2. Setup Google Maps Start Button
                 const btnViewStart = document.getElementById("btn-view-start");
