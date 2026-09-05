@@ -8,17 +8,17 @@
 
     <!-- Single Main Scope Alpine.js -->
     <div x-data="{ 
-        midtransEnabled: {{ json_encode($midtransEnabled) }},
-        activeTab: '{{ $midtransEnabled ? 'midtrans' : 'manual' }}',
-        basePrice: {{ $basePrice }},
-        adminFee: {{ $adminFee }},
+        midtransEnabled: @js($midtransEnabled),
+        activeTab: @js($midtransEnabled ? 'midtrans' : 'manual'),
+        basePrice: @js($basePrice),
+        adminFee: @js($adminFee),
         formatRupiah(val) {
             return 'Rp' + new Intl.NumberFormat('id-ID').format(val);
         }
     }">
 
         <!-- Form Tersembunyi untuk Pembatalan / Edit Data -->
-        <form id="cancel-edit-form" action="{{ url('/register/cancel/'.$registration->order_id) }}" method="POST" class="hidden">
+        <form id="edit-data-regist" action="{{ route('payment.edit', $registration->order_id) }}" method="POST" class="hidden">
             @csrf
         </form>
 
@@ -347,7 +347,7 @@
 
         // Modal Konfirmasi Edit Data Registration
         function showEditConfirmationModal() {
-            const cancelForm = document.getElementById('cancel-edit-form');
+            const cancelForm = document.getElementById('edit-data-regist');
             if (!cancelForm) return;
 
             const overlay = document.createElement('div');

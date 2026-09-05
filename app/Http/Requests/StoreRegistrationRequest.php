@@ -27,7 +27,7 @@ class StoreRegistrationRequest extends FormRequest
             'community'       => ['nullable', 'string', 'max:100'],
 
             // Kontak & Sosmed
-            'whatsapp_number'  => ['required', "regex:/^08[0-9]{7,13}$/"], 
+            'whatsapp_number'  => ['required', "regex:/^(0|\+?62)8[0-9]{7,13}$/"], 
             'email'            => ['required', 'email:rfc', 'max:255'],
             'instagram_handle' => ['nullable', 'string', 'max:100'],
 
@@ -40,7 +40,7 @@ class StoreRegistrationRequest extends FormRequest
             // Kontak Darurat
             'emergency_contact_name'     => ['required', 'string', 'max:255', "regex:/^[a-zA-Z\s\.\']+$/"],
             'emergency_contact_relation' => ['required', 'string', 'max:100'],
-            'emergency_contact_phone'    => ['required', "regex:/^08[0-9]{7,13}$/"], 
+            'emergency_contact_phone'    => ['required', "regex:/^(0|\+?62)8[0-9]{7,13}$/"],
         ];
     }
 
@@ -75,7 +75,7 @@ class StoreRegistrationRequest extends FormRequest
 
             // Kontak & Komunikasi
             'whatsapp_number.required' => 'Nomor WhatsApp wajib diisi.',
-            'whatsapp_number.regex'    => 'Format nomor WhatsApp harus diawali "08" dan hanya berisi angka (contoh: 0812...).',
+            'whatsapp_number.regex'    => 'Format nomor WhatsApp harus diawali "08", "628", atau "+628" dan berisi angka.',
             
             'email.required'           => 'Alamat email wajib diisi.',
             'email.email'              => 'Format alamat email tidak valid (harus mengandung @).',
@@ -98,7 +98,7 @@ class StoreRegistrationRequest extends FormRequest
             'emergency_contact_relation.required' => 'Hubungan kontak darurat wajib dipilih/diisi.',
             
             'emergency_contact_phone.required'    => 'Nomor telepon darurat wajib diisi.',
-            'emergency_contact_phone.regex'       => 'Format nomor telepon darurat harus diawali "08" dan hanya berisi angka.',
+            'emergency_contact_phone.regex'       => 'Format nomor telepon darurat harus diawali "08", "628", atau "+628" dan berisi angka.',
         ];
     }
 }

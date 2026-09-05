@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Kecualikan route webhook dari proteksi CSRF
         $middleware->validateCsrfTokens(except: [
             'midtrans/notification',
-            'api/webhook/manual-status', 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -291,9 +291,9 @@ class PaymentController extends Controller
         }
     }
 
-    public function cancelAndEdit(Request $request, $orderId = null)
+    public function editDataRegist(Request $request, $orderId)
     {
-        $targetOrderId = $orderId ?? $request->input('order_id');
+        $targetOrderId = $orderId;
 
         $registration = Registration::where('order_id', $targetOrderId)
             ->where('payment_status', 'pending')
@@ -318,8 +318,8 @@ class PaymentController extends Controller
             ->first();
 
         if ($registration) {
-            // Hapus data dari database agar NIK dan kuotanya langsung bersih
-            $registration->delete();
+            // Cukup ubah status jadi cancelled biar history datanya gak ilang
+            $registration->update(['payment_status' => 'cancelled']);
         }
 
         // Bersihkan sesi terkait
@@ -328,8 +328,8 @@ class PaymentController extends Controller
 
         return response()->json([
             'status'       => 'success',
-            'message'      => 'Pendaftaran berhasil dibatalkan dan data dihapus.',
-            'redirect_url' => url('/') // atau url('/dashboard')
+            'message'      => 'Pendaftaran berhasil dibatalkan.',
+            'redirect_url' => url('/') 
         ]);
     }
 

@@ -18,9 +18,8 @@ Route::post('/register', [RegistrationController::class, 'store'])
 // 2. Payment Views & Verification (Read-Only)
 Route::get('/payment/{orderId}', [PaymentController::class, 'showPayment'])->name('payment.page');
 
-// Route Batal & Edit Data Pendaftaran (Melepas Lock & Redirect ke Register)
-Route::post('/register/cancel/{orderId}', [PaymentController::class, 'cancelAndEdit'])
-    ->name('payment.cancel-edit');
+// Sesuaikan dengan method HTTP yang lu pakai (GET/POST)
+Route::post('/payment/edit/{orderId}', [PaymentController::class, 'editDataRegist'])->name('payment.edit');
 
 // Cek status dipasangi limit 30x/menit biar aman dari brute force enumerasi Order ID
 Route::get('/payment/verify/{orderId}', [RegistrationController::class, 'checkStatus'])
@@ -35,9 +34,5 @@ Route::post('/payment/manual/{orderId}', [PaymentController::class, 'processManu
 // 4. Webhook Callback Midtrans
 Route::post('/midtrans/notification', [PaymentController::class, 'handleNotification'])
     ->name('midtrans.notification');
-
-// 5. Webhook Manual Status dari Make.com
-Route::post('/api/webhook/manual-status', [PaymentController::class, 'updateManualStatus'])
-    ->name('webhook.manual-status');
 
 Route::delete('/payment/{orderId}/cancel', [PaymentController::class, 'cancelOrder'])->name('payment.cancel');

@@ -29,22 +29,19 @@ class RegistrationController extends Controller
 
     public function index(Request $request)
     {
-        // 1. Jika peserta memilih untuk edit data dari halaman pembayaran
+        // 1. Cek apakah ada request edit DAN validasinya bawa tiket dari PaymentController
         if ($request->has('edit')) {
             session()->forget('pending_order_id');
 
-            $editOrderId = $request->query('edit');
-            $registration = Registration::where('order_id', $editOrderId)
-                ->where('payment_status', 'pending')
-                ->first();
-
-            if ($registration) {
-                // WAJIB: Simpan data lama ke session edit_draft biar kebaca di form Blade!
-                session(['edit_draft' => $registration->toArray()]);
+            // SATPAM: Pastikan edit_draft cuma keisi kalau user dateng dari tombol edit yang sah
+            if (session()->has('old_data')) {
+                session(['edit_draft' => session('old_data')]);
+            } else {
+                // Tendang orang iseng yang cuma ngetik /register?edit= di URL
+                return redirect('/register')->with('error', 'Akses edit ditolak! Gunakan tombol edit dari halaman pembayaran.');
             }
         } else {
-            // Kalau masuk halaman register biasa (bukan dari tombol edit), 
-            // pastikan session draft dibersihkan biar formnya fresh.
+            // Bersihkan form draft kalau user masuk lewat /register biasa
             session()->forget('edit_draft');
         }
 
@@ -116,7 +113,15 @@ class RegistrationController extends Controller
         }
 
         $age = !empty($validated['dob']) ? Carbon::parse($validated['dob'])->age : null;
-        $ticketPrice = 192500;
+        $basePrice = 190000;
+        
+        // Cek metode pembayaran yang dipilih user dari form
+        $paymentMethod = $request->input('payment_method', 'midtrans'); 
+        
+        // Tentukan admin fee (Midtrans kena 2500, manual 0)
+        $adminFee = ($paymentMethod === 'midtrans') ? 2500 : 0;
+        $ticketPrice = $basePrice + $adminFee;
+
         $orderId = 'JTR-' . strtoupper(Str::random(12));
 
         try {

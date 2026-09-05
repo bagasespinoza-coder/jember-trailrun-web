@@ -22,7 +22,7 @@ class MakeService
 
         try {
             // Request HTTP POST dengan timeout 5 detik & non-blocking
-            $response = Http::timeout(5)->post($webhookUrl, [
+            $response = Http::retry(3, 1000)->timeout(5)->post($webhookUrl, [
                 'order_id'                   => $registration->order_id,
                 'full_name'                  => $registration->full_name,
                 

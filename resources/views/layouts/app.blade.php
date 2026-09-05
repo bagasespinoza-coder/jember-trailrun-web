@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>10K Trail Run Jember</title>
+        <title>Jember Trail Run</title>
 
         <link rel="icon" type="image/png" href="{{ asset('images/logo.crop.png') }}">
 
