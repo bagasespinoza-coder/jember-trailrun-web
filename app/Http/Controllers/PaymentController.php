@@ -28,6 +28,10 @@ class PaymentController extends Controller
     {
         $registration = Registration::where('order_id', $orderId)->firstOrFail();
 
+        if (session('pending_order_id') !== $orderId) {
+            abort(403, 'Akses ditolak');
+        }
+
         // UBAH INI: Kalau session-nya nggak cocok, langsung banting ke 403 Forbidden
         if (strtolower($registration->payment_status) === 'pending' && session('pending_order_id') !== $orderId) {
             abort(403, 'Akses ditolak');
@@ -140,6 +144,13 @@ class PaymentController extends Controller
         // Ambil order_id dari URL atau dari body request (form hidden input)
         $targetOrderId = $orderId ?? $request->input('order_id');
 
+        if (session('pending_order_id') !== $targetOrderId) {
+            $msg = 'Akses ditolak.';
+            return $request->expectsJson() 
+                ? response()->json(['message' => $msg], 403) 
+                : back()->with('error', $msg);
+        }
+
         $registration = Registration::where('order_id', $targetOrderId)->firstOrFail();
 
         if (strtolower($registration->payment_status) !== 'pending') {
@@ -176,7 +187,7 @@ class PaymentController extends Controller
 
         $extension = $file->guessExtension() ?? 'jpg';
         $fileName  = 'proof_' . Str::random(40) . '.' . $extension;
-        $path      = $file->storeAs('payment_proofs', $fileName, 'public');
+        $path = $file->storeAs('payment_proofs', $fileName, 'public');
 
         try {
             $registration->update([
@@ -224,7 +235,7 @@ class PaymentController extends Controller
         $secretToken = $request->header('X-Webhook-Secret');
         $expectedSecret = config('services.make.webhook_secret');
 
-        if (!$secretToken || $secretToken !== $expectedSecret) {
+        if (!$secretToken || !hash_equals($expectedSecret, $secretToken)) {
             Log::warning("Unauthorized Webhook Make.com attempt on Order ID: " . $request->order_id);
             return response()->json([
                 'status'  => 'error',
@@ -293,9 +304,11 @@ class PaymentController extends Controller
 
     public function editDataRegist(Request $request, $orderId)
     {
-        $targetOrderId = $orderId;
+        if (session('pending_order_id') !== $orderId) {
+            abort(403, 'Akses ditolak.');
+        }
 
-        $registration = Registration::where('order_id', $targetOrderId)
+        $registration = Registration::where('order_id', $orderId)
             ->where('payment_status', 'pending')
             ->first();
 
@@ -303,9 +316,7 @@ class PaymentController extends Controller
             return redirect('/register')->with('error', 'Data pendaftaran tidak ditemukan atau sudah diproses.');
         }
 
-        session()->forget('pending_order_id');
-
-        return redirect('/register?edit=' . $targetOrderId)->with([
+        return redirect('/register?edit=' . $orderId)->with([
             'old_data' => $registration->toArray(),
             'info'     => 'Silakan perbaiki data pendaftaran kamu.'
         ]);
@@ -313,6 +324,13 @@ class PaymentController extends Controller
 
     public function cancelOrder(Request $request, $orderId): JsonResponse
     {
+        if (session('pending_order_id') !== $orderId) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Akses ditolak.'
+            ], 403);
+        }
+
         $registration = Registration::where('order_id', $orderId)
             ->where('payment_status', 'pending')
             ->first();

@@ -36,3 +36,9 @@ Route::post('/midtrans/notification', [PaymentController::class, 'handleNotifica
     ->name('midtrans.notification');
 
 Route::delete('/payment/{orderId}/cancel', [PaymentController::class, 'cancelOrder'])->name('payment.cancel');
+
+Route::middleware([App\Http\Middleware\PreventBackHistory::class])->group(function () {
+    Route::get('/payment/{orderId}', [PaymentController::class, 'showPayment']);
+    Route::get('/payment/edit/{orderId}', [PaymentController::class, 'editDataRegist']);
+    Route::get('/register', [RegistrationController::class, 'index']);
+});

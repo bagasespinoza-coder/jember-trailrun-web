@@ -285,6 +285,16 @@
     @endif
 
     <script>
+        window.addEventListener('pageshow', function (event) {
+            var historyTraversal = event.persisted || 
+                (typeof window.performance != 'undefined' && 
+                window.performance.getEntriesByType("navigation")[0].type === "back_forward");
+
+            if (historyTraversal) {
+                // Jika user menekan tombol Back di browser, paksa halaman reload dari server
+                window.location.reload();
+            }
+        });
         // Modal Konfirmasi Batalkan & Hapus Pendaftaran
         function showCancelRegistrationModal(orderId) {
             const overlay = document.createElement('div');
