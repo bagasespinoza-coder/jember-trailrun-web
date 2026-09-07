@@ -265,9 +265,8 @@ class PaymentController extends Controller
                 };
 
                 $bibNumber = $registration->bib_number;
-                $isNewlyPaid = ($newStatus === 'paid' && $registration->payment_status !== 'paid');
 
-                if ($isNewlyPaid && empty($bibNumber)) {
+                if ($newStatus === 'paid' && empty($bibNumber)) {
                     $bibNumber = $this->generateBibNumber($registration);
                 }
 

@@ -115,23 +115,18 @@ class RegistrationController extends Controller
         $age = !empty($validated['dob']) ? Carbon::parse($validated['dob'])->age : null;
         $basePrice = 190000;
         
-        // Cek metode pembayaran yang dipilih user dari form
-        $paymentMethod = $request->input('payment_method', 'midtrans'); 
-        
-        // Tentukan admin fee (Midtrans kena 2500, manual 0)
-        $adminFee = ($paymentMethod === 'midtrans') ? 2500 : 0;
-        $ticketPrice = $basePrice + $adminFee;
-
         $orderId = 'JTR-' . strtoupper(Str::random(12));
 
         try {
             $snapToken = null;
             
-            // CEK STATUS MIDTRANS: Hanya generate Snap Token jika Midtrans di-ENABLE
+            // CEK STATUS MIDTRANS: Tambah fee 2.500 HANYA untuk request Midtrans
             if (config('services.midtrans.enabled')) {
+                $midtransPrice = $basePrice + 2500; // 192.500 khusus Midtrans
+
                 $snapToken = $this->midtransService->createSnapToken([
                     'order_id'   => $orderId,
-                    'amount'     => $ticketPrice,
+                    'amount'     => $midtransPrice, // Kirim nominal + fee ke Midtrans
                     'user_name'  => $validated['full_name'],
                     'user_email' => $validated['email'],
                     'user_phone' => $validated['whatsapp_number'],
@@ -139,7 +134,7 @@ class RegistrationController extends Controller
             }
 
             // 3. DB Transaction
-            $registration = DB::transaction(function () use ($validated, $orderId, $ticketPrice, $age, $snapToken, $oldOrderId) {
+            $registration = DB::transaction(function () use ($validated, $orderId, $basePrice, $age, $snapToken, $oldOrderId) {
                 
                 // Lock Check NIK
                 $blockedNik = Registration::where('identity_number', $validated['identity_number'])
@@ -176,7 +171,7 @@ class RegistrationController extends Controller
                     'bib_name'       => $bibName,
                     'bib_number'     => null,
                     'order_id'       => $orderId,
-                    'gross_amount'   => $ticketPrice,
+                    'gross_amount'   => $basePrice, 
                     'payment_status' => 'pending',
                     'snap_token'     => $snapToken,
                     'usia'           => $age,
