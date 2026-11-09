@@ -102,12 +102,12 @@ class RegistrationController extends Controller
             ->when($oldOrderId, fn($q) => $q->where('order_id', '!=', $oldOrderId)) 
             ->count();
 
-        if ($currentCount >= 300) {
+        if ($currentCount >= 400) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
                 'errors'  => [
-                    'quota' => ['Mohon maaf, kuota pendaftaran Jember Trail Run 2026 sudah penuh (Maksimal 300 peserta).']
+                    'quota' => ['Mohon maaf, kuota pendaftaran Jember Trail Run 2026 sudah penuh (Maksimal 400 peserta).']
                 ]
             ], 422);
         }
@@ -146,7 +146,10 @@ class RegistrationController extends Controller
 
                 if ($blockedNik) {
                     $status = strtolower($blockedNik->payment_status);
-                    throw new \Exception($status === 'pending' ? 'NIK_PENDING' : 'NIK_PAID');
+                    if ($status === 'pending') {
+                        throw new \Exception('NIK_PENDING:' . $blockedNik->order_id);
+                    }
+                    throw new \Exception('NIK_PAID');
                 }
 
                 // Lock Check Kuota (SUDAH DIPERBAIKI: Exclude old order ID)
@@ -155,7 +158,7 @@ class RegistrationController extends Controller
                     ->lockForUpdate()
                     ->count();
 
-                if ($totalRegistered >= 300) {
+                if ($totalRegistered >= 400) {
                     throw new \Exception('QUOTA_FULL');
                 }
 

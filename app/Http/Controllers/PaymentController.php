@@ -32,18 +32,16 @@ class PaymentController extends Controller
             abort(403, 'Akses ditolak');
         }
 
-        // UBAH INI: Kalau session-nya nggak cocok, langsung banting ke 403 Forbidden
-        if (strtolower($registration->payment_status) === 'pending' && session('pending_order_id') !== $orderId) {
-            abort(403, 'Akses ditolak');
-        }
-
         $midtransEnabled = config('services.midtrans.enabled');
 
         $validStatuses = ['pending', 'paid', 'approved', 'settled', 'success'];
+
         if (!in_array(strtolower($registration->payment_status), $validStatuses)) {
             session()->forget('pending_order_id');
             return redirect('/register')->with('error', 'Transaksi sudah kedaluwarsa atau dibatalkan. Silakan daftar ulang.');
         }
+
+        session(['pending_order_id' => $registration->order_id]);
 
         return view('registration.payment', compact('registration', 'midtransEnabled'));
     }
