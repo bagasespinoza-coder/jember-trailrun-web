@@ -28,7 +28,7 @@ class PaymentController extends Controller
     {
         $registration = Registration::where('order_id', $orderId)->firstOrFail();
 
-        if (session('pending_order_id') !== $orderId) {
+        if (strtolower($registration->payment_status) === 'pending' && session('pending_order_id') !== $orderId) {
             abort(403, 'Akses ditolak');
         }
 
