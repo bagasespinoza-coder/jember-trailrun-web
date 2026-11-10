@@ -29,6 +29,8 @@ class RegistrationController extends Controller
 
     public function index(Request $request)
     {
+        return redirect('/')->with('error', 'Pendaftaran Jember Trail Run 2026 sudah ditutup sementara.');
+
         // 1. Cek apakah ada request edit DAN validasinya bawa tiket dari PaymentController
         if ($request->has('edit')) {
             session()->forget('pending_order_id');
@@ -65,6 +67,14 @@ class RegistrationController extends Controller
 
     public function store(StoreRegistrationRequest $request): JsonResponse
     {
+        return response()->json([
+            'success' => false,
+            'message' => 'Pendaftaran Ditutup',
+            'errors'  => [
+                'quota' => ['Mohon maaf, pendaftaran Jember Trail Run 2026 telah ditutup. Terima kasih atas antusiasme luar biasa dari para runners!']
+            ]
+        ], 422);
+
         $validated = $request->validated();
         
         $oldOrderId = session('edit_draft.order_id');
